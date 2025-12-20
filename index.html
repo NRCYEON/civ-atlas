@@ -1,7 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script>
+        (function() {
+            // 원하는 최소 너비 설정 (768px 추천)
+            var minWidth = 768;
+            var viewport = document.querySelector("meta[name=viewport]");
+            
+            if (!viewport) {
+                viewport = document.createElement("meta");
+                viewport.name = "viewport";
+                document.head.appendChild(viewport);
+            }
+
+            // 화면이 768px보다 작으면 -> 강제로 768px로 고정 (축소되어 보임)
+            if (screen.width < minWidth) {
+                viewport.setAttribute("content", "width=" + minWidth + ", user-scalable=yes");
+            } 
+            // 화면이 충분히 크면 -> 1:1 비율 유지 (기존 방식)
+            else {
+                viewport.setAttribute("content", "width=device-width, initial-scale=1.0");
+            }
+        })();
+    </script>
 <meta charset="UTF-8">
 <title>문명의 아틀라스</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
