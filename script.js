@@ -736,7 +736,13 @@ if (returnBtn) {
     returnBtn.addEventListener('click', returnToOrigin);
 }
 // [신규] 중분류 카드 자동 번호 매기기 함수
+// [수정] 중분류 카드 자동 번호 매기기 함수 (기후 섹션 예외 처리 추가)
 function autoNumberSubCards(container) {
+    // 1. 현재 활성화된 카드가 'climate'로 시작하면(기후 섹션이면) 즉시 종료
+    // 기후 섹션은 숫자가 아니라 이모지를 보여줘야 하기 때문입니다.
+    if (activeCardId && String(activeCardId).startsWith('climate')) return;
+
+    // 2. 그 외의 섹션(지형, 인문 등)은 기존대로 번호를 매김
     const subCards = container.querySelectorAll('.sub-region-card');
     subCards.forEach((card, index) => {
         const numberElement = card.querySelector('.sub-title-number');
@@ -1100,4 +1106,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ... 추후 다른 섹션 추가
 });
-
