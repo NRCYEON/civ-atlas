@@ -1,0 +1,2712 @@
+    :root {
+        --bg-pattern: none;
+        --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        --card-bg-inactive: rgba(255, 255, 255, 0.8);
+        --active-surface: #f8f9fa;
+        --text-primary: #2d3436; --text-secondary: #636e72; --text-muted: #b2bec3;
+    }
+
+    body {
+        font-family: 'Pretendard', sans-serif; margin: 0; padding: 0;
+        color: var(--text-primary);
+        background-color: #f5f7fa;
+        background-image: var(--bg-pattern), var(--bg-gradient);
+        background-attachment: fixed; min-height: 100vh; overflow-y: scroll;
+        transition: background 0.6s ease-in-out;
+    }
+
+    /* [수정] 헤더를 '서리 낀 반투명 유리' 효과로 변경 */
+header {
+    position: sticky; top: 0; z-index: 1000;
+    
+    /* --- 불투명도 조절 영역 --- */
+    /* background: rgba(255, 255, 255, 0.3) !important;  <-- 이 숫자를 0.0 ~ 1.0 사이로 조절하세요 (예: 0.9) */
+    background: rgba(255, 255, 255, 0.7); 
+    /* --- ------------------ --- */
+    
+    /* 뒤에 비치는 배경을 더 밝고 화사하게 보정 */
+backdrop-filter: blur(1px) saturate(180%) brightness(1.2); 
+-webkit-backdrop-filter: blur(1px) saturate(180%) brightness(1.2);
+    
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 0;
+    display: flex; flex-direction: column; align-items: center;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+}
+
+    /* [핵심] 마우스 오버 또는 하위 메뉴 활성 시 헤더 공간 확장 */
+    header:not(.header-shrunk):has(.nav-group:hover),
+    header:not(.header-shrunk):has(.sub-tab-btn.active) {
+        padding-bottom: 35px; /* 2단 메뉴가 들어갈 공간 확보 */
+    }
+
+    /* 카드가 열려서 헤더가 줄어들었을 때 클릭 방지 해제 (중요 수정) */
+    /* [복구 완료] 카드가 열리면 헤더를 얇은 줄(약 1cm)로 축소 */
+    header.header-shrunk { 
+        height: 15px !important; /* 얇은 줄의 두께 설정 */
+        padding: 0 !important;   /* 위아래 여백 제거 */
+        overflow: hidden;        /* 내부 메뉴 글자 숨김 */
+        border-bottom: 1px solid rgba(0,0,0,0.1); /* 하단 경계선은 유지 */
+        pointer-events: auto;    
+    }
+
+    /* 줄어든 헤더 내부의 메뉴 내용물은 투명하게 처리 */
+    header.header-shrunk .nav-tabs,
+    header.header-shrunk .sub-menu {
+        opacity: 0 !important; 
+        visibility: hidden !important; 
+        pointer-events: none;
+    }
+
+    .nav-tabs {
+        display: flex; gap: 30px; justify-content: center;
+        padding: 15px 0; width: 100%; position: relative; z-index: 2;
+        height: 60px; align-items: center;
+    }
+
+    /* 1단 메뉴 버튼 */
+    /* 1단 메뉴 버튼 (초기화) */
+    .tab-btn, .group-btn {
+    background: transparent; border: none; padding: 5px 10px;
+    font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 700;
+    /* [수정] 기본 글씨색에 80% 투명도 적용 */
+    color: color-mix(in srgb, var(--text-primary) 80%, transparent);
+    cursor: pointer;
+    position: relative; 
+    /* [핵심 수정] 버튼을 투명 다리보다 훨씬 위로 올려서 클릭 씹힘 방지 */
+    z-index: 5000; 
+    transition: all 0.3s;
+border-radius: 8px;
+}
+/* [추가] 1단 메뉴에 마우스를 올리면 옅은 배경색으로 히트박스 표시 */
+    .tab-btn:hover, .group-btn:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+    .tab-btn:hover, .group-btn:hover,
+    .tab-btn.active, .group-btn.active,
+    .nav-group:hover .group-btn,
+    .nav-group:has(.sub-tab-btn.active) .group-btn { 
+        color: var(--text-primary); 
+    }
+    
+    /* 1단 메뉴 밑줄 (활성 상태) */
+    .tab-btn.active::after,
+    .nav-group:has(.sub-tab-btn.active) .group-btn::after {
+        content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 3px;
+        background: var(--text-primary); border-radius: 2px;
+    }
+
+    /* 그룹 컨테이너 */
+    /* [패널 개선] 수직 드롭다운 및 활성 탭 고정 스타일 */
+.nav-group {
+    position: relative;
+    display: inline-block; /* 수평 정렬 유지 */
+}
+
+/* 수직 드롭다운 메뉴 스타일 (개선됨) */
+.sub-menu {
+    position: absolute;
+    top: 100%; /* 대분류 버튼 바로 아래부터 시작 */
+    left: 0;
+    flex-direction: column; /* 세로 나열 */
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 10px 0;
+    min-width: 360px;
+
+    /* [핵심 수정 1] 평소에는 투명하고, 클릭도 통과되도록 설정 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* 마우스가 떠나면 즉시 클릭이 뒤로 통과됨 (방해 금지) */
+    transform: translateY(10px);
+    
+    /* [핵심 수정 2] 닫힐 때: 딜레이 없이 즉시 투명해지기 시작 */
+    /* visibility는 0.2s 뒤에 꺼지지만, pointer-events: none 덕분에 즉시 조작 가능 */
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
+    z-index: 9999;
+}
+
+.nav-group:hover .sub-menu {
+    /* [핵심 수정 3] 마우스 올렸을 때: 즉시 보이고 클릭 가능하게 변경 */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* 다시 클릭 가능 상태로 복구 */
+    transform: translateY(0);
+    
+    /* 열릴 때는 부드럽게 등장 */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sub-tab-btn {
+    width: calc(100% - 20px);
+    text-align: left;
+    padding: 12px 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 12px;
+    margin: 5px 10px;
+    transition: all 0.2s;
+    /* 그리드 레이아웃 핵심 */
+    display: grid !important;
+    grid-template-columns: 50px 1fr; /* 이모지 50px, 나머지 텍스트 */
+    align-items: center;
+    gap: 15px;
+}
+
+.sub-tab-btn:hover { background: rgba(0,0,0,0.05); }
+.sub-tab-btn.active { background: var(--text-primary); color: #fff; }
+
+/* 이모지 스타일: 텍스트에 밀리지 않도록 고정 */
+/* 평상시: 흑백 및 약간 투명하게 설정 */
+.sub-tab-btn .menu-icon {
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+/* 마우스 오버 시: 컬러로 복원 */
+.sub-tab-btn:hover .menu-icon {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* 활성화 상태일 때: 컬러로 고정 */
+.sub-tab-btn.active .menu-icon {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* 텍스트 그룹 스타일: 제목과 수식어를 세로로 나열 */
+.sub-tab-btn .text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden; /* 텍스트 넘침 방지 */
+}
+
+.sub-tab-btn .menu-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap; /* 제목 줄바꿈 방지 */
+}
+
+.sub-tab-btn .menu-desc {
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.7;
+    line-height: 1.4;
+    word-break: keep-all; /* 수식어는 단어 단위 개행 */
+}
+
+.sub-tab-btn.active .menu-desc { color: #fff; opacity: 0.8; }
+
+/* [핵심] 활성화된 항목이 헤더 확장 공간에 남는 스타일 */
+/* [패널 개선] 활성 라벨 스타일: 폰트 통일 및 볼드 해제 */
+.nav-group::after {
+    content: attr(data-active-tab);
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    /* 폰트 통일 및 굵기 조절 */
+    font-family: 'Noto Serif KR', serif; 
+    font-size: 1.0rem;
+    font-weight: 400; /* 볼드 해제 (일반 굵기) */
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.nav-group:has(.sub-tab-btn.active)::after {
+    opacity: 1; /* 활성 항목이 있을 때만 표시 */
+}
+
+/* 헤더 높이 확장 유지 */
+header:not(.header-shrunk):has(.sub-tab-btn.active) {
+    padding-bottom: 40px; 
+}
+
+    .controls { width: 100%; display: flex; justify-content: center; transition: all 0.4s ease; }
+    .controls input {
+        padding: 10px 20px; border-radius: 50px;
+        border: 1px solid rgba(0,0,0,0.1); background: #fff;
+        font-size: 0.95rem; width: 300px; text-align: center;
+        transition: all 0.3s;
+	position: relative; 
+        z-index: 10;
+    }
+    .controls input:focus { outline: none; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+    /* [v4.0] 섹션 전환용 */
+    .content-section { display: none; animation: fadeIn 0.4s ease-out; padding: 40px 20px 600px; }
+    .content-section.active { display: block; }
+    
+    /* 홈 섹션 스타일 */
+    .home-section { 
+        display: none; /* JS로 제어 */
+        flex-direction: column; align-items: center; justify-content: center;
+        height: 100vh; text-align: center; padding-bottom: 0;
+    }
+    .home-section.active { display: flex; }
+    
+    .home-title {
+        font-family: 'Noto Serif KR', serif; font-size: 4rem; font-weight: 900;
+        margin-bottom: 20px; color: #2d3436; letter-spacing: -0.03em;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .home-desc { font-size: 1.2rem; color: #636e72; line-height: 1.6; max-width: 600px; word-break: keep-all; }
+
+    /* 기존 스타일 유지 */
+    .grid-container {
+    counter-reset: region-card-counter; /* [핵심] 여기서부터 숫자 세기 시작 */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+    align-items: start;
+}
+    .region-card {
+        background: var(--card-bg-inactive); backdrop-filter: blur(5px); border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.8); border-left: 6px solid transparent;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 10px rgba(0, 255, 255, 0.4); /* 전체 카드 그림자 결정 */
+        transition: all 0.3s ease; /* transition 속성 통합 */
+        cursor: pointer; position: relative; z-index: 1; height: 160px;
+        display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+    }    
+    /* [업그레이드] 모든 카드에 '테마 색상 발광' 호버 효과 일괄 적용 */
+.region-card:hover {
+    /* [핵심] 그림자를 '카드별 테마 색상'으로 빛나게 변경 */
+    box-shadow: 0 0 25px color-mix(in srgb, var(--theme) 70%, transparent),
+                0 0 45px color-mix(in srgb, var(--theme) 40%, transparent);
+    
+    /* 기존보다 살짝 더 떠오르는 효과 */
+    transform: translateY(-8px);
+    
+    /* 기존의 배경색 살짝 변하는 효과는 유지 */
+    
+}
+/* [수정 완료] 비활성 카드도 클릭 가능하게 변경 */
+.region-card.dimmed {
+    opacity: 0.6; 
+    filter: grayscale(20%) blur(1px) !important; 
+    transform: scale(0.98); 
+    cursor: pointer; /* 마우스 올리면 손가락 모양 */
+    pointer-events: auto !important; /* [핵심] 클릭 차단 해제 */
+    transition: all 0.3s ease;
+}
+/* [추가] 비활성 카드에 마우스 올리면 살짝 밝아짐 */
+.region-card.dimmed:hover {
+    opacity: 0.9;
+    filter: grayscale(0%);
+    transform: scale(1.0);
+}
+    /* [개선 2 - 수정] 활성화 시 빛 번짐 효과 (강도 40% 수준으로 조정) */
+    .region-card.active {
+        background: var(--active-surface); border-color: rgba(0,0,0,0.1); border-bottom: none;
+        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+        transform: scale(1.02);
+        box-shadow: 0 0 25px color-mix(in srgb, var(--theme) 18%, transparent), 0 -5px 15px rgba(0,0,0,0.05);
+        z-index: 20; opacity: 1 !important; filter: none !important;
+    }
+    .region-card.active::after {
+        content: ''; position: absolute; bottom: -15px; left: -1px; width: calc(100% + 2px); height: 20px;
+        background: var(--active-surface); z-index: 21;
+    }
+    .card-header { padding: 0 30px 0 36px; display: flex; justify-content: space-between; align-items: center; height: 100%; position: relative; z-index: 2; }
+    .header-content { position: relative; z-index: 5; width: 100%; }
+    .header-content h2 {
+    position: relative; /* 숫자 위치의 기준점 */
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    color: var(--text-primary);
+    transition: transform 0.3s, color 0.3s;
+    transform-origin: left;
+    text-shadow: 0 0 8px color-mix(in srgb, var(--theme) 20%, transparent), 0 0 15px color-mix(in srgb, var(--theme) 10%, transparent);
+    word-break: keep-all;
+}
+.header-content h2::before {
+    z-index: 2; /* [핵심] 숫자를 아래로 깔리게 함 */
+    counter-increment: region-card-counter;
+    content: counter(region-card-counter, upper-roman);
+    position: absolute;
+    /* [핵심] 위치 변경: 11시 방향으로 이동 */
+    left: -0px;
+    top: -30px;
+    transform: none; /* 기존 중앙 정렬 transform 제거 */
+
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; /* 조금 더 굵게 */
+    font-size: 1.5rem; /* 크기 살짝 조정 */
+    color: var(--theme);
+    opacity: 0.8; /* 투명도 조정 */
+    
+    /* [추가] 디자인 안정성을 위한 코드 */
+    width: auto; /* 더 이상 고정 너비 필요 없음 */
+    text-align: left; /* 정렬 방식 변경 */
+}
+#climate-main-grid .header-content h2::before {
+    display: none;
+}
+#climate-main-grid .header-content h2 {
+    padding-left: 0; /* 기후 섹션 제목의 불필요한 왼쪽 여백 제거 */
+}
+    .region-card.active .header-content h2 { transform: scale(1.1); color: #000; }
+    .header-content p { margin: 0; font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; text-shadow: 0 0 5px rgba(255,255,255,1), 0 0 10px #fff; word-break: keep-all; }
+
+    .card-bg-icon { position: absolute; bottom: -10px; left: -10px; width: 140px; height: 140px; z-index: 0; opacity: 0.15; pointer-events: none; fill: var(--theme); transition: all 0.5s ease; }
+    .panel-bg-icon { position: absolute; bottom: 0; right: 0; width: 400px; height: 400px; opacity: 0.08; z-index: 0; pointer-events: none; fill: var(--panel-theme); }
+
+/* [추가] 자원 섹션 5번 카드 (비금속) */
+    .expand-icon { font-size: 1.2rem; color: var(--text-muted); border: 1px solid var(--text-muted); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; background: rgba(255,255,255,0.5); position: relative; z-index: 10; }
+    .region-card.active .expand-icon { transform: rotate(180deg); background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+    .detail-panel { grid-column: 1 / -1; background: var(--active-surface); border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); border-top: none; box-shadow: 0 30px 60px rgba(0,0,0,0.1); display: none; max-height: 0; opacity: 0; overflow: hidden; margin-top: -2px; padding: 0 50px; z-index: 10; position: relative; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-out, padding 0.3s ease-out; }
+    #detail-content-area { position: relative; z-index: 5; }
+    .detail-panel.open { display: block; max-height: 2500px; opacity: 1; padding: 50px; }
+    .panel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;}
+    .hidden-data { display: none; }
+    .sub-region-card { background: #fff; border-radius: 10px; padding: 25px; border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s; }
+    .sub-region-card:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.06); transform: translateY(-3px); z-index: 5; position: relative; }
+    .sub-title-group { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 20px; position: relative; }
+    .sub-title-number { font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 900; color: var(--panel-theme, #dfe6e9); line-height: 1; opacity: 0.8; margin-top: -5px; transition: color 0.3s; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--panel-theme, #dfe6e9); border-radius: 10px; background-color: rgba(0,0,0,0.02); }
+    .sub-title-content { flex: 1; padding-top: 2px; }
+    .sub-title-heading { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0 0 8px 0; }
+    .sub-title-description { font-size: 0.9rem; color: var(--text-secondary); margin: 0; padding: 0; border: none; line-height: 1.6; word-break: keep-all; }
+    .detail-list { list-style: none; padding: 0; margin: 0; }
+    .detail-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding: 15px 15px 15px 20px;
+    border-left: 3px solid var(--panel-theme, #dfe6e9);
+    border-bottom: none; /* 기존 점선 제거 */
+    border-radius: 4px; /* 둥근 모서리 추가 */
+    background-color: rgba(255, 255, 255, 0.4); /* 반투명 흰색으로 변경하여 밝게 만듦 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10); /* 옅은 그림자 추가 */
+    transition: all 0.2s ease-out; /* 부드러운 효과를 위한 트랜지션 */
+}
+.detail-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    background-color: #fff;
+}
+    .detail-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .detail-header { display: flex; justify-content: space-between; align-items: baseline; width: 100%; }
+    .detail-name {
+    display: inline-block; /* 배경이 텍스트만큼만 차지하도록 설정 */
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2d3436;
+    padding: 2px 8px; /* 상하좌우 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    background-color: color-mix(in srgb, var(--panel-theme, #dfe6e9) 15%, transparent); /* 테마색 15% 하이라이트 */
+    transition: background-color 0.2s; /* 부드러운 색상 전환 효과 */
+}
+.detail-item:hover .detail-name {
+    background-color: color-mix(in srgb, var(--panel-theme, #dfe6e9) 25%, transparent); /* 마우스 올리면 25%로 살짝 진하게 */
+}
+    .detail-examples { font-size: 0.8rem; color: #636e72; font-weight: 500; text-align: right; margin-left: 10px; transition: opacity 0.5s ease-in-out; opacity: 1; word-break: keep-all; }
+/* [신규] 메타데이터(수치) 스타일 */
+    .meta-info {
+        font-size: 0.8rem;
+        color: var(--theme); /* 카드의 테마 색상을 따라감 */
+        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        opacity: 0.9;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    .meta-info {
+        /* ... 기존 스타일 유지 ... */
+        display: flex;
+        gap: 6px; /* 이모지와 글자 사이 간격 살짝 조정 */
+        align-items: center;
+    }
+    /* 이 줄은 지우거나 아래처럼 바꾸세요 */
+    .meta-info::before { content: none; }    
+	.detail-desc { font-size: 0.85rem; color: #7f8c8d; margin-top: 4px; line-height: 1.4; word-break: keep-all; }
+    .full-list-container { display: none; text-align: right; font-size: 0.8rem; color: #636e72; margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(0,0,0,0.05); line-height: 1.6; animation: fadeIn 0.3s ease-out; word-break: keep-all; }
+    .sub-region-card:hover .full-list-container, .climate-sub-card:hover .full-list-container { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    i {
+    font-style: normal;
+    background-color: transparent; /* [수정] 배경을 투명하게 */
+    padding: 2px 8px; /* 좌우 여백 살짝 조정 */
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85em;
+    color: var(--panel-theme, #2d3436); /* [수정] 글자색을 테마 색상으로 */
+    margin-right: 3px;
+    border: 1.5px solid var(--panel-theme, #dfe6e9); /* [수정] 테두리를 테마 색상으로 */
+    vertical-align: 1px;
+    cursor: pointer; /* 클릭 가능한 링크이므로 커서 변경 */
+    transition: all 0.2s ease-out;
+    white-space: nowrap;
+    position: relative;
+}
+    i:hover {
+    background-color: var(--panel-theme, #2d3436); /* 배경을 테마 색상으로 채움 */
+    color: #fff; 
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding-right: 24px; /* 국기가 나올 공간을 다시 확보합니다. */
+}
+    i::after { content: attr(data-flag); position: absolute; right: 6px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.2s; font-size: 1rem; }
+    i:hover::after { opacity: 1; }
+i.term:hover {
+        padding-right: 6px; /* 기존 24px에서 원래 padding 값으로 되돌림 */
+        color: #fff; /* 글자색을 흰색으로 변경 */
+        background-color: var(--panel-theme, #2d3436); /* 배경색을 패널 테마색으로 변경 */
+    }
+    i.term::after {
+        content: none !important; /* 국기 이모지가 나타나지 않도록 강제 설정 */
+    }
+    .cap { font-size: 0; display: inline-block; vertical-align: middle; margin-left: 2px; position: relative; top: -1px; }
+    .cap::after { content: '★'; font-size: 0.75rem; color: #d63031; opacity: 0.9; }
+    .separator { margin: 0 4px; color: #b2bec3; }
+    .close-panel-btn { position: absolute; top: 25px; right: 25px; width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 1px solid rgba(0,0,0,0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-secondary); transition: all 0.2s; z-index: 100; }
+    .close-panel-btn:hover { background: #2d3436; color: #fff; }
+    
+    .detail-examples a, .detail-panel .description a, .full-list-container a { color: var(--text-secondary) !important; text-decoration: none; transition: all 0.2s ease-out; }
+    .detail-examples a:hover, .detail-panel .description a:hover, .full-list-container a:hover { font-weight: 700; color: var(--panel-theme, #2d3436); text-shadow: 0 0 10px rgba(0,0,0,0.2); text-decoration: underline; }
+    /* [기후 섹션 전용] 레이아웃 스타일 */
+    .climate-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 50px 50px 600px 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* 1열 꽉 찬 카드 (E, D, A 기후) */
+    .climate-card-full {
+        width: 100%;
+        max-width: 800px; /* 너무 넓어지지 않게 제한 */
+    }
+
+    /* 2열 카드 컨테이너 (C, B 기후) */
+    .climate-row-half {
+        display: flex;
+        gap: 30px;
+        width: 100%;
+        max-width: 800px;
+        justify-content: center;
+    }
+
+    .climate-card-half {
+        flex: 1; /* 반반씩 차지 */
+    }
+
+/* [v4.3 추가] 기후 섹션 전용 스타일 (3단 계층 구조) */
+    
+    /* 1. 기후 섹션 메인 레이아웃: 완전 수직 배치 */
+    .climate-vertical-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        padding-bottom: 600px; /* 패널 공간 확보 */
+    }
+
+    /* 2. 기후 중분류 카드 (패널 내부용) */
+    .climate-sub-card {
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,0.08);
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .climate-sub-card:hover {
+        border-color: var(--panel-theme);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        transform: translateX(5px);
+    }
+
+    /* 중분류 헤더 (클릭 가능한 영역) */
+    .climate-sub-header {
+        padding: 20px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.01);
+    }
+
+    .climate-code {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        font-size: 1.8rem;
+        color: var(--panel-theme);
+        margin-right: 15px;
+        width: 60px;
+    }
+
+    .climate-name-group h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+    
+    .climate-name-group p {
+        margin: 4px 0 0 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .accordion-arrow {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        transition: transform 0.3s ease;
+    }
+
+    /* 3. 아코디언 내용 영역 (기본 숨김) */
+    .climate-accordion-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        background: #fff;
+    }
+
+    /* 활성화 시 스타일 */
+    .climate-sub-card.expanded {
+        border-color: var(--panel-theme);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .climate-sub-card.expanded .accordion-arrow {
+        transform: rotate(180deg);
+        color: var(--panel-theme);
+    }
+
+    /* 아코디언 내부 리스트 스타일링 (기존 detail-list 재사용 + 패딩 조정) */
+    .climate-detail-wrapper {
+        padding: 0 25px 25px 25px;
+        border-top: 1px dashed rgba(0,0,0,0.05);
+        padding-top: 15px;
+    }
+/* [v4.3 FINAL CSS] 기후 섹션 전용 스타일 */
+    .climate-vertical-stack {
+        display: flex; flex-direction: column; gap: 20px;
+        max-width: 900px; margin: 0 auto; padding-bottom: 600px;
+    }
+    .climate-sub-card {
+        background: #fff; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08);
+        margin-bottom: 15px; overflow: hidden; cursor: pointer; transition: all 0.2s;
+    }
+    .climate-sub-card:hover { border-color: var(--panel-theme); transform: translateX(5px); }
+    .climate-sub-header {
+        padding: 20px 25px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .climate-code {
+        font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1.8rem;
+        color: var(--panel-theme); margin-right: 15px; width: 60px;
+    }
+    .climate-name-group h3 { margin: 0; font-size: 1.1rem; color: var(--text-primary); }
+    .climate-name-group p { margin: 4px 0 0 0; font-size: 0.85rem; color: var(--text-secondary); }
+    .accordion-arrow { transition: transform 0.3s ease; font-size: 0.8rem; color: var(--text-muted); }
+    
+    /* 핵심: 아코디언 내용 영역 */
+    .climate-accordion-body {
+        max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        background: #fff; opacity: 0; /* 닫혔을 때 내용 숨김 */
+    }
+    
+    /* 열렸을 때 스타일 */
+    .climate-sub-card.expanded { border-color: var(--panel-theme); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .climate-sub-card.expanded .accordion-arrow { transform: rotate(180deg); color: var(--panel-theme); }
+    .climate-sub-card.expanded .climate-accordion-body { opacity: 1; } /* 열리면 내용 보임 */
+    
+    .climate-detail-wrapper { padding: 0 25px 25px 25px; border-top: 1px dashed rgba(0,0,0,0.05); padding-top: 15px; }
+/* [v5.7 FINAL CSS] 기후 패널 디자인 개선 */
+    .panel-criteria-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 30px;
+        border-top: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
+        border-bottom: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
+        padding: 25px 0;
+    }
+    .criteria-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .criteria-icon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: var(--panel-theme);
+    }
+    .criteria-content {
+        display: flex;
+        flex-direction: column;
+    }
+    .criteria-label {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+    }
+    .criteria-text {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    /* [개선 1] 아코디언 카드 테마 색상 적용 */
+    .climate-sub-card {
+        border-left: 4px solid var(--panel-theme);
+    }
+    /* [개선 2] 기후 코드 뱃지 스타일 */
+    /* [수정 완료] 하위 기후 코드: 꽉 찬 네모 스타일 */
+    .climate-code {
+        /* 글자 스타일 */
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        font-size: 1.5rem;   /* 글자 크기 적절히 조절 */
+        line-height: 1.2;
+        
+        /* 핵심 디자인: 꽉 찬 네모 만들기 */
+        background-color: var(--panel-theme); /* 배경을 카드 테마색으로 채움 */
+        color: #ffffff;                       /* 글자를 흰색으로 (투명하게 뚫린 느낌) */
+        
+        /* 박스 모양 */
+        padding: 5px 12px;                    /* 박스 안쪽 여백 */
+        border-radius: 8px;                   /* 모서리 살짝 둥글게 */
+        
+        /* 위치 정렬 */
+        display: inline-block;
+        margin-right: 15px;
+        min-width: 55px;                      /* 글자 수 달라도 너비 비슷하게 */
+        text-align: center;                   /* 박스 안에서 글자 가운데 정렬 */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 살짝 그림자 줘서 입체감 */
+    }
+/* [요청사항 반영] 기후 패널 하위 항목 2열 그리드 스타일 */
+/* [신규] 기후 카드의 1차 | 2차 | 3차 계층 시각화 */
+.climate-classification-guide {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 2차 분류 그룹과 수직선 사이의 간격 */
+    margin-left: auto;
+    
+    /* 굵기와 크기 조정 */
+    font-size: 0.9rem;
+    font-family: 'Pretendard', sans-serif; /* Pretendard로 변경하여 굵기 통일성 확보 */
+    font-weight: 500; /* 굵기 500으로 조정 */
+    color: var(--text-secondary);
+    transition: all 0.3s;
+    line-height: 1.3;
+    padding-right: 10px;
+    height: 100%; /* 높이 확보 */
+}
+
+/* 2차 분류 그룹 (수직선 왼쪽에 위치) */
+.climate-sub-group-2 {
+    display: flex;
+    flex-direction: column;
+    text-align: right; /* 수직선에 붙도록 오른쪽 정렬 (밀착 정렬) */
+    white-space: nowrap;
+    min-width: 100px; /* 최소 너비 확보 */
+}
+
+/* 3차 분류 그룹 (수직선 오른쪽에 위치) */
+.climate-sub-group-3 {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* 수직선에 붙도록 왼쪽 정렬 (밀착 정렬) */
+    white-space: nowrap;
+    min-width: 100px; /* 최소 너비 확보 */
+}
+
+/* 수직 분리선 (|) */
+.classification-separator {
+    width: 2px;
+    height: 60px; /* 높이 증가하여 텍스트 높이 커버 */
+    background-color: rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+/* 활성화 상태에서 텍스트 색상 강조 */
+.region-card.active .climate-classification-guide {
+    color: var(--text-primary);
+}
+.region-card.active .classification-separator {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.region-card.active .classification-separator {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 세부 구분 기호 그룹 (W/S, h/k 등) */
+.climate-sub-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    white-space: nowrap;
+}
+
+/* 수직 분리선 (|) */
+.classification-separator {
+    width: 2px; /* 두께 증가 */
+    height: 40px; /* 높이 유지 */
+    background-color: rgba(0, 0, 0, 0.3); /* 색상 진하게 */
+    flex-shrink: 0;
+}
+
+/* 활성화 상태에서 텍스트 색상 강조 */
+.region-card.active .climate-classification-guide {
+    color: var(--text-primary);
+}
+.region-card.active .classification-separator {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+/* 세부 구분 기호 그룹 (W/S, h/k 등) */
+.climate-sub-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    white-space: nowrap;
+}
+
+/* 수직 분리선 (|) */
+.classification-separator {
+    width: 2px; /* 두께 증가 */
+    height: 50px; /* 높이 증가 */
+    background-color: rgba(0, 0, 0, 0.3); /* 색상 진하게 */
+    flex-shrink: 0;
+}
+
+/* 활성화 상태에서 텍스트 색상 강조 (기존 유지) */
+.region-card.active .climate-classification-guide {
+    color: #000; /* 활성화 시 검은색으로 더 강조 */
+}
+.region-card.active .classification-separator {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+    .climate-sub-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        align-items: start; /* 카드 높이가 달라도 위쪽 정렬 */
+    }
+    
+/* [종교 섹션] 정보 패널 그리드 최적화 */
+.panel-criteria-group {
+    display: grid !important; /* 기존 flex 덮어쓰기 */
+    gap: 15px;
+}
+/* [농업 섹션 전용] 메타데이터 2x2 배치 */
+#agriculture-grid .panel-criteria-group {
+    grid-template-columns: repeat(2, 1fr) !important; /* 2열로 강제 재정의 */
+    gap: 15px 30px !important; /* 행 간격과 열 간격 분리 */
+}
+/* [지하자원 섹션 전용] 메타데이터 2x2 배치 */
+#resources-grid .panel-criteria-group {
+    grid-template-columns: repeat(2, 1fr) !important; /* 2열로 강제 재정의 */
+    gap: 15px 30px !important; /* 행 간격과 열 간격 분리 */
+}
+/* [공업 섹션 전용] 메타데이터 2x2 배치 */
+    #industry-grid .panel-criteria-group {
+        grid-template-columns: repeat(2, 1fr) !important; /* 2열로 강제 재정의 */
+        gap: 15px 30px !important; /* 행 간격과 열 간격 분리 */
+    }
+/* [신규 추가] 에너지 섹션 전용 메타데이터 2x2 배치 */
+#energy-grid .panel-criteria-group {
+    grid-template-columns: repeat(2, 1fr) !important; /* 2열로 강제 재정의 */
+    gap: 15px 30px !important; /* 행 간격과 열 간격 분리 */
+}
+
+/* 1. 주요 5대 종교 (패널 상단): 4열로 넓게 배치 */
+#religion-grid .region-card > .hidden-data > .panel-criteria-group {
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+}
+
+/* 2. 기타 종교 (카드 내부): 2열로 좁게 배치 */
+#card-religion-6 .sub-region-card .panel-criteria-group {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px !important;
+    padding: 15px 0 !important;
+    border-top: 1px dashed rgba(0,0,0,0.08) !important;
+    border-bottom: 1px dashed rgba(0,0,0,0.08) !important;
+}
+
+
+/* [신규] 수직 온도 눈금선 스타일 - 우측 정렬 버전 ] */
+/* 기존 right: calc(50% - 535px) 설정을 제거하고 left 기준으로 재배치 */
+/* [수정됨] 온도 눈금선: 화면에 고정 (Fixed) */
+#climate-scale {
+    position: fixed; /* [핵심] 스크롤해도 따라오지 않고 화면에 박제 */
+    top: 50%;        /* 화면 세로 중앙 */
+    transform: translateY(-50%); /* 정확한 중앙 정렬 */
+    
+    /* 900px 콘텐츠의 오른쪽 끝(450px)에서 40px 더 떨어진 곳 */
+    left: calc(50% + 490px); 
+    right: auto;
+    
+    width: 150px;
+    height: 60vh; /* 높이는 화면의 60% 정도가 적당 */
+    font-size: 0.8rem;
+    z-index: 100; /* 카드보다 위에 떠 있어야 함 */
+    text-align: left;
+    display: none; /* JS가 제어 */
+    pointer-events: none; /* 클릭 통과 (방해 안 되게) */
+}
+/* 나머지 .scale-tick 등의 내부 스타일은 그대로 유지되므로 정상적으로 라인이 그려집니다. */
+
+.scale-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    /* [수정] 그라데이션 방향 및 색상 순서 상하 반전 */
+    background: linear-gradient(
+        to top, 
+        #d63031 10%, /* 하단: 빨강 */
+        #fdcb6e 35%, /* 중앙: 노랑 */
+        #0984e3 65%, /* 상단: 파랑 */
+        #74b9ff 90%  /* 최상단: 하늘색 */
+    );
+    /* [수정] 그림자 확산 효과 상하 반전 */
+    box-shadow: 0 0 10px rgba(116, 185, 255, 0.5), /* 최상단 (하늘색) 확산 */
+                0 -100px 10px rgba(9, 132, 227, 0.4), /* 상단 (파랑) 확산 */
+                0 -150px 10px rgba(253, 203, 110, 0.2), /* 중앙 (노랑) 확산 */
+                0 -200px 15px rgba(214, 48, 49, 0.4); /* 하단 (빨강) 확산 */
+    transition: all 0.5s ease;
+}
+
+.scale-tick {
+    position: absolute;
+    width: 100%;
+    left: 15px; /* 텍스트를 선 오른쪽으로 띄움 */
+    right: auto;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.scale-tick::before { /* 눈금을 before로 사용하여 텍스트 오른쪽에 배치 */
+    content: '';
+    position: absolute;
+    left: -15px; 
+    top: 50%;
+    width: 10px;
+    height: 2px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+/* 기존 ::after는 삭제 또는 비활성화 */
+.scale-tick::after {
+    content: none !important; 
+}
+
+.tick-label {
+    font-weight: 700;
+    color: var(--text-secondary);
+    order: 2; /* 순서 변경: 레이블이 뒤로 이동 */
+}
+
+.tick-temp {
+    margin-left: 0; /* Flexbox 정렬을 위해 기존 마진 제거 */
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    order: 1; /* 순서 변경: 온도가 앞으로 이동 */
+}
+
+/* 온도 뒤에 콜론(:) 및 간격 추가 */
+.tick-temp::after {
+    content: ':'; 
+    margin-right: 8px; /* 콜론 뒤 간격 추가 */
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* [기후 카드 전용] 헤더 내부 요소 정렬 및 공간 분배 */
+[id^="card-climate-"] .card-header {
+    display: grid;
+    /* 1열: 1차 분류 텍스트 (40%) | 2열: 2차 분류 그룹 | 3열: 수직선 | 4열: 3차 분류 그룹 | 5열: 확장 아이콘 */
+    /* 1차 분류에 40% 할당, 2/3차 분류에 남은 공간을 균등하게 할당 */
+    grid-template-columns: 40% 1fr 2px 1fr 10%; 
+    align-items: center;
+    gap: 0; 
+    padding-right: 30px; 
+}
+
+/* 1차 분류 텍스트 (제목) */
+[id^="card-climate-"] .header-content {
+    grid-column: 1 / 2;
+    width: 100%;
+}
+
+/* 2차 분류 그룹 (수직선 왼쪽에 붙음) */
+[id^="card-climate-"] .climate-sub-group-2 {
+    grid-column: 2 / 3;
+    justify-self: flex-end; /* 그룹을 오른쪽 끝으로 밀어냄 */
+    padding-right: 15px; /* 수직선과의 간격 확보 */
+}
+
+/* 수직선 */
+[id^="card-climate-"] .classification-separator {
+    grid-column: 3 / 4;
+    justify-self: center;
+    display: block !important; /* 모든 기후에서 수직선 강제 표시 */
+}
+
+/* 3차 분류 그룹 (수직선 오른쪽에 붙음) */
+[id^="card-climate-"] .climate-sub-group-3 {
+    grid-column: 4 / 5;
+    justify-self: flex-start; /* 그룹을 왼쪽 끝으로 밀어냄 */
+    padding-left: 15px; /* 수직선과의 간격 확보 */
+}
+
+/* 확장 아이콘 */
+[id^="card-climate-"] .expand-icon {
+    grid-column: 5 / 6;
+    justify-self: flex-end;
+}
+
+/* E 기후 예외 처리 (3차 분류 텍스트가 없으므로 3차 분류 영역을 비워둠) */
+#card-climate-e .climate-sub-group-2 {
+    /* 2차 분류 영역은 그대로 2열에 유지 */
+    grid-column: 2 / 3;
+    justify-self: flex-end;
+    text-align: right;
+    padding-right: 15px;
+}
+#card-climate-e .climate-sub-group-3 {
+    /* 3차 분류 영역은 비어있지만 공간과 수직선은 유지됨 */
+    grid-column: 4 / 5;
+    justify-self: flex-start;
+    padding-left: 15px;
+}
+/* [추가] 기후 알파벳 박스 디자인 */
+    .climate-char-box {
+        display: inline-block;
+        border: 3px solid var(--theme); /* 카드의 테마 색상을 따라감 */
+        color: var(--theme);            /* 글자색도 테마 색상 */
+        border-radius: 12px;            /* 모서리 둥글게 */
+        padding: 0px 10px;              /* 박스 안쪽 여백 */
+        margin-right: 8px;              /* 박스와 뒤에 글자 사이 간격 */
+        font-family: 'Inter', sans-serif; /* 숫자/영어 전용 폰트 */
+        font-weight: 900;               /* 아주 굵게 */
+        line-height: 1.3;
+        vertical-align: text-bottom;    /* 옆 글자와 높이 맞춤 */
+    }
+/* [신규] 지형 뱃지 스타일 (모던) */
+    .geo-badge {
+        display: inline-block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #fff;
+        background-color: var(--theme);
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-right: 8px;
+        vertical-align: middle;
+        transform: translateY(-2px);
+        letter-spacing: -0.02em;
+	text-align: center;
+    }
+/* [신규] 설명문 소문자 박스 디자인 */
+    .guide-char {
+        display: inline-block;
+        background-color: var(--theme); /* 카드의 테마 색 배경 */
+        color: #fff;                    /* 글자는 흰색 */
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 1px 6px;               /* 박스 크기 조절 */
+        border-radius: 4px;             /* 살짝 둥글게 */
+        margin-right: 4px;              /* 글자와 설명 사이 간격 */
+        line-height: 1.2;
+        min-width: 14px;
+        text-align: center;
+    }
+/* [긴급 교정] 가이드 텍스트 줄바꿈 및 정렬 해결 */
+    .climate-sub-group-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; /* 여기가 핵심! 오른쪽(end)에서 왼쪽(start)으로 변경 */
+        justify-content: center;
+        gap: 4px; 
+        padding-right: 10px; /* 세로선과 너무 딱 붙지 않게 살짝 띄움 */
+    }
+    .climate-sub-group-3 {
+        align-items: flex-start; /* 왼쪽 정렬 및 늘어남 방지 */
+        justify-content: center;
+        gap: 4px; /* 줄 간격 */
+    }
+    /* 한 줄씩 묶어주는 래퍼 */
+    .guide-row {
+        display: flex;
+        align-items: center; /* 박스와 글자 수직 중앙 정렬 */
+        gap: 6px; /* 박스와 글자 사이 간격 */
+        white-space: nowrap; /* 글자 줄바꿈 금지 */
+    }
+/* [긴급 수정] 기후 코드 강제 적용 스타일 */
+    .climate-code {
+        /* 모양과 크기 */
+        display: inline-block !important;
+        min-width: 60px !important;
+        padding: 4px 10px !important;
+        border-radius: 8px !important;
+        
+        /* 색상: 배경은 테마색, 글자는 흰색 */
+        background-color: var(--panel-theme, #2d3436) !important;
+        color: #ffffff !important;
+        
+        /* 글자 스타일 */
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 900 !important;
+        font-size: 1.4rem !important;
+        text-align: center !important;
+        line-height: 1.2 !important;
+        
+        /* 위치 정렬 및 그림자 */
+        margin-right: 12px !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+        vertical-align: middle !important;
+    }
+/* [신규] 수권 전용: 강줄기(Streamline) 스타일 */
+    .stream-list {
+        position: relative;
+        padding-left: 20px;
+        margin-top: 15px;
+        border-left: 3px solid var(--theme, #0984e3); /* 강줄기 선 (테마색 따라감) */
+    }
+    .stream-item {
+        position: relative;
+        margin-bottom: 25px;
+        padding-left: 25px;
+    }
+    .stream-item:last-child { margin-bottom: 0; }
+    
+    /* 물방울 포인트 (Drop) */
+    .stream-item::before {
+        content: '';
+        position: absolute;
+        left: -29px; /* 선 위에 정확히 위치 */
+        top: 6px;
+        width: 15px;
+        height: 15px;
+        background: #fff;
+        border: 3px solid var(--theme, #0984e3);
+        border-radius: 50%;
+        z-index: 1;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* 마우스 올렸을 때 물방울이 차오르는 효과 */
+    .stream-item:hover::before {
+        background: var(--theme, #0984e3);
+        transform: scale(1.3);
+    }
+
+    /* 강 이름 텍스트 */
+    .stream-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 4px;
+        font-family: 'Noto Serif KR', serif;
+    }
+    /* 설명 텍스트 */
+    .stream-desc {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        word-break: keep-all;
+        display: block;
+    }
+/* [신규] 지형 뱃지 스타일 */
+    .geo-badge {
+        display: inline-block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #fff;
+        background-color: var(--theme);
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-right: 8px;
+        vertical-align: middle;
+        transform: translateY(-2px);
+        letter-spacing: -0.02em;
+        text-align: center;
+    }
+/* [신규] 담수(Freshwater) 전용 디자인: Deep Flow */
+    #freshwater-grid .region-card {
+        border-left: none !important; /* 기존 단색 테두리 제거 */
+        position: relative;
+        overflow: hidden; /* 띠지가 둥근 모서리를 넘치지 않게 */
+    }
+    
+    /* 그라데이션 띠지 생성 */
+    #freshwater-grid .region-card::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px; /* 띠지 두께 */
+        /* 위쪽은 카드의 테마색, 아래쪽은 깊은 심해색(#0c2461)으로 떨어지는 그라데이션 */
+        background: linear-gradient(to bottom, var(--theme), #0c2461); 
+        z-index: 5;
+    }
+
+    /* 배경 물결 패턴 애니메이션 (선택 사항: 은은하게 움직임) */
+    @keyframes waveFloat {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0); }
+    }
+    
+    /* [재수정] 담수 아이콘 색상 심화: 면(Fill)과 선(Stroke) 동시 적용 */
+    #freshwater-grid .card-bg-icon {
+        right: -20px;
+        bottom: -20px;
+        left: auto;
+        width: 180px;
+        height: 180px;
+        opacity: 0.5 !important;    /* 투명도 0.4 -> 0.5로 상향하여 더 선명하게 */
+        color: var(--theme) !important; /* [핵심] 이것이 면과 선의 색을 동시에 지배합니다 */
+        fill: currentColor !important;  /* 내부 요소들이 위에서 설정한 color를 따르도록 강제 */
+    }
+/* [신규] 대양과 바다(Ocean) 섹션 전용 디자인 */
+    /* 규칙 1: 아이콘에 테마 색상 적용 */
+    #ocean-grid .card-bg-icon {
+        right: -20px;
+        bottom: -20px;
+        left: auto;
+        width: 180px;
+        height: 180px;
+        opacity: 0.5 !important;
+        color: var(--theme) !important;
+        fill: currentColor !important;
+    }
+
+    /* 규칙 2: 하단에 수평 그라데이션 Flow 추가 */
+    #ocean-grid .region-card {
+        position: relative;
+        overflow: hidden;
+    }
+    #ocean-grid .region-card::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 6px; /* 수평 띠의 두께 */
+        /* 아래쪽은 깊은 심해색(#0c2461), 위쪽은 카드의 테마색으로 변하는 그라데이션 */
+        background: linear-gradient(to top, #0c2461, var(--theme)); 
+        z-index: 5;
+    }
+/* [최종 정리] 겹치는 아이콘 제거 및 종교 섹션 디자인 통합 */
+
+/* 1. 패널 내부 유령 아이콘 (중첩 문제) 제거 - 모든 섹션 */
+.panel-bg-icon {
+    display: none !important;
+}
+
+/* 2. 종교 카드 배경 아이콘 숨기기 (겹치는 회색 이미지) */
+#religion-grid .card-bg-icon {
+    display: none !important;
+}
+
+/* 3. 종교 카드 경전 스타일 이중선 테두리 적용 (8px) */
+#religion-grid .region-card {
+    border-left-width: 8px !important;
+    border-left-style: double !important;
+    border-left-color: var(--theme) !important;
+}
+
+/* -------------------------------------- */
+/* [신규] 용어 링크(종교, 특수지형) 밑줄 제거 및 스타일 정리 */
+.detail-name a, .criteria-text a {
+    text-decoration: none !important; /* 밑줄 제거 */
+    color: inherit !important;        /* 글자색 상속 */
+    border-bottom: none !important;   /* 혹시 모를 테두리 제거 */
+}
+
+/* 링크 호버 시에도 밑줄 생기지 않도록 방지 (배경색 반전 효과만 유지) */
+.detail-name a:hover, .criteria-text a:hover {
+    text-decoration: none !important;
+}
+
+/* [신규] 우하단 플로팅 검색창 스타일 */
+    .floating-search {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 2000; /* 최상위 노출 */
+        background: rgba(255, 255, 255, 0.6); /* 평소엔 반투명 */
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        width: 50px; /* 접힌 상태 너비 (정사각형) */
+        height: 50px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* 마우스 올렸을 때 & 입력 중일 때 확장 */
+    .floating-search:hover, .floating-search:focus-within {
+        width: 320px; /* 길게 늘어남 */
+        background: #ffffff; /* 완전 불투명 흰색 */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .search-icon {
+        font-size: 1.2rem;
+        min-width: 30px;
+        text-align: center;
+        cursor: default;
+        opacity: 0.7;
+    }
+
+    .search-input {
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 1rem;
+        color: var(--text-primary);
+        margin-left: 10px;
+        width: 100%;
+        font-family: 'Pretendard', sans-serif;
+        opacity: 0; /* 접혔을 땐 글자 숨김 */
+        transition: opacity 0.3s ease;
+    }
+
+    /* 확장되면 입력창 글자 보임 */
+    .floating-search:hover .search-input, 
+    .floating-search:focus-within .search-input {
+        opacity: 1;
+    }
+/* [제안 2] 도트 세퍼레이터 */
+.dropdown-menu .tab-btn:not(:last-child)::after {
+    content: ' • ';     /* 점 문자 */
+    position: absolute;
+    right: -10px;     /* 위치 */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b2bec3;   /* 연한 회색 */
+    font-size: 0.8rem;
+}
+/* [복구] 검색어 하이라이트 (노란 형광펜 효과) */
+    .search-highlight {
+        background-color: #ffeaa7;
+        color: #2d3436;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        font-weight: bold;
+    }
+/* [신규] 준비중 페이지 스타일 */
+    .preparing-wrap {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        height: 50vh; text-align: center; color: var(--text-secondary);
+        animation: fadeIn 0.5s ease-out;
+    }
+    .preparing-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.3; filter: grayscale(100%); }
+    .preparing-title { font-family: 'Noto Serif KR', serif; font-size: 2rem; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+/* [신규] 메뉴 아이콘 스타일 (회색조) */
+    .menu-icon {
+        filter: grayscale(100%); /* 흑백 처리 */
+        opacity: 0.7;            /* 약간 투명하게 */
+        margin-right: 6px;       /* 글자와 간격 */
+        font-style: normal;      /* 이모지 기울임 방지 */
+        font-size: 1.1em;        /* 글자보다 살짝 크게 */
+        vertical-align: -1px;    /* 높이 보정 */
+        transition: all 0.3s;
+    }
+    /* 마우스 올리면 컬러로 살아나게 (선택 사항 - 원치 않으시면 삭제 가능) */
+    button:hover .menu-icon, button.active .menu-icon {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+/* [수정됨] 기후 그래프 전용 스타일 */
+.climate-graph-box {
+    /* 핵심: 현재 테마색(빨강, 노랑 등)을 15%만 남기고 검은색을 섞어 아주 어둡고 탁하게 만듦 */
+    background-color: color-mix(in srgb, var(--panel-theme) 30%, #151515);
+    
+    border-radius: 12px;       /* 둥근 모서리 */
+    padding: 20px 10px;        /* 위아래 여백 20px, 좌우 여백 10px */
+    margin-bottom: 25px;       /* 아래쪽 간격 */
+    text-align: center;        /* 가운데 정렬 */
+    
+    /* 안쪽으로 그림자를 줘서 움푹 들어간 느낌 (그래프가 더 잘 보임) */
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5); 
+    border: 1px solid rgba(255,255,255,0.1); /* 살짝 밝은 테두리 */
+}
+
+.climate-graph-img {
+    /* 그래프 크기 조정 */
+    width: auto;               /* 가로 비율 자동 */
+    max-width: 100%;           /* 화면을 넘치지 않게 */
+    height: auto;              /* 세로 비율 자동 */
+    max-height: 450px;         /* 너무 길어지지 않게 제한 (모바일 배려) */
+    
+    /* [중요] 흐릿한 회색 그래프를 선명하게 만드는 보정 필터 */
+    filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 2px rgba(0,0,0,0.5));
+}
+
+.graph-caption {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    /* 어두운 배경이므로 글자는 밝은 흰색 계열로 변경 */
+    color: rgba(255, 255, 255, 0.9); 
+    font-family: 'Pretendard', sans-serif;
+}
+/* [신규] 기후 지도 레이아웃 스타일 */
+.panel-criteria-group {
+    position: relative; /* 버튼 위치 기준점 */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 지도 토글 버튼 (1시 방향) */
+.map-toggle-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: 1px solid var(--panel-theme);
+    color: var(--panel-theme);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.map-toggle-btn:hover {
+    background: var(--panel-theme);
+    color: #fff;
+}
+
+/* 지도 영역 (기본 숨김) */
+.climate-map-area {
+    display: none; /* 평소엔 숨김 */
+    width: 0;
+    opacity: 0;
+    transition: all 0.4s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.climate-map-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 영역 꽉 채우기 */
+    display: block;
+}
+
+/* [핵심] 지도가 펼쳐졌을 때의 레이아웃 변경 */
+.panel-criteria-group.map-open {
+    display: grid !important; /* 강제 그리드 전환 */
+    grid-template-columns: 4fr 6fr; /* 텍스트 40% : 지도 70% */
+    gap: 20px;
+    align-items: start;
+}
+
+.panel-criteria-group.map-open .climate-map-area {
+    display: block;
+    width: 100%;
+    opacity: 1;
+    grid-column: 2; /* 오른쪽 배치 */
+    grid-row: 1 / span 3; /* 텍스트 높이에 맞춰 늘어남 */
+}
+
+/* 텍스트 줄바꿈 개선 */
+.criteria-text {
+    word-break: keep-all; /* 어절 단위 줄바꿈 */
+    line-height: 1.5;
+}
+
+/* [최종 완성 v9] 세계의 권역 스타일 (심해 그라데이션 배경) */
+#section-geo.active {
+    position: relative;
+    /* [수정] 상단: 깊은 바다색(#1a2a6c) -> 하단: 완전 검정(#000000) */
+    /* 스크롤을 내릴수록 점점 어두워지는 심해 효과 */
+    background: linear-gradient(to bottom, #1a2a6c 0%, #0a0e17 40%, #000000 100%) !important;
+    background-attachment: fixed;
+}
+
+/* 1. 배경 지도 (위치 조정, 유지 & png 변경) */
+.geo-bg-layer {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 120vh;
+    background-image: url('images/world-map-clear.webp');
+    background-size: cover; /* 초기 크기 */
+    background-repeat: no-repeat;
+    background-position: center 85%; /* 초기 위치 */
+    z-index: 0;
+    
+    /* [수정] 움직임을 영화처럼 부드럽게 (1.2초 동안 이동) */
+    transition: background-position 1.2s cubic-bezier(0.22, 1, 0.36, 1), 
+                background-size 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.3s linear;
+    will-change: background-position, background-size;
+}
+
+/* 2. 어두운 막 (초기값 완전 투명) */
+.geo-dim-layer {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(0,0,0,0); 
+    opacity: 1;
+    z-index: 1;
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+/* 3. 제목 영역 */
+.geo-hero-title {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    height: 55vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 175px;
+}
+
+.geo-hero-title h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 4rem;
+    margin: 0;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(0, 20, 175, 0.8), 0 0 40px rgba(0,0,0,0.6);
+    background: none;
+}
+
+.geo-hero-title p:first-of-type {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #ffffff;
+    font-weight: 500;
+    text-shadow: 0 0 15px rgba(0, 20, 175,0.9), 0 0 20px rgba(0,0,0,0.7);
+}
+
+.geo-hero-title p:last-of-type {
+    font-size: 1.1rem !important;
+    margin-top: 40px !important;
+    opacity: 1 !important;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(0, 20, 175,1), 0 0 20px rgba(0,0,0,0.8);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+/* 4. 카드 컨테이너 */
+#section-geo.active .grid-container {
+    position: relative;
+    z-index: 5;
+    background: none; 
+    padding-top: 50px;
+}
+
+
+
+/* 2. 비활성화된 카드는 더 어둡고 투명하게 */
+#section-geo.active .region-card.dimmed {
+    opacity: 0.6 !important; /* 기존 dimmed 효과보다 조금 더 투명하게 */
+    filter: grayscale(20%);
+}
+
+/* 2. 활성화된 카드는 완전 불투명 흰색으로 변경 */
+#section-geo.active .region-card.active {
+    background: #f8f9fa !important; /* 완전 불투명한 흰색 계열 */
+    transform: scale(1.02);
+    z-index: 20;
+}
+/* [개선된] 매거진 커버 스타일 갤러리 */
+    .photo-toggle-btn {
+        margin-left: auto;
+        background: transparent;
+        border: 1px solid var(--text-muted);
+        color: var(--text-secondary);
+        border-radius: 50%; width: 32px; height: 32px;
+        font-size: 1rem; cursor: pointer; transition: all 0.2s;
+        display: flex; align-items: center; justify-content: center;
+        z-index: 200; /* 제목과 함께 최상단 유지 */
+    }
+    .photo-toggle-btn:hover { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+
+    /* 카드 설정 */
+    .sub-region-card {
+        position: relative !important;
+        overflow: hidden !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* [수정] 제목이 클릭을 방해하지 않도록 '유령화' 처리 */
+    .sub-region-card.photo-mode .sub-title-group {
+        position: relative; z-index: 100; 
+        color: #fff !important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        transition: all 0.3s;
+        pointer-events: none !important; /* [핵심] 마우스 클릭이 텍스트를 뚫고 지나감 */
+    }
+    .sub-region-card.photo-mode .sub-title-number {
+        color: #fff !important; border-color: #fff !important; background: rgba(255,255,255,0.2);
+    }
+    .sub-region-card.photo-mode .sub-title-heading,
+    .sub-region-card.photo-mode .sub-title-description {
+        color: #fff !important;
+    }
+    .sub-region-card.photo-mode .photo-toggle-btn {
+        display: none; /* 닫기 버튼이 생기므로 카메라 버튼은 숨김 */
+    }
+
+    /* 갤러리 화면 (스크린) */
+    .gallery-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: #2d3436; /* 로딩 전 배경색 */
+        z-index: 50; /* 제목(100)보다는 아래, 본문보다는 위 */
+        opacity: 0; visibility: hidden;
+        transition: opacity 0.4s ease;
+        display: flex; flex-direction: column; justify-content: flex-end;
+    }
+
+    /* 활성화 시 */
+    .sub-region-card.photo-mode .gallery-overlay { opacity: 1; visibility: visible; }
+    .sub-region-card.photo-mode .detail-list { opacity: 0; pointer-events: none; } /* 본문만 숨김 */
+    
+    /* 깜빡임 방지용 강제 고정 (마우스 무시) */
+    .sub-region-card.photo-mode {
+        pointer-events: auto; /* 내부는 클릭 가능해야 함 */
+        transform: none !important; /* 카드 흔들림 방지 */
+    }
+    /* 중요: 사진 모드일 때 호버 효과 원천 차단 */
+    .sub-region-card.photo-mode:hover {
+        transform: none !important; box-shadow: none !important;
+    }
+
+    /* 이미지 및 그라데이션 */
+    .gallery-img {
+        width: 100%; height: 100%; object-fit: cover;
+        position: absolute; top: 0; left: 0; z-index: 1;
+    }
+    /* 제목이 잘 보이도록 상단에 검은 그라데이션 추가 */
+    .gallery-overlay::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        z-index: 2; pointer-events: none;
+    }
+
+    /* 하단 컨트롤 UI */
+    .gallery-ui {
+        position: relative; z-index: 10;
+        padding: 15px 20px;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        color: #fff;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .gallery-caption h4 { margin: 0; font-size: 0.95rem; font-weight: 500; opacity: 0.9; }
+    
+    .gallery-nav-btn {
+        background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+        color: #fff; border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+    }
+    .gallery-nav-btn:hover { background: #fff; color: #000; }
+
+    .gallery-close-btn {
+        position: absolute; top: 20px; right: 20px;
+        background: rgba(0,0,0,0.5); color: #fff;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 50%; width: 32px; height: 32px;
+        
+        /* [핵심 수정] z-index를 200에서 9999로 변경 */
+        cursor: pointer; z-index: 9999 !important; 
+        
+        display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-close-btn:hover { background: #d63031; border-color: #d63031; }
+/* [필수] 사진 액자가 카드 밖으로 튀어나가지 않도록 가두는 코드 */
+    .sub-region-card {
+        position: relative !important; /* 액자의 기준점을 카드로 고정 */
+        overflow: hidden !important;   /* 카드 밖으로 삐져나온 사진 잘라냄 */
+    }
+/* [신규] 이미지 로딩 실패 시 '준비중' 텍스트 표시 */
+.gallery-overlay.image-error::after {
+    content: '이미지 준비 중';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+    pointer-events: none; /* 텍스트가 클릭을 방해하지 않도록 */
+}
+.gallery-overlay.image-error .gallery-img {
+    display: none; /* 깨진 이미지 아이콘 숨기기 */
+}
+/* [신규] 기후 그래프 토글 버튼 스타일 */
+.graph-toggle-btn {
+    display: block;
+    width: 150px;
+    margin: 0 auto 25px; /* 중앙 정렬 및 아래쪽 간격 */
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    
+    /* 기본 상태 (테두리 버튼) */
+    background: transparent;
+    border: 2px solid var(--panel-theme);
+    color: var(--panel-theme);
+}
+
+/* 활성화 상태 (꽉 찬 버튼) */
+.graph-toggle-btn.active {
+    background: var(--panel-theme);
+    color: #fff;
+}
+
+/* 그래프를 감싸는 컨테이너 (기본 숨김) */
+.graph-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#section-geo.active .detail-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(248, 249, 250, 0.7);
+    backdrop-filter: blur(15px);
+    z-index: -1;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+/* [전역 스타일] 모든 패널에 '반투명 유리' 컨셉 적용 */
+
+/* 1. 모든 패널의 배경(외곽부)을 반투명하게 만듭니다. */
+.detail-panel {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+/* [수정된 코드 - 이걸로 덮어쓰세요] */
+.detail-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(232, 237, 247, 0.85); /* 배경을 조금 더 진하게 해서 깜빡임 방지 */
+    
+    /* 평소(움직일 때)에는 블러를 끕니다 -> 렉 제거 핵심 */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    
+    z-index: -1;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 20, 100, 0.4);
+    
+    /* 블러 효과가 켜질 때 부드럽게 변하도록 설정 */
+    transition: backdrop-filter 0.3s ease;
+}
+
+/* 패널이 완전히 열렸을 때만 블러를 켭니다 */
+.detail-panel.open::before {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+/* 2. 모든 패널의 내부 카드(중분류)도 반투명하게 만듭니다. */
+.sub-region-card {
+    background: rgba(240, 244, 250, 0.8) !important;
+    backdrop-filter: blur(1px);
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    /* 기존 호버 효과는 그대로 유지됩니다. */
+}
+
+/* [수정] '권역' 섹션의 중분류 카드에만 '반투명 유리' 효과 적용 */
+#section-geo.active .sub-region-card {
+    background: rgba(255, 255, 255, 0.75) !important; /* !important로 다른 규칙 덮어쓰기 */
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+/* [수정] '대양과 바다' 섹션 전용 캔버스 배경 스타일 v3 */
+
+/* 1. 섹션 자체는 투명하게 만들어, 뒤의 body 배경이 보이게 함 */
+#section-ocean.active {
+    position: relative;
+    background: transparent !important; /* 배경 제거 (핵심) */
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* 2. 비네팅 효과는 그대로 유지 */
+#section-ocean.active::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(10, 20, 60, 0.7) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+/* 4. 카드 배경은 불투명하게 유지 */
+#section-ocean.active .region-card {
+    background-color: #fff;
+}
+/* [신규] '세계의 대지형' 섹션 전용 캔버스 스타일 */
+
+/* 1. 섹션 자체는 투명하게 만들어, 뒤의 body 배경이 보이게 함 */
+#section-terrain.active {
+    background: transparent !important;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* 3. 캔버스 내부 카드 배경은 불투명하게 유지 */
+#section-terrain.active .region-card {
+    background-color: var(--card-bg-inactive);
+}
+/* [통합] 대지형 & 대양 섹션 캔버스/비네팅 스타일 */
+
+/* [수정] 모든 페이지에 비네팅 효과를 적용하되, 헤더는 제외 */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    
+    /* 비네팅 그라데이션 (기존 값 유지) */
+    background: radial-gradient(ellipse at center, 
+        transparent 10%, 
+        rgba(5, 10, 40, 0.9) 100%
+    );
+    
+    z-index: -1; /* [핵심] 헤더(1000)보다 훨씬 아래, 배경보다는 위에 위치 */
+    pointer-events: none; /* 마우스 클릭 통과 */
+}
+
+/* [전역 통합] 배경 이미지를 사용하는 모든 섹션 투명화 */
+#section-terrain.active,
+#section-ocean.active,
+#section-special.active,
+#section-freshwater.active,
+#section-climate.active,
+#section-agriculture.active,
+#section-livestock.active,
+#section-resources.active,
+#section-industry.active,
+#section-city.active,
+#section-language.active,
+#section-religion.active,
+#section-energy.active, 
+#section-population.active {
+    background: transparent !important;
+}
+
+/* 위 섹션들의 카드 배경 불투명도 유지 (가독성 확보) */
+#section-terrain.active .region-card,
+#section-ocean.active .region-card,
+#section-special.active .region-card,
+#section-freshwater.active .region-card,
+#section-climate.active .region-card,
+#section-agriculture.active .region-card,
+#section-livestock.active .region-card
+#section-resources.active .region-card,
+#section-industry.active .region-card,
+#section-city.active .region-card,
+#section-language.active .region-card,
+#section-religion.active .region-card, 
+#section-energy.active .region-card {
+    background-color: var(--card-bg-inactive); 
+    backdrop-filter: blur(10px);
+}
+/* [신규] 홈 화면 전용 배경 및 텍스트 스타일 */
+
+/* 1. 홈 화면 배경 이미지 설정 */
+
+
+/* 2. 홈 화면 제목(h1)을 흰색 + 그림자 효과로 변경 (권역 스타일 참조) */
+#section-home.active .home-title {
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(0, 20, 175, 0.8), 0 0 40px rgba(0,0,0,0.6);
+}
+
+/* 3. 홈 화면 설명(p)도 동일하게 변경 */
+#section-home.active .home-desc {
+    color: #ffffff;
+    font-weight: 500; /* 가독성을 위해 살짝 굵게 */
+    text-shadow: 0 0 15px rgba(0, 20, 175,0.9), 0 0 20px rgba(0,0,0,0.7);
+}
+/* [신규] '세계의 기후' 섹션 배경 투명화 */
+#section-climate.active {
+    background: transparent !important;
+}
+/* [수정] 기후 온도 눈금선 가독성 강화 (흰색 글씨 + 그림자) */
+
+/* 1. 눈금선 전체 글씨 색상을 흰색 계열로 변경 */
+#climate-scale .tick-label,
+#climate-scale .tick-temp,
+#climate-scale .tick-temp::after {
+    color: #fff !important;
+}
+
+/* 2. 모든 글씨에 어두운 그림자를 추가하여 배경과 분리 */
+#climate-scale .tick-label,
+#climate-scale .tick-temp {
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. [수정] 눈금선(tick) 색상도 흰색 + 그림자로 변경 */
+#climate-scale .scale-tick::before {
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+/* [신규] 배경 보기 버튼 및 모달 스타일 */
+.bg-view-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px; /* 좌하단 배치 */
+    z-index: 2000; /* 검색창과 동급 */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.bg-view-btn:hover {
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.bg-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* 거의 불투명한 검정 */
+    z-index: 9999; /* 최상위 (비네팅보다 위) */
+    display: none; /* 기본 숨김 */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+}
+
+.bg-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.bg-modal img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain; /* 비율 유지하며 꽉 채움 */
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    border-radius: 4px;
+    cursor: default;
+}
+
+.bg-modal-close {
+    position: absolute;
+    top: 30px; right: 30px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.bg-modal-close:hover { opacity: 1; }
+
+
+/* [최종 수정] 배경 모달 텍스트 스타일 (박스 제거, 그림자 강조) */
+.bg-modal-text {
+    position: absolute;
+    top: 15%; 
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 20000 !important; 
+    pointer-events: none; 
+    width: 100%;
+}
+
+.bg-modal-text h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 3rem; /* 글자 크기 대폭 확대 */
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    
+    /* [핵심] 박스 배경 없음. 대신 진한 그림자로 가독성 확보 */
+    background: none !important; 
+    text-shadow: 0 0 30px rgba(0, 20, 100, 0.9), 0 0 10px black;
+    
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.bg-modal-text p {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    
+    /* [핵심] 박스 배경 없음 */
+    background: none !important;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 5px black;
+    
+    padding: 0;
+    border-radius: 0;
+}
+
+
+
+/* [신규] 나침반 버튼 스타일 */
+.map-reset-btn {
+    position: fixed;
+    bottom: 90px; /* 눈 버튼(30px) 위에 배치 */
+    left: 30px;
+    z-index: 2000;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none; /* 평소엔 숨김 */
+    align-items: center; justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.map-reset-btn:hover {
+    background: #fff;
+    transform: rotate(-45deg); /* 마우스 올리면 나침반이 살짝 돔 */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* [핵심] '세계의 권역' 섹션이 켜졌을 때만 버튼 보이기 */
+body:has(#section-geo.active) .map-reset-btn {
+    display: flex;
+}
+/* [수정됨] 전역 카드 네비게이션 버튼 스타일 (가시성 개선) */
+.global-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1500;
+    width: 50px;
+    height: 90px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.5); /* 0.4 -> 0.5로 배경 진하게 */
+    color: #fff;
+    font-size: 1.5rem; /* 아이콘 크기 살짝 조정 */
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    opacity: 0.8; /* 0.6 -> 0.8로 더 불투명하게 */
+    transition: all 0.2s ease;
+    display: none;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5); /* [추가] 아이콘 그림자 */
+}
+
+.global-nav-btn:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.8); /* 호버 시 더 진하게 */
+    transform: translateY(-50%) scale(1.05); /* 살짝 커지는 효과 */
+}
+
+.global-nav-btn.prev { left: 30px; }
+.global-nav-btn.next { right: 30px; }
+
+.global-nav-btn:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.global-nav-btn.prev { left: 30px; }
+.global-nav-btn.next { right: 30px; }
+
+/* [신규] 권역 섹션에서만 배경 지도 블러 효과 강제 제거 */
+body:has(#section-geo.active) .geo-bg-layer {
+    filter: none !important;
+}
+
+/* [신규] 패널 닫힘 애니메이션 효과 */
+.detail-panel.closing {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, max-height 0.4s cubic-bezier(0.6, 0, 0.4, 1);
+}
+/* [완벽 수정] 겹쳐진 단축키 버튼 스타일 (위치 및 노출 오류 수정) */
+.bg-view-btn {
+    /* --- 위치 및 기본 스타일 --- */
+    position: fixed;   /* [수정] 화면에 고정 */
+    bottom: 30px;
+    left: 30px;
+    z-index: 2000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형 복귀 */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    /* --- 내부 아이콘 정렬 및 노출 --- */
+    display: flex; /* [수정] 항상 보이도록 기본 설정 (JS가 제어함) */
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.bg-view-btn:hover {
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.bg-view-btn .btn-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.btn-shortcut-overlay {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    padding: 1px 5px;
+    line-height: 1;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* [최종] 홈 화면 애니메이션 배경 (4단계 파노라마 이동) */
+.home-section {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+.home-animated-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    
+    background-image: url('images/world-map-main.webp');
+    background-size: cover;
+    background-position: center;
+    
+    /* 동선이 길어서 시간을 40초로 늘려 부드럽게 만듦 */
+    animation: kenburns 240s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+/* 
+   [좌표 설명]
+   translate X축: (-)는 왼쪽 이동(오른쪽 보여줌), (+)는 오른쪽 이동(왼쪽 보여줌)
+   translate Y축: (-)는 위로 이동(아래쪽 보여줌), (+)는 아래로 이동(위쪽 보여줌)
+*/
+@keyframes kenburns {
+    /* 1단계: 동아시아 (우측 상단) */
+    0% {
+        transform: scale(1.0) translate(0%, 0%);
+    }
+    16% {
+        transform: scale(1.7) translate(0%, 0%);
+    }
+    32% {
+        transform: scale(2.5) translate(-31%, 16%);
+    }
+    
+    /* 2단계: 동남아시아 및 오세아니아 (우측 하단) - 가장 크게 줌인 */
+    48% {
+        transform: scale(2.2) translate(-27%, -10%);
+    }
+    
+    /* 3단계: 서남아시아, 유럽, 아프리카 (중앙) - 약간 줌아웃 */
+    64% {
+        transform: scale(2.6) translate(-8%, 9%);
+    }
+    80% {
+        transform: scale(3.3) translate(2%, 23%);
+    }
+    
+    /* 4단계: 아메리카 (좌측) - 가장 넓게 줌아웃 */
+    100% {
+        transform: scale(1.8) translate(15%, 0%);
+    }
+}
+/* [신규] 기후 섹션 전용: 카드가 열리면 배경 블러 처리 */
+
+/* 1. 기후 섹션이 활성화되면 블러용 막(Layer)을 미리 준비 (투명 상태) */
+body:has(#section-climate.active)::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    z-index: 0; /* 배경(body)보다는 앞, 카드(z-index:1)보다는 뒤 */
+    pointer-events: none; /* 마우스 클릭 통과 */
+    
+    backdrop-filter: blur(0px); /* 평소엔 블러 없음 */
+    transition: backdrop-filter 0.5s ease; /* 0.5초 동안 부드럽게 변함 */
+}
+
+/* 2. 패널(.detail-panel.open)이 열리는 순간 블러 강도를 높임 */
+body:has(#section-climate.active):has(.detail-panel.open)::before {
+    backdrop-filter: blur(8px); /* 블러 강도 (취향껏 조절: 5px ~ 10px 추천) */
+}
+/* [최종 해결책] 에너지 섹션 배경 이미지 강제 적용 (JS 무시) */
+body:has(#section-energy.active) {
+    background-image: url('images_human/energy.webp') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+/* [신규] sub-region-card 아코디언 기능 */
+.sub-region-card .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s;
+    opacity: 0;
+}
+
+.sub-region-card.expanded .accordion-body {
+    max-height: 500px; /* 충분한 높이 */
+    opacity: 1;
+}
+
+.sub-region-card .accordion-arrow {
+    transition: transform 0.3s ease;
+}
+
+.sub-region-card.expanded .accordion-arrow {
+    transform: rotate(180deg);
+}
+/* [기후 섹션 전용] 식생/토양 카드 높이 정렬 해제 (엿가락 방지) */
+#section-climate .panel-grid {
+    align-items: start;
+}
+/* [신규] 홈 화면에서만 헤더를 배경 위로 띄우기 */
+body:has(#section-home.active) header {
+    position: absolute; /* 헤더를 '공중에 뜬 레이어'로 변경 */
+    width: 100%;      /* 가로 폭을 화면 전체로 설정 */
+}
+/* [신규] 대기 대순환 띠 및 토글 버튼 스타일 */
+#climate-bands-toggle {
+    position: fixed;
+    top: 135px; /* 헤더 바로 아래 */
+    left: 30px;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none; /* 평소엔 숨김 (JS로 제어) */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    
+    /* [추가] 둥둥 떠다니는 애니메이션 적용 (2초 간격 무한 반복) */
+    animation: bounce 2s infinite; 
+}
+
+/* [추가] 마우스를 올리거나 활성화되면 얌전해지도록 설정 */
+#climate-bands-toggle:hover,
+#climate-bands-toggle.active {
+    animation: none; /* 호버 시 애니메이션 멈춤 */
+    transform: scale(1.1); /* 호버 효과 유지 */
+}
+
+#climate-bands-toggle.active {
+    background: #fff;
+    transform: rotate(90deg); /* 활성 시 회전 유지 */
+}
+
+#atmospheric-bands-container {
+    position: absolute;
+    top: 120px; /* [수정] 헤더 아래로 위치 이동 */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 120px); /* [수정] 전체 높이도 그만큼 줄여줌 */
+    z-index: 0; /* 카드보다 아래에 위치 */
+    pointer-events: none;
+    display: none; /* 평소엔 숨김 */
+    overflow: hidden;
+}
+
+.pressure-band, .wind-band {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* [수정] 왼쪽 정렬 */
+    padding-left: 100px; /* [추가] 좌측 버튼과 겹치지 않도록 여백 확보 */
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); /* [수정] 그림자를 더 진하고 선명하게 */
+}
+
+
+/* [재조정] 극고압대 추가 및 북반구 순서에 맞춰 띠 위치 재조정 */
+.polar-high       { top: 0;   height: 10%; background: rgba(116, 185, 255, 0.25); } /* 신규 */
+.polar-easterlies { top: 10%; height: 10%; background: rgba(116, 185, 255, 0.15); }
+.polar-front      { top: 20%; height: 10%; background: rgba(9, 132, 227, 0.2); }
+.westerlies       { top: 30%; height: 28%; background: rgba(0, 184, 148, 0.15); }
+.subtropical-high { top: 58%; height: 12%; background: rgba(253, 203, 110, 0.2); }
+.trade-winds      { top: 70%; height: 20%; background: rgba(230, 126, 34, 0.15); }
+.itcz             { top: 90%; height: 10%; background: rgba(214, 48, 49, 0.2); }
+
+/* 화살표 패턴 (바람 띠에만 적용) */
+.polar-easterlies, .trade-winds {
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 12px);
+}
+.westerlies {
+    /* [수정] 편서풍 방향 수정 (남서풍) */
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 12px);
+}
+
+/* JS가 body에 .show-climate-bands 클래스를 추가하면 띠가 나타남 */
+body.show-climate-bands #atmospheric-bands-container {
+    display: block;
+}
+/* [최종 수정] 기후 섹션 구분선 (가장 안정적인 방식) */
+.climate-divider {
+    width: 100%;
+    margin: 25px 0; /* 위아래 간격 */
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9); /* 글씨 선명도 살짝 올림 */
+    font-size: 0.9rem;
+    font-weight: 700; /* 글씨 살짝 더 굵게 */
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8); /* [수정] 그림자를 더 진하고 넓게 */
+    display: flex;
+    align-items: center;
+    position: relative; /* z-index 적용을 위해 필요 */
+    z-index: 1; /* [추가] 대기 대순환 띠(z-index: 0)보다 위에 표시 */
+}
+
+.climate-divider span {
+    padding: 0 15px;
+}
+
+.climate-divider::before,
+.climate-divider::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: repeating-linear-gradient(to right, rgba(255,255,255,0.7), rgba(255,255,255,0.7) 3px, transparent 3px, transparent 8px);
+}
+#climate-bands-toggle:hover::after {
+    content: "대기 대순환 켜기/끄기";
+    position: absolute;
+    left: 60px; /* 버튼 오른쪽 */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+/* [강제 적용] 지정학 섹션 배경 */
+body.bg-geopolitics {
+    background: url('images/geopolitics.webp') no-repeat center center fixed !important;
+    background-size: cover !important;
+}
+/* [신규] 둥둥 떠다니는 버튼 애니메이션 */
+@keyframes floatBounce {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    50% {
+        transform: translateY(-10px); /* 위로 10px 둥실 */
+        box-shadow: 0 15px 25px rgba(0,0,0,0.1); /* 그림자도 멀어짐 */
+    }
+}
+/* [신규] 바람 텍스트 전용 애니메이션 (좌우로 살랑살랑) */
+@keyframes windFlow {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); } /* 오른쪽으로 10px 이동 */
+}
+
+/* [적용] 'wind-band' 클래스를 가진 녀석들(편서풍, 무역풍 등) 안의 span(글자)에만 적용 */
+.wind-band span {
+    display: inline-block; /* 애니메이션 적용을 위해 블록화 */
+    animation: windFlow 3s infinite ease-in-out; /* 3초 간격으로 부드럽게 왕복 */
+}
+
+/* (선택사항) 편서풍은 반대 방향으로 움직이게 하고 싶다면? */
+/* .westerlies span { animation-direction: reverse; } */
+/* [신규] 도약 버튼 스타일 */
+.jump-btn-container {
+    display: flex;
+    justify-content: flex-end; /* 우측 정렬 */
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(0,0,0,0.1); /* 본문과 구분선 */
+}
+
+/* [디자인 수정] 도약 버튼 컨테이너: 가로 배열 & 우측 정렬 & 줄바꿈 허용 */
+.jump-btn-container {
+    display: flex;
+    flex-direction: row;     /* 가로 정렬 (기본값이라 생략 가능하지만 명시함) */
+    justify-content: flex-end; /* 오른쪽 끝으로 밀기 */
+    align-items: center;     /* 세로 중앙 정렬 */
+    flex-wrap: wrap;         /* 공간 부족하면 다음 줄로 (모바일 대응) */
+    gap: 8px;                /* 버튼 사이 간격 */
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+}
+
+/* 안내 문구는 줄바꿈을 강제해서 버튼들 위에 오도록 함 */
+.jump-guide-text {
+    width: 100%;             /* 한 줄 다 차지하게 */
+    text-align: right;       /* 오른쪽 정렬 */
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* '더 알아보기' 같은 안내 문구 스타일 */
+.jump-guide-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* 버튼 본체 스타일: 폰트 얇게, 크기 작게 */
+.jump-link-btn {
+    background: linear-gradient(135deg, var(--panel-theme, #2d3436) 0%, #2d3436 100%);
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* [수정] 600 -> 400 (볼드체 제거, 얇게) */
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.9;
+}
+
+.jump-link-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 1;
+}
+/* [신규] 돌아가기 버튼 스타일 */
+.return-jump-btn {
+    position: fixed;
+    top: 90px; /* 헤더 아래쪽 */
+    right: 30px; /* 오른쪽 구석 */
+    z-index: 2000; /* 다른 것들보다 위에 */
+    
+    background: rgba(45, 52, 54, 0.9); /* 검은색 반투명 배경 */
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 25px; /* 둥글게 */
+    padding: 8px 16px;
+    
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    
+    display: none; /* 평소엔 숨김 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease-out; /* 나타날 때 부드럽게 */
+}
+
+.return-jump-btn:hover {
+    background: #000;
+    transform: translateY(-2px);
+}
+/* ===================================================== */
+/* [진짜 최종] 카드 테마 색상 정의 (모든 ID 적용)         */
+/* ===================================================== */
+
+/* 1. 세계의 권역 (geo) */
+#card-1 { --theme: #2d3436; }
+#card-2 { --theme: #0984e3; }
+#card-3 { --theme: #e17055; }
+#card-4 { --theme: #fdcb6e; }
+#card-5 { --theme: #636e72; }
+#card-6 { --theme: #6c5ce7; }
+#card-7 { --theme: #00cec9; }
+#card-8 { --theme: #00b894; }
+#card-9 { --theme: #d63031; }
+
+/* 2. 대지형 (terrain) */
+#card-terrain-1 { --theme: #8D6E63; }
+#card-terrain-2 { --theme: #546E7A; }
+#card-terrain-3 { --theme: #fa8231; }
+
+/* 3. 특수 지형 (special) */
+#card-special-1 { --theme: #00a8ff; }
+#card-special-2 { --theme: #74b9ff; }
+#card-special-3 { --theme: #fdcb6e; }
+#card-special-4 { --theme: #a29bfe; }
+#card-special-5 { --theme: #e17055; }
+#card-special-6 { --theme: #00cec9; }
+
+/* 4. 담수 시스템 (freshwater) */
+#card-hydro-1 { --theme: #1e3799; }
+#card-hydro-2 { --theme: #009432; }
+#card-hydro-3 { --theme: #6a89cc; }
+#card-hydro-5 { --theme: #82ccdd; }
+#card-hydro-8 { --theme: #a55eea; }
+
+/* 5. 대양과 바다 (ocean) */
+#card-hydro-6 { --theme: #0c2461; }
+#card-hydro-7 { --theme: #3498db; }
+#card-ocean-3 { --theme: #3498db; }
+#card-ocean-4 { --theme: #27ae60; }
+
+/* 6. 세계의 기후 (climate) */
+#card-climate-e { --theme: #74b9ff; }
+#card-climate-d { --theme: #0984e3; }
+#card-climate-c { --theme: #00b894; }
+#card-climate-b { --theme: #fdcb6e; }
+#card-climate-a { --theme: #d63031; }
+#card-climate-s { --theme: #9c88ff; }
+#card-climate-x { --theme: #8e82a2; }
+
+/* 7. 인구 (population) */
+#card-population-1 { --theme: #3498db; }
+#card-population-2 { --theme: #2ecc71; }
+#card-population-3 { --theme: #9b59b6; }
+#card-population-4 { --theme: #7f8c8d; }
+#card-population-5 { --theme: #e67e22; }
+
+/* 8. 농업 (agriculture) */
+#card-agri-1 { --theme: #4CAF50; }
+#card-agri-2 { --theme: #795548; }
+#card-agri-3 { --theme: #FF9800; }
+#card-agri-4 { --theme: #8e44ad; }
+#card-agri-5 { --theme: #e84393; }
+#card-agri-6 { --theme: #f1c40f; }
+#card-agri-7 { --theme: #636e72; }
+#card-agri-8 { --theme: #8e44ad; }
+#card-agri-9 { --theme: #2d3436; }
+
+/* 9. 자원 (resources) */
+#card-resources-1 { --theme: #D35400; }
+#card-resources-2 { --theme: #8D6E63; }
+#card-resources-3 { --theme: #FFD700; }
+#card-resources-4 { --theme: #00B894; }
+#card-resources-5 { --theme: #95a5a6; }
+
+/* 10. 에너지 (energy) */
+#card-energy-1 { --theme: #e67e22; }
+#card-energy-2 { --theme: #8e44ad; }
+#card-energy-3 { --theme: #3498db; }
+#card-energy-4 { --theme: #2ecc71; }
+#card-energy-5 { --theme: #4b6584; }
+
+/* 11. 공업 (industry) */
+#card-industry-1 { --theme: #404E88; }
+#card-industry-2 { --theme: #B53471; }
+#card-industry-3 { --theme: #D6A32F; }
+#card-industry-4 { --theme: #2D98DA; }
+#card-industry-5 { --theme: #6c5ce7; }
+
+/* 12. 도시 (city) */
+#card-city-1 { --theme: #3c40c6; }
+#card-city-2 { --theme: #0fb9b1; }
+#card-city-3 { --theme: #ff5e57; }
+#card-city-4 { --theme: #6c5ce7; }
+#card-city-5 { --theme: #009432; }
+
+/* 13. 언어 (language) */
+#card-lang-1 { --theme: #3c40c6; }
+#card-lang-2 { --theme: #3c40c6; }
+#card-lang-3 { --theme: #d63031; }
+#card-lang-4 { --theme: #e17055; }
+#card-lang-5 { --theme: #00b894; }
+#card-lang-6 { --theme: #6c5ce7; }
+
+/* 14. 종교 (religion) */
+#card-religion-1 { --theme: #5D729A; }
+#card-religion-2 { --theme: #D62828; }
+#card-religion-3 { --theme: #0096C7; }
+#card-religion-4 { --theme: #F77F00; }
+#card-religion-5 { --theme: #B8860B; }
+#card-religion-6 { --theme: #43AA8B; }
+
+/* 15. 지리학의 탐구 (Exploration) */
+#card-tourism-1, #card-tourism-2, #card-tourism-3 { --theme: #6c5ce7; }
+#card-geopol-1 { --theme: #c0392b; }
+#card-geopol-2 { --theme: #2980b9; }
+#card-geopol-3 { --theme: #8e44ad; }
+#card-geopol-4 { --theme: #e67e22; }
+#card-geopol-5 { --theme: #636e72; }
+#card-geopol-6 { --theme: #f1c40f; }
+#card-econ-1 { --theme: #0984e3; }
+#card-econ-2 { --theme: #6c5ce7; }
+#card-econ-3 { --theme: #e84393; }
+#card-rural-1 { --theme: #6ab04c; }
+#card-rural-2 { --theme: #f0932b; }
+#card-rural-3 { --theme: #be2edd; }
+#card-rural-4 { --theme: #4834d4; }
+#card-rural-5 { --theme: #636e72; }
+#card-urban-1 { --theme: #fdcb6e; }
+#card-urban-2 { --theme: #b2bec3; }
+#card-urban-3 { --theme: #a29bfe; }
+#card-urban-4 { --theme: #636e72; }
+#card-cultural-1, #card-cultural-2, #card-cultural-3 { --theme: #e17055; }
+#card-conflict-1 { --theme: #57606f; }
+
+/* ----------------------------------------------------- */
+/* [통합] 카드 좌측 띠지 및 내부 색상 자동 적용          */
+/* ----------------------------------------------------- */
+.region-card {
+    border-left-color: var(--theme);
+}
+.header-content h2::before {
+    color: var(--theme);
+}
+
+.card-bg-icon {
+    fill: var(--theme);
+}
+/* [긴급 수정] 기후 카드 높이 정상화 */
+[id^="card-climate-"] {
+    height: 120px; /* 카드 자체의 높이를 160px -> 120px로 줄임 */
+}
+
+/* 기후 카드 헤더 내부 정렬 방식 변경 */
+[id^="card-climate-"] .card-header {
+    align-items: center; /* 기존 중앙 정렬 유지 */
+    padding-top: 5px;   /* 위쪽 여백 살짝 추가 */
+    padding-bottom: 5px;/* 아래쪽 여백 살짝 추가 */
+}
+
+/* 기후 카드 분류 가이드의 세로선 높이 조절 */
+[id^="card-climate-"] .classification-separator {
+    height: 55px; /* 세로선 높이를 60px -> 55px로 줄여서 여유 공간 확보 */
+}
+
+/* ===================================================== */
+/* [필수] 데스크톱 환경에서 모바일 요소 원천 봉쇄        */
+/* (이 코드가 없으면 PC 화면에 모바일 메뉴가 튀어나옵니다) */
+/* ===================================================== */
+#mobile-menu-btn,
+#mobile-close-btn,
+#mobile-nav-overlay,
+#mobile-nav-panel {
+    display: none !important;
+}
+/* PC 스크롤 강제 복구 */
+body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
