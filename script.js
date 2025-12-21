@@ -240,6 +240,8 @@ function activateCard(id, event) {
     detailPanel.classList.remove('open');
     detailPanel.style.display = 'block';
     insertPanelAfterRow(clickedCard);
+    // [복구] 모바일에서만 페이지네이션 점 생성 함수 실행
+    if (window.innerWidth <= 1024) setupMobilePagination(contentArea); 
     
     requestAnimationFrame(() => { 
         requestAnimationFrame(() => { 
@@ -248,12 +250,24 @@ function activateCard(id, event) {
     });
     
     startTextRotation(contentArea);
+    // [수정] 헤더 높이, 모바일 여부를 고려한 정밀 스크롤 로직
     setTimeout(() => {
-        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-        const targetY = clickedCard.offsetTop - headerHeight - 20;
+        let targetY;
+        const headerHeight = 50; // 모바일 헤더 높이는 50px로 고정
+        const panelTop = detailPanel.getBoundingClientRect().top + window.scrollY;
+
+        // 모바일에서는 패널 상단을 헤더 바로 아래에 맞춤
+        if (window.innerWidth <= 1024) {
+            targetY = panelTop - headerHeight;
+        } 
+        // PC에서는 기존 로직 유지 (클릭한 카드 기준)
+        else {
+            const pcHeaderHeight = document.querySelector('header')?.offsetHeight || 0;
+            targetY = clickedCard.offsetTop - pcHeaderHeight - 20;
+        }
+
         window.scrollTo({ top: targetY, behavior: 'smooth' });
-    }, 400);
-    setupMobilePagination(contentArea); //
+    }, 400); // 패널이 열리는 애니메이션(0.4초)에 맞춰 실행
     if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
 }
 
@@ -454,7 +468,20 @@ btn.innerHTML = isOpen ? '🔼 접기' : btn.dataset.originalText; }
 // [11] 패럴랙스 & 스크롤 보정
 window.addEventListener('scroll', () => { const geoSection = document.getElementById('section-geo'); if (!geoSection || !geoSection.classList.contains('active')) return; const scrollY = window.scrollY; const bgLayer = document.getElementById('geo-bg'); const dimLayer = document.getElementById('geo-dim'); if (bgLayer && dimLayer) { bgLayer.style.transform = `translateY(${-scrollY * 0.05}px)`; const progress = Math.min(scrollY / 600, 1); bgLayer.style.filter = `blur(${progress * 3}px)`; dimLayer.style.backgroundColor = `rgba(12, 22, 59, ${progress * 0.6})`; } });
 const originalScrollTo = window.scrollTo;
-window.scrollTo = function(options) { const geoSection = document.getElementById('section-geo'); if (geoSection && geoSection.classList.contains('active') && activeCardId) { const card = document.getElementById(`card-${activeCardId}`); if (card) { const headerHeight = document.querySelector('header')?.offsetHeight || 0; const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20; originalScrollTo.call(window, { top: targetY, behavior: 'smooth' }); return; } } originalScrollTo.apply(window, arguments); };
+window.scrollTo = function(options) { 
+    const geoSection = document.getElementById('section-geo'); 
+    // [수정] PC 화면(1024px 초과)일 때만 작동하도록 제한
+    if (window.innerWidth > 1024 && geoSection && geoSection.classList.contains('active') && activeCardId) { 
+        const card = document.getElementById(`card-${activeCardId}`); 
+        if (card) { 
+            const headerHeight = document.querySelector('header')?.offsetHeight || 0; 
+            const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20; 
+            originalScrollTo.call(window, { top: targetY, behavior: 'smooth' }); 
+            return; 
+        } 
+    } 
+    originalScrollTo.apply(window, arguments); 
+};
 
 // [12] 그래프 토글
 function toggleGraph(button) { event.stopPropagation(); const graphContainer = button.nextElementSibling; const accordionBody = button.closest('.climate-accordion-body'); if (!graphContainer || !accordionBody) return; const isOpen = graphContainer.classList.toggle('open'); button.classList.toggle('active', isOpen); button.innerHTML = isOpen ? '🔼 닫기' : '📊 보기'; const currentAccordionHeight = parseInt(accordionBody.style.maxHeight || accordionBody.scrollHeight); const graphHeight = graphContainer.scrollHeight; if (isOpen) { graphContainer.style.maxHeight = graphHeight + "px"; accordionBody.style.maxHeight = (currentAccordionHeight + graphHeight) + "px"; } else { graphContainer.style.maxHeight = null; accordionBody.style.maxHeight = Math.max(0, currentAccordionHeight - graphHeight) + "px"; } }

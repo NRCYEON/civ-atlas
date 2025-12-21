@@ -20,6 +20,11 @@
         }
     }
 
+        /* --- 기존 코드 계속 --- */
+    /* --- 1. 레이아웃 및 그리드 --- */
+    /* ... */
+@media (max-width: 1024px) {
+
     /* --- 1. 레이아웃 및 그리드 --- */
     /* 기본 그리드는 1열 유지 */
     .grid-container,
@@ -29,25 +34,11 @@
         grid-template-columns: 1fr !important;
     }
 
-    /* 최상단 메타데이터는 2x2 그리드로 변경 */
+    /* [수정 1] 최상단 메타데이터는 2x2 그리드로 변경 */
     .panel-criteria-group {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* 2열 강제 + 찢어짐 방지 */
+        grid-template-columns: repeat(2, 1fr) !important; /* 2열 강제 */
         gap: 10px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        padding: 15px !important;
-        margin: 0 0 20px 0 !important;
-    }
-    
-    /* 텍스트 강제 줄바꿈 (공통) */
-    .panel-criteria-group * {
-        white-space: normal !important;
-        word-break: break-all !important;
-        word-wrap: break-word !important;
-        overflow-wrap: anywhere !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
     }
 
     /* 기후 지도 펼쳤을 때는 1열로 복귀 */
@@ -181,7 +172,7 @@
 
     /* --- 4. 카드 내부 디자인 (상세 패널) --- */
     .detail-panel.open {
-        /* 패널 좌우 여백 극한 축소 (5px) */
+        /* [수정 3] 패널 좌우 여백 극한 축소 (5px) */
         padding: 25px 15px !important;
         max-height: 8000px !important; overflow: visible !important; padding-bottom: 100px !important;
     }
@@ -193,7 +184,7 @@
         margin-right: 6px; /* 간격 축소 */
     }
     .criteria-label { font-size: 0.8rem; opacity: 0.8; }
-    /* 메타데이터 폰트 축소 */
+    /* [수정 2] 메타데이터 폰트 축소 */
     .criteria-text {
         font-size: 0.85rem !important;
         font-weight: 600; line-height: 1.2;
@@ -204,7 +195,7 @@
 
     /* 중분류 카드 (Sub Cards) */
     .sub-region-card {
-        /* 카드 내부 여백 극한 축소 (5px) */
+        /* [수정 3] 카드 내부 여백 극한 축소 (5px) */
         padding: 20px 15px !important;
         margin-bottom: 20px; box-shadow: none !important; border: 1px solid rgba(0,0,0,0.05) !important;
     }
@@ -214,7 +205,7 @@
 
     /* 리스트 아이템 */
     .detail-item {
-        /* 리스트 아이템 여백 축소 */
+        /* [수정 3] 리스트 아이템 여백 축소 */
         padding: 15px 10px !important;
         margin-bottom: 10px;
     }
@@ -234,24 +225,24 @@
     .floating-search { bottom: 20px; right: 20px; }
     .bg-view-btn { bottom: 85px; right: 20px; }
     .map-reset-btn { bottom: 145px; right: 20px; }
-
-    /* 기후 섹션에서만 로마자(I, II...) 강제 제거 */
+}
+}
+/* [수정 1] 기후 섹션에서만 로마자(I, II...) 강제 제거 */
     #climate-main-grid .region-card .header-content h2::before {
         display: none !important;
     }
 
-    /* 기후 섹션을 '제외'한 나머지 카드들의 스타일 조정 */
+    /* [수정 2] 기후 섹션을 '제외'한 나머지 카드들의 스타일 조정 */
     .region-card:not([id^="card-climate-"]) {
-        padding: 10px 0 !important;   /* 상하 패딩 축소 */
-        min-height: 100px !important; /* 최소 높이 축소 */
+        padding: 10px 0 !important;   /* 상하 패딩 축소 (15px -> 10px) */
+        min-height: 100px !important; /* 최소 높이 축소 (120px -> 100px) */
     }
 
     /* 설명 문구 폰트 키우기 (기후 제외) */
     .region-card:not([id^="card-climate-"]) .header-content p {
-        font-size: 1.05rem !important; 
-        line-height: 1.35 !important;  
+        font-size: 1.05rem !important; /* 폰트 확대 (0.95rem -> 1.05rem) */
+        line-height: 1.35 !important;  /* 줄간격 살짝 조절 */
     }
-
     /* ===================================================== */
     /* [모바일 가독성 리뉴얼] 기후 섹션 제외, 상세 패널 디자인 개선 */
     /* ===================================================== */
@@ -308,9 +299,8 @@
         line-height: 1.5 !important;
         color: #555 !important;
     }
-
     /* ===================================================== */
-    /* [모바일 기후 섹션 헤더] 세로 적층형 & 텍스트 제거 */
+    /* [모바일 기후 섹션 최종 수정] 세로 적층형 & 텍스트 제거 */
     /* ===================================================== */
 
     /* 1. 헤더 전체 레이아웃: 가로 배치 (제목 - 분류그룹 - 버튼) */
@@ -339,11 +329,11 @@
         display: none !important;
     }
 
-    /* 3. 분류 가이드 그룹: 세로(Column) 배치 & 텍스트 숨김 */
+    /* 3. [핵심] 분류 가이드 그룹: 세로(Column) 배치 & 텍스트 숨김 */
     #climate-main-grid .climate-sub-group-2,
     #climate-main-grid .climate-sub-group-3 {
         display: flex !important;
-        flex-direction: column !important; /* 박스들을 위에서 아래로 쌓음 */
+        flex-direction: column !important; /* [중요] 박스들을 위에서 아래로 쌓음 */
         align-items: center !important;
         justify-content: center !important;
         width: auto !important;
@@ -387,7 +377,7 @@
         align-self: center !important;
     }
 
-    /* 8. 식생/토양 패널의 이모지(아이콘) 살리기 */
+    /* 8. [요청 반영] 식생/토양 패널의 이모지(아이콘) 살리기 */
     .criteria-item {
         display: flex !important;
         align-items: flex-start !important;
@@ -400,10 +390,16 @@
         text-align: center;
         flex-shrink: 0 !important;    
     }
+    /* ========================================================================== */
+/* [최종 수정본 v2] Slim Fixed Header + Card Width Overflow Fix */
+/* 기능: 헤더 높이 50px 고정, 카드 내부 콘텐츠 폭주 방지 */
+/* ========================================================================== */
 
-    /* ========================================================================== */
-    /* [상단 고정 헤더] 높이 50px 칼고정 (Slim Design) - 기후 섹션 제외 */
-    /* ========================================================================== */
+@media (max-width: 1024px) {
+
+    /* ------------------------------------------------------------ */
+    /* 1. [상단 고정 헤더] 높이 50px 칼고정 (Slim Design) */
+    /* ------------------------------------------------------------ */
     /* [수정] 기후 섹션(:not(#section-climate))이 아닐 때만 헤더로 변신 */
     .content-section:not(#section-climate) .region-card.active {
         position: fixed !important;
@@ -431,8 +427,8 @@
         justify-content: space-between !important;
     }
 
-    /* 본문 상단 여백 (헤더 높이만큼) - 기후 섹션 제외 */
-    .content-section:not(#section-climate) .detail-panel.open {
+    /* 본문 상단 여백 (헤더 높이만큼) */
+    .detail-panel.open {
         margin-top: 50px !important;
         padding-bottom: 60px !important;
         overflow: visible !important;
@@ -440,7 +436,7 @@
         min-height: calc(100vh - 50px) !important;
     }
 
-    /* 불필요 요소 숨김 - 기후 섹션 제외 */
+    /* [수정] 기후 섹션이 아닐 때만 요소들을 숨김 (기후 섹션은 다 보여야 함) */
     .content-section:not(#section-climate) .region-card.active .card-bg-icon,
     .content-section:not(#section-climate) .region-card.active .header-content p,
     .content-section:not(#section-climate) .region-card.active .expand-icon,
@@ -452,8 +448,8 @@
         display: none !important;
     }
 
-    /* 제목 스타일 - 기후 섹션 제외 */
-    .content-section:not(#section-climate) .region-card.active .header-content {
+    /* 제목 스타일 */
+    .region-card.active .header-content {
         flex: 1 !important;
         width: auto !important;
         min-width: 0 !important;
@@ -461,7 +457,7 @@
         display: flex !important;
         align-items: center !important;
     }
-    .content-section:not(#section-climate) .region-card.active .header-content h2 {
+    .region-card.active .header-content h2 {
         font-size: 1.2rem !important;
         color: #fff !important;
         margin: 0 !important;
@@ -471,10 +467,10 @@
         text-overflow: ellipsis !important;
         display: block !important;
     }
-    .content-section:not(#section-climate) .region-card.active .header-content h2::before { display: none !important; }
+    .region-card.active .header-content h2::before { display: none !important; }
 
-    /* 닫기 버튼 (X) - 기후 섹션 제외 */
-    .content-section:not(#section-climate) .region-card.active::after {
+    /* 닫기 버튼 (X) */
+    .region-card.active::after {
         content: '✕';
         display: block !important;
         font-size: 1.5rem;
@@ -529,6 +525,15 @@
         overflow-wrap: anywhere !important; /* 최신 브라우저 강력 줄바꿈 */
     }
 
+    /* [핵심] 카드 내부의 모든 요소 강제 줄바꿈 및 너비 제한 */
+    #detail-content-area .sub-region-card * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        white-space: normal !important; /* 줄바꿈 허용 */
+        word-break: break-word !important; /* 긴 단어 자르기 */
+        overflow-wrap: break-word !important;
+    }
+
     /* [세로 모드] 1개 (100%) */
     html:not(.landscape-mode) #detail-content-area .sub-region-card {
         width: 100% !important;
@@ -568,10 +573,102 @@
     }
 
     .dot {
-        width: 8px !important;
+        width: 10px;
+        height: 10px;
+        margin: 0 6px;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.4) !important;
+        border: 1px solid rgba(255,255,255,0.5);
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+
+    .dot.active {
+        background-color: var(--panel-theme) !important;
+        transform: scale(1.4);
+        border: 2px solid #fff;
+    }
+    /* ============================================================ */
+    /* [최종 해결] 화면 찢어짐 원천 봉쇄 (Grid minmax 솔루션) */
+    /* 원인: 1fr은 내용물이 길면 늘어남 -> minmax(0, 1fr)로 강제 수축 */
+    /* ============================================================ */
+
+    /* 1. 상단 회색 박스 (2열 유지 + 강제 줄바꿈) */
+    .panel-criteria-group {
+        display: grid !important;
+        /* [핵심] 1fr 대신 minmax(0, 1fr)을 써야만 긴 텍스트가 있어도 칸이 안 늘어남 */
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 15px !important;
+        margin: 0 0 20px 0 !important;
+    }
+
+    /* 2. 중분류 카드 (가로 슬라이드 아이템) 너비 제한 */
+    #detail-content-area .sub-region-card {
+        /* [핵심] 너비를 100%가 아니라 뷰포트 기준으로 계산하여 패딩 간섭 제거 */
+        width: calc(100vw - 30px) !important; /* 화면 너비 - 좌우여백 */
+        max-width: calc(100vw - 30px) !important;
+        
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        margin-right: 15px !important;
+        
+        /* 내부 콘텐츠가 뚫고 나오지 못하게 감춤 */
+        overflow: hidden !important;
+    }
+
+    /* 3. 모든 텍스트 강제 줄바꿈 (최후의 수단) */
+    .panel-criteria-group *, 
+    #detail-content-area .sub-region-card * {
+        white-space: normal !important; /* 줄바꿈 허용 */
+        word-break: break-all !important; /* 단어 중간이라도 무조건 자름 */
+        word-wrap: break-word !important;
+        overflow-wrap: anywhere !important; /* 최신 브라우저 강력 줄바꿈 */
+        min-width: 0 !important; /* Flex/Grid 자식 수축 허용 */
+        max-width: 100% !important;
+    }
+
+    /* [가로 모드 예외 처리] 가로 모드에서는 카드 너비 절반으로 */
+    html.landscape-mode #detail-content-area .sub-region-card {
+        width: calc(50vw - 25px) !important; /* (화면절반) - (간격보정) */
+        max-width: calc(50vw - 25px) !important;
+    }  
+    /* ------------------------------------------------------------ */
+    /* [최종 수정] 페이지네이션 점 스타일 (작고 투명하게) */
+    /* ------------------------------------------------------------ */
+    
+    .pagination-dots {
+        /* [위치] 화면 하단 중앙 */
+        position: fixed !important;
+        bottom: 20px !important; /* 위치를 살짝 더 아래로 내림 */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 9999999 !important;
+        
+        /* [크기 축소] 패딩을 대폭 줄여서 박스를 작게 만듦 */
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        width: auto !important;
+        padding: 4px 12px !important; /* 8px 16px -> 4px 12px */
+        
+        /* [투명도 조절] 배경을 아주 연하게 변경 (0.9 -> 0.3) */
+        background: rgba(255, 255, 255, 0.3) !important; 
+        backdrop-filter: blur(2px) !important; /* 유리기능 추가로 가독성 확보 */
+        border-radius: 15px !important;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important; /* 그림자도 연하게 */
+        pointer-events: none;
+    }
+
+    .dot {
+        width: 8px !important; /* 점 크기도 살짝 줄임 (10px -> 8px) */
         height: 8px !important;
         margin: 0 5px !important;
         border-radius: 50% !important;
+        
+        /* [점 색상] 진한 회색 유지 */
         background-color: rgba(0, 0, 0, 0.4) !important;
         border: none !important;
         transition: transform 0.2s ease !important;
@@ -579,56 +676,83 @@
     }
 
     .dot.active {
+        /* [활성 점] 완전 검정 */
         background-color: #000 !important; 
         background-color: var(--panel-theme, #000) !important;
         transform: scale(1.2) !important;
-    }
-    
-    .pagination-dots {
-        position: fixed !important;
-        bottom: 20px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        z-index: 9999999 !important;
-        width: auto !important;
-        padding: 4px 12px !important;
-        background: rgba(255, 255, 255, 0.3) !important; 
-        backdrop-filter: blur(2px) !important;
-        border-radius: 15px !important;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important;
-        pointer-events: none;
+    }  
+}
+/* ===================================================== */
+/* [긴급 패치] 기후 섹션 레이아웃 깨짐 해결 코드         */
+/* 설명: 기후 섹션만 '가로 슬라이드' 기능을 끄고 정상화함 */
+/* ===================================================== */
+@media (max-width: 1024px) {
+
+    /* 1. 기후 섹션(#section-climate) 안에 있는 카드만 콕 집어서 */
+    #section-climate .sub-region-card {
+        /* 화면 너비만큼 억지로 늘어나던 것을 취소합니다 */
+        width: auto !important;       
+        max-width: none !important;   
+        
+        /* 옆으로 밀려나지 않고 제자리를 찾게 합니다 */
+        flex-shrink: 1 !important;    
+        margin-right: 0 !important;   
     }
 
-    /* ===================================================== */
-    /* [통합] 기후 섹션 모바일 전용 예외 처리 (레이아웃, 텍스트 색상, 카드 크기 등) */
-    /* 기존의 덕지덕지 붙은 패치들을 하나로 통합하며, 우선순위 이슈를 해결하기 위해 높은 선택자 유지 */
-    /* ===================================================== */
+    /* 2. 카드를 감싸는 틀도 가로 스크롤(슬라이드)을 멈춥니다 */
+    #section-climate .panel-grid {
+        display: grid !important;       /* 바둑판 배열로 복구 */
+        overflow-x: visible !important; /* 스크롤바 제거 */
+        padding: 0 !important;          /* 불필요한 여백 제거 */
+    }
+}
+/* ===================================================== */
+/* [추가 패치] 기후 섹션 카드 간격 넓히기                */
+/* ===================================================== */
+@media (max-width: 1024px) {
+    #section-climate .panel-grid {
+        /* 1. 식생 카드와 토양 카드 사이를 20px만큼 벌립니다 */
+        gap: 20px !important; 
+        
+        /* 2. 토양 카드 덩어리와 그 아래(Cfa, Cfb...) 사이를 40px만큼 벌립니다 */
+        margin-bottom: 40px !important; 
+    }
+}
+/* ===================================================== */
+/* [최종_진짜_마지막] 기후 섹션 카드 찢어짐 원천 봉쇄 (우선순위 최상) */
+/* ===================================================== */
+@media (max-width: 1024px) {
 
-    /* 1. 그리드 컨테이너 설정 (2열 고정, 찢어짐 방지, 간격 조정) */
+    /* 1. 그리드 컨테이너: 2열 강제, 내용물 넘침 방지(minmax) */
     html body #section-climate .panel-grid {
         display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* 찢어짐 방지 핵심 */
+        /* [핵심] minmax(0, 1fr)을 써야 내부 콘텐츠가 커도 칸 안으로 구겨 넣음 */
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
         gap: 20px !important;
+        
         width: 100% !important;
-        margin: 0 0 30px 0 !important; /* 하단 여백 30px */
+        margin: 0 0 30px 0 !important;
         padding: 0 !important;
-        overflow: visible !important; /* 스크롤 제거 */
+        
+        overflow: visible !important;
         box-sizing: border-box !important;
-        justify-content: stretch !important;
     }
 
-    /* 2. 내부 카드 설정 (너비 자동 조절, 슬라이드 해제) */
+    /* 2. 내부 카드: 기존의 100vw(화면너비) 설정을 가장 강력한 선택자로 덮어씌움 */
     html body #section-climate #detail-content-area .sub-region-card {
-        width: 100% !important;
-        min-width: 0 !important;    /* 찢어짐 방지 */
-        max-width: none !important;
-        flex: none !important;      /* 가로 슬라이드 속성 제거 */
+        /* [핵심] 화면 너비(vw)가 아니라 부모 칸 너비(%)를 따르게 함 */
+        width: 100% !important; 
+        
+        /* 찢어짐 방지 3중 잠금 */
+        min-width: 0 !important;    
+        max-width: none !important; 
+        flex: none !important;      
+        
         margin: 0 !important;
         box-sizing: border-box !important;
-        height: 100% !important;
     }
 
-    /* 3. 상단 메타데이터 그룹 (식생/토양 등)도 동일한 그리드 적용 */
+    /* (혹시 모를 상단 식생/토양 그룹도 동일하게 처리) */
     html body #section-climate .panel-criteria-group {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -636,69 +760,29 @@
         width: 100% !important;
         box-sizing: border-box !important;
     }
-
-    /* 4. 활성 카드 텍스트 색상 강제 복구 (흰색 변짐 방지) */
-    html body #section-climate .region-card.active .header-content h2 {
-        color: #2d3436 !important;
-        text-shadow: none !important;
-        transform: none !important;
-    }
-    html body #section-climate .region-card.active .header-content p {
-        color: #636e72 !important;
-        display: block !important;
-        text-shadow: none !important;
-    }
-    html body #section-climate .region-card.active .expand-icon {
-        color: #b2bec3 !important;
-        background: rgba(255,255,255,0.5) !important;
-        border-color: #b2bec3 !important;
-    }
-
-    /* 5. 좁은 화면(폰) 대응 */
-    @media (max-width: 600px) {
-        html body #section-climate .panel-grid,
-        html body #section-climate .panel-criteria-group {
-            grid-template-columns: minmax(0, 1fr) !important;
-        }
-    }
 }
 /* ===================================================== */
-/* [최종 수정] 가로 모드 기후 텍스트 정렬 (박스 기준 정렬) */
+/* [긴급 수정] 기후 카드 제목 흰색 변짐 현상 강제 복구     */
 /* ===================================================== */
-@media (max-width: 1024px) and (orientation: landscape) {
+@media (max-width: 1024px) {
+    /* 1. 제목(H2): 흰색으로 변하는 것을 막고 검은색(기본색)으로 강제 고정 */
+    html body #section-climate .region-card.active .header-content h2 {
+        color: #2d3436 !important;    /* 검은색(var(--text-primary)) 강제 적용 */
+        text-shadow: none !important; /* 배경이 밝으므로 흰색 그림자 제거 */
+        transform: none !important;   /* 글자 커짐/이동 방지 */
+    }
+
+    /* 2. 부제목(P): 흰색으로 변하거나 숨겨지는 것 방지 */
+    html body #section-climate .region-card.active .header-content p {
+        color: #636e72 !important;    /* 회색(var(--text-secondary)) 강제 적용 */
+        display: block !important;    /* 숨김 해제 */
+        text-shadow: none !important;
+    }
     
-    /* 1. 그룹 공통: 폰트 키우고, 세로 중앙 정렬 */
-    #section-climate .climate-sub-group-2,
-    #section-climate .climate-sub-group-3 {
-        font-size: 0.85rem !important; 
-        width: auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        height: 100% !important;
-    }
-
-    /* 2. Group 2 (왼쪽): 박스(f,m,w)는 왼쪽 정렬하되, 전체 덩어리는 오른쪽에 배치 */
-    #section-climate .climate-sub-group-2 {
-        align-items: flex-start !important; /* [핵심] 박스 기준 왼쪽 정렬 (일직선) */
-        padding-right: 20px !important;     /* 구분선과 간격 */
-        margin-left: auto !important;       /* 전체 덩어리를 오른쪽 끝으로 밈 */
-    }
-
-    /* 3. Group 3 (오른쪽): 박스 기준 왼쪽 정렬 */
-    #section-climate .climate-sub-group-3 {
-        align-items: flex-start !important; /* 박스 기준 왼쪽 정렬 (일직선) */
-        padding-left: 20px !important;      /* 구분선과 간격 */
-        margin-right: auto !important;      /* 전체 덩어리를 왼쪽 끝으로 밈 */
-    }
-
-    /* 4. 내부 행(Row): 박스와 글자 간격 */
-    #section-climate .guide-row {
-        line-height: 1.4 !important;
-        margin: 2px 0 !important;
-        gap: 8px !important;
-        display: flex !important;
-        align-items: center !important;
-        width: 100% !important; /* 너비 꽉 채워서 정렬 유지 */
+    /* 3. 확장 아이콘(▼): 흰색으로 변하는 것 방지 */
+    html body #section-climate .region-card.active .expand-icon {
+        color: #b2bec3 !important;    /* 원래 회색 */
+        background: rgba(255,255,255,0.5) !important;
+        border-color: #b2bec3 !important;
     }
 }
