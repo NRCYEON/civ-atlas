@@ -1741,26 +1741,27 @@ const climateData = {
             mapImage: null // 지도 없음
         },
         features: [],
+        /* --- 위 코드를 아래 코드로 통째로 교체하세요 --- */
         subClimates: [
             {
-                code: "Ds", name: "고지 지중해성 기후", desc: "겨울은 춥고 여름은 건조한 특이 기후", graph: "images/Ds.webp",
+                code: "Ds", name: "고지 지중해성 기후", desc: "여름은 건조하고 겨울은 혹독한 산악 기후", graph: "images/Ds.webp",
                 items: [
-                    { name: "대륙 서안 고지대", examples: ["시에라네바다 산맥", "캐스케이드 산맥"], desc: "" },
-                    { name: "서아시아 산악", examples: ["아나톨리아 고원", "힌두쿠시 산맥"], desc: "" }
+                    { name: "대륙 서안 고지대", examples: ["시에라네바다 산맥", "캐스케이드 산맥"], desc: "건조한 여름과 혹독한 겨울이 공존하는 태평양 습기가 막힌 산맥의 비그늘." },
+                    { name: "서아시아 산악", examples: ["아나톨리아 고원", "힌두쿠시 산맥"], desc: "대륙 깊숙한 고원이 빚어낸, 여름은 건조하고 겨울은 혹독하게 추운 기후." }
                 ]
             },
             {
-                code: "As", name: "열대 하계 건조 기후", desc: "열대임에도 여름이 건조한 기후", graph: "images/As.webp",
+                code: "As", name: "열대 하계 건조 기후", desc: "우기와 건기가 뒤바뀐 열대의 이단아", graph: "images/As.webp",
                 items: [
-                    { name: "지형성 비그늘", examples: ["하와이 일부", "베트남 중부 해안"], desc: "" },
-                    { name: "해안 지역", examples: ["브라질 북동부 (레시페, 나탈)"], desc: "" }
+                    { name: "지형성 비그늘", examples: ["하와이 일부", "베트남 중부 해안"], desc: "여름 몬순이 산맥에 막혀, 겨울 대신 여름에 건기가 찾아오는 열대." },
+                    { name: "해안 지역", examples: ["브라질 북동부 (레시페, 나탈)"], desc: "열대 수렴대의 계절적 이동으로 인해, 가장 더운 여름에 오히려 비가 적게 내리는 해안." }
                 ]
             },
             {
-                code: "Cfc", name: "아극 해양성 기후", desc: "고위도임에도 겨울이 온화한 기후", graph: "images/Cfc.webp",
+                code: "Cfc", name: "아극 해양성 기후", desc: "극지방 앞에서 바다가 붙잡은 마지막 온기", graph: "images/Cfc.webp",
                 items: [
-                    { name: "북대서양 고위도", examples: ["아이슬란드", "페로 제도", "노르웨이 해안"], desc: "" },
-                    { name: "태평양/남반구", examples: ["알류샨 열도", "푼타아레나스(칠레)"], desc: "" }
+                    { name: "북대서양 고위도", examples: ["아이슬란드", "페로 제도", "노르웨이 해안"], desc: "북대서양 난류의 영향으로 위도를 거스르는 온화한 겨울을 가진 바다의 땅." },
+                    { name: "태평양/남반구", examples: ["알류샨 열도", "푼타아레나스(칠레)"], desc: "대양의 영향으로 겨울이 얼지 않는, 연교차가 매우 작은 해양성 기후." }
                 ]
             }
         ]
@@ -4318,11 +4319,7 @@ const jumpConnections = {
         { section: 'livestock', card: 'agri-6', label: '유목 (양)' },
         { section: 'religion', card: 'religion-3', label: '이슬람 발상' }
     ],
-    'climate-a': [ // 열대 기후
-        { section: 'special', card: 'special-4', label: '카르스트' },
-        { section: 'freshwater', card: 'hydro-2', label: '아마존/콩고' },
-        { section: 'agriculture', card: 'agri-3', label: '플랜테이션' }
-    ],
+
     'climate-a': [ // 열대 기후
         { section: 'special', card: 'special-4', label: '카르스트' },
         { section: 'freshwater', card: 'hydro-2', label: '아마존/콩고' },

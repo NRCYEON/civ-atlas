@@ -253,7 +253,7 @@ function activateCard(id, event) {
         const targetY = clickedCard.offsetTop - headerHeight - 20;
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, 400);
-    
+    setupMobilePagination(contentArea); //
     if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
 }
 
@@ -735,7 +735,7 @@ if (climateBandsBtn) {
 if (returnBtn) {
     returnBtn.addEventListener('click', returnToOrigin);
 }
-// [신규] 중분류 카드 자동 번호 매기기 함수
+
 // [수정] 중분류 카드 자동 번호 매기기 함수 (기후 섹션 예외 처리 추가)
 function autoNumberSubCards(container) {
     // 1. 현재 활성화된 카드가 'climate'로 시작하면(기후 섹션이면) 즉시 종료
@@ -1106,3 +1106,62 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ... 추후 다른 섹션 추가
 });
+// [신규] 모바일 페이지네이션 생성 및 연동 함수 (매번 실행됨)
+// [수정] 모바일 페이지네이션 생성 및 연동 함수 (스크롤 끝 감지 로직 추가)
+function setupMobilePagination(contentArea) {
+    // 1. 모바일 환경이 아니면 중단
+    if (window.innerWidth > 1024) return;
+
+    const panelGrid = contentArea.querySelector('.panel-grid');
+    if (!panelGrid) return;
+
+    // 2. 기존 점 제거
+    const oldDots = document.querySelector('.pagination-dots');
+    if (oldDots) oldDots.remove();
+
+    // 3. 카드 개수 확인
+    const cards = panelGrid.querySelectorAll('.sub-region-card');
+    if (cards.length === 0) return;
+
+    // 4. 점 컨테이너 생성
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'pagination-dots';
+    
+    // 5. 카드 개수만큼 점 만들기
+    cards.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = i === 0 ? 'dot active' : 'dot';
+        dotsContainer.appendChild(dot);
+    });
+
+    const panel = document.getElementById('detail-panel-template');
+    panel.appendChild(dotsContainer);
+
+    // 6. 스크롤 이벤트 (핵심 수정)
+    panelGrid.onscroll = () => {
+        const scrollLeft = panelGrid.scrollLeft;
+        const scrollWidth = panelGrid.scrollWidth;
+        const clientWidth = panelGrid.clientWidth;
+        const cardWidth = cards[0].offsetWidth + 15; 
+        
+        // [핵심] 스크롤이 끝에 닿았는지 확인 (오차범위 5px 허용)
+        const isAtEnd = (scrollLeft + clientWidth) >= (scrollWidth - 5);
+
+        let activeIndex;
+
+        if (isAtEnd) {
+            // 끝에 닿았다면 무조건 마지막 점 활성화
+            activeIndex = cards.length - 1;
+        } else {
+            // 아니라면 기존대로 왼쪽 기준 계산
+            activeIndex = Math.round(scrollLeft / cardWidth);
+        }
+        
+        // 점 상태 업데이트
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((d, i) => {
+            if (i === activeIndex) d.classList.add('active');
+            else d.classList.remove('active');
+        });
+    };
+}

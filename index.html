@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <script>
+    <meta name="viewport" id="dynamic-viewport" content="width=device-width, initial-scale=1.0">
+<script>
     (function() {
-        // 화면 너비가 1024px 미만인 경우 (모바일/태블릿)
-        if (screen.width < 1024) {
-            // 600px 고정 너비로 설정하여 브라우저가 자동으로 스케일링하도록 함
-            document.write('<meta name="viewport" content="width=600, user-scalable=no, target-densitydpi=device-dpi">');
-        } else {
-            // PC 환경에서는 기존 반응형 유지
-            document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        const viewport = document.getElementById('dynamic-viewport');
+        const html = document.documentElement;
+        
+        function updateViewport() {
+            // [핵심] 픽셀값 대신 '비율'로만 판단 (오작동 원천 차단)
+            // innerWidth/Height는 뷰포트 설정에 따라 변하므로, 
+            // 기기 회전 상태를 가장 확실하게 아는 방법은 가로/세로 길이 비교뿐입니다.
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // PC 화면(창이 매우 클 때)은 건드리지 않음 (안전장치)
+            if (screen.width > 1200) return;
+
+            if (width > height) {
+                // [가로 모드] -> 무조건 1024px
+                viewport.setAttribute('content', 'width=1024, user-scalable=no');
+                html.classList.add('landscape-mode');
+                html.classList.remove('portrait-mode');
+            } else {
+                // [세로 모드] -> 무조건 600px
+                viewport.setAttribute('content', 'width=600, user-scalable=no');
+                html.classList.remove('landscape-mode');
+                html.classList.add('portrait-mode');
+            }
         }
+
+        // 이벤트 감지 (회전 및 리사이즈)
+        window.addEventListener('orientationchange', () => { setTimeout(updateViewport, 100); });
+        window.addEventListener('resize', updateViewport);
+        
+        // 초기 실행
+        updateViewport();
     })();
 </script>
 <meta charset="UTF-8">
