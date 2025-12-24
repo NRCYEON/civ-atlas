@@ -385,10 +385,25 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .hidden-data { display: none; }
     .sub-region-card { background: #fff; border-radius: 10px; padding: 25px; border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s; }
     .sub-region-card:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.06); transform: translateY(-3px); z-index: 5; position: relative; }
-    .sub-title-group { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 20px; position: relative; }
+    .sub-title-group { 
+    display: flex; 
+    align-items: flex-start; 
+    gap: 18px; 
+    margin-bottom: 20px; 
+    position: relative; /* 버튼의 기준점 */
+    /* padding-right: 100px;  <-- [삭제] 이 쓰레기 코드가 설명글을 좁게 만들었습니다 */
+}
     .sub-title-number { font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 900; color: var(--panel-theme, #dfe6e9); line-height: 1; opacity: 0.8; margin-top: -5px; transition: color 0.3s; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--panel-theme, #dfe6e9); border-radius: 10px; background-color: rgba(0,0,0,0.02); }
     .sub-title-content { flex: 1; padding-top: 2px; }
-    .sub-title-heading { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0 0 8px 0; }
+    .sub-title-heading { 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    margin: 0 0 8px 0;
+    
+    /* [핵심] 제목만 버튼 공간만큼 비켜가게 설정 */
+    padding-right: 110px; 
+}
     .sub-title-description { font-size: 0.9rem; color: var(--text-secondary); margin: 0; padding: 0; border: none; line-height: 1.6; word-break: keep-all; }
     .detail-list { list-style: none; padding: 0; margin: 0; }
     .detail-item {
@@ -1572,131 +1587,7 @@ i.term:hover {
     transform: scale(1.02);
     z-index: 20;
 }
-/* [개선된] 매거진 커버 스타일 갤러리 */
-    .photo-toggle-btn {
-        margin-left: auto;
-        background: transparent;
-        border: 1px solid var(--text-muted);
-        color: var(--text-secondary);
-        border-radius: 50%; width: 32px; height: 32px;
-        font-size: 1rem; cursor: pointer; transition: all 0.2s;
-        display: flex; align-items: center; justify-content: center;
-        z-index: 200; /* 제목과 함께 최상단 유지 */
-    }
-    .photo-toggle-btn:hover { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
 
-    /* 카드 설정 */
-    .sub-region-card {
-        position: relative !important;
-        overflow: hidden !important;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    /* [수정] 제목이 클릭을 방해하지 않도록 '유령화' 처리 */
-    .sub-region-card.photo-mode .sub-title-group {
-        position: relative; z-index: 100; 
-        color: #fff !important;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-        transition: all 0.3s;
-        pointer-events: none !important; /* [핵심] 마우스 클릭이 텍스트를 뚫고 지나감 */
-    }
-    .sub-region-card.photo-mode .sub-title-number {
-        color: #fff !important; border-color: #fff !important; background: rgba(255,255,255,0.2);
-    }
-    .sub-region-card.photo-mode .sub-title-heading,
-    .sub-region-card.photo-mode .sub-title-description {
-        color: #fff !important;
-    }
-    .sub-region-card.photo-mode .photo-toggle-btn {
-        display: none; /* 닫기 버튼이 생기므로 카메라 버튼은 숨김 */
-    }
-
-    /* 갤러리 화면 (스크린) */
-    .gallery-overlay {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: #2d3436; /* 로딩 전 배경색 */
-        z-index: 50; /* 제목(100)보다는 아래, 본문보다는 위 */
-        opacity: 0; visibility: hidden;
-        transition: opacity 0.4s ease;
-        display: flex; flex-direction: column; justify-content: flex-end;
-    }
-
-    /* 활성화 시 */
-    .sub-region-card.photo-mode .gallery-overlay { opacity: 1; visibility: visible; }
-    .sub-region-card.photo-mode .detail-list { opacity: 0; pointer-events: none; } /* 본문만 숨김 */
-    
-    /* 깜빡임 방지용 강제 고정 (마우스 무시) */
-    .sub-region-card.photo-mode {
-        pointer-events: auto; /* 내부는 클릭 가능해야 함 */
-        transform: none !important; /* 카드 흔들림 방지 */
-    }
-    /* 중요: 사진 모드일 때 호버 효과 원천 차단 */
-    .sub-region-card.photo-mode:hover {
-        transform: none !important; box-shadow: none !important;
-    }
-
-    /* 이미지 및 그라데이션 */
-    .gallery-img {
-        width: 100%; height: 100%; object-fit: cover;
-        position: absolute; top: 0; left: 0; z-index: 1;
-    }
-    /* 제목이 잘 보이도록 상단에 검은 그라데이션 추가 */
-    .gallery-overlay::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 60%;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-        z-index: 2; pointer-events: none;
-    }
-
-    /* 하단 컨트롤 UI */
-    .gallery-ui {
-        position: relative; z-index: 10;
-        padding: 15px 20px;
-        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        color: #fff;
-        display: flex; justify-content: space-between; align-items: center;
-    }
-    .gallery-caption h4 { margin: 0; font-size: 0.95rem; font-weight: 500; opacity: 0.9; }
-    
-    .gallery-nav-btn {
-        background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
-        color: #fff; border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
-    }
-    .gallery-nav-btn:hover { background: #fff; color: #000; }
-
-    .gallery-close-btn {
-        position: absolute; top: 20px; right: 20px;
-        background: rgba(0,0,0,0.5); color: #fff;
-        border: 1px solid rgba(255,255,255,0.3);
-        border-radius: 50%; width: 32px; height: 32px;
-        
-        /* [핵심 수정] z-index를 200에서 9999로 변경 */
-        cursor: pointer; z-index: 9999 !important; 
-        
-        display: flex; align-items: center; justify-content: center;
-    }
-    .gallery-close-btn:hover { background: #d63031; border-color: #d63031; }
-/* [필수] 사진 액자가 카드 밖으로 튀어나가지 않도록 가두는 코드 */
-    .sub-region-card {
-        position: relative !important; /* 액자의 기준점을 카드로 고정 */
-        overflow: hidden !important;   /* 카드 밖으로 삐져나온 사진 잘라냄 */
-    }
-/* [신규] 이미지 로딩 실패 시 '준비중' 텍스트 표시 */
-.gallery-overlay.image-error::after {
-    content: '이미지 준비 중';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
-    pointer-events: none; /* 텍스트가 클릭을 방해하지 않도록 */
-}
-.gallery-overlay.image-error .gallery-img {
-    display: none; /* 깨진 이미지 아이콘 숨기기 */
-}
 /* [신규] 기후 그래프 토글 버튼 스타일 */
 .graph-toggle-btn {
     display: block;
@@ -1853,6 +1744,7 @@ body::after {
 /* [전역 통합] 배경 이미지를 사용하는 모든 섹션 투명화 */
 #section-terrain.active,
 #section-ocean.active,
+#section-maps.active,
 #section-special.active,
 #section-freshwater.active,
 #section-climate.active,
@@ -1871,6 +1763,7 @@ body::after {
 /* 위 섹션들의 카드 배경 불투명도 유지 (가독성 확보) */
 #section-terrain.active .region-card,
 #section-ocean.active .region-card,
+#section-maps.active .region-card,
 #section-special.active .region-card,
 #section-freshwater.active .region-card,
 #section-climate.active .region-card,
@@ -2709,4 +2602,250 @@ body.bg-geopolitics {
 body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
+}
+/* [신규] 지도 섹션 전용 테마 색상 정의 */
+#card-map-1 { --theme: #2c3e50; } /* 고지도 (네이비) */
+#card-map-2 { --theme: #8e44ad; } /* 구성요소 (보라) */
+#card-map-3 { --theme: #2980b9; } /* 투영법 (파랑) */
+#card-map-4 { --theme: #c0392b; } /* 주제도 (빨강) */
+#card-map-5 { --theme: #d35400; } /* 디지털 (주황) */
+
+/* ===================================================== */
+/* [최종 수정] 인라인 히어로 갤러리 스타일               */
+/* ===================================================== */
+
+/* 1. 갤러리 버튼 */
+.inline-gallery-btn {
+    position: absolute; /* 공중에 띄움 */
+    top: 0;
+    right: 0;
+    
+    background: transparent;
+    border: 1px solid #b2bec3;
+    color: #636e72;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* 버튼에 마우스 올리거나 활성화됐을 때 */
+.inline-gallery-btn:hover,
+.inline-gallery-btn.active {
+    background: var(--panel-theme, #2d3436); /* 카드의 테마색을 따라감 */
+    color: #fff;
+    border-color: var(--panel-theme, #2d3436);
+}
+
+/* 2. 갤러리 컨테이너 (열리고 닫히는 상자) */
+.inline-gallery-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), margin-top 0.3s;
+    
+    /* [수정] 트랙이 아닌 컨테이너 전체에 배경색 적용 (일관성 확보) */
+    background: color-mix(in srgb, var(--panel-theme, #2d3436) 35%, #101010);
+    
+    border-radius: 8px;
+    margin-top: 0;
+    position: relative; /* [중요] 화살표 버튼의 위치 기준점 */
+}
+
+/* 갤러리가 열렸을 때 적용되는 스타일 */
+.inline-gallery-container.open {
+    max-height: 600px !important; /* 충분히 큰 높이로 설정해 내용이 보이게 함 */
+    margin-top: 15px;             /* 위쪽 여백 추가 */
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 3. 이미지 트랙 (사진들이 나열된 긴 띠) */
+.gallery-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    
+    /* [수정] 높이 자동 해제 -> 4:3 비율 고정 */
+    height: auto; 
+    aspect-ratio: 4 / 3; 
+    
+    background: transparent; /* 기존 설정 유지 (투명) */
+}
+
+/* 개별 슬라이드 */
+.gallery-slide {
+    min-width: 100%;           /* 한 번에 하나씩만 보임 */
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 이미지 스타일 */
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    
+    /* [기존 유지] 비율 유지하며 전체 보이기 */
+    object-fit: contain; 
+    
+    /* [핵심 변경] 상하 정렬을 '상단(top)'으로 설정 */
+    /* 이미지를 위쪽으로 끌어올려, 하단 캡션이 이미지를 가리는 것을 방지합니다 */
+    object-position: top center;
+    
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.gallery-image.loaded {
+    opacity: 1;                /* 로딩 완료되면 보임 */
+}
+
+/* 4. 좌우 화살표 버튼 */
+.gallery-nav {
+    position: absolute;
+    top: 50%; /* 컨테이너 높이의 정확히 절반 지점 */
+    transform: translateY(-50%); /* 버튼 크기만큼 보정하여 수직 중앙 정렬 */
+    
+    /* 나머지 스타일 유지 */
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+}
+.gallery-nav:hover { background: rgba(255, 255, 255, 0.4); }
+.gallery-nav.prev { left: 10px; }
+.gallery-nav.next { right: 10px; }
+
+/* [수정] 사진 설명 (캡션) - 테마색 기반 안개 효과 적용 */
+.gallery-caption-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    
+    padding: 60px 20px 20px 20px; /* 위쪽 패딩을 넉넉히 주어 그라데이션 공간 확보 */
+    
+    /* [핵심 변경] 무채색 검정이 아닌, 테마색이 감도는 어두운 안개 */
+    background: linear-gradient(
+        to top, 
+        color-mix(in srgb, var(--panel-theme, #000) 30%, black) 0%,       /* 바닥: 테마색 섞인 진한 검정 */
+        color-mix(in srgb, var(--panel-theme, #000) 15%, transparent) 70%, /* 중간: 서서히 투명해짐 */
+        transparent 100%                                                  /* 상단: 완전 투명 */
+    );
+    
+    color: #fff;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    pointer-events: none; 
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8); /* 글자 그림자를 진하게 하여 가독성 보장 */
+}
+
+/* 6. 준비중 화면 스타일 */
+.gallery-empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #b2bec3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.empty-icon { font-size: 2rem; opacity: 0.7; }
+.empty-text { font-size: 0.95rem; font-weight: 600; }
+
+/* [갤러리 강제 노출 패치] */
+.inline-gallery-container.open {
+    display: block !important;
+    height: auto !important;
+    min-height: 200px !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    
+    /* [수정] 15px -> 5px로 줄여서 제목과 가깝게 붙임 */
+    margin-top: 5px !important;
+    
+    padding: 0 !important;
+    
+    /* 배경색 삭제됨 (유지) */
+    
+    border: 1px solid rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+/* [신규] 갤러리가 열렸을 때만, 아래쪽 본문(리스트)을 강제로 밀어내어 간격 확보 */
+.inline-gallery-container.open + .detail-list {
+    margin-top: 40px !important; 
+}
+
+/* [신규] 이미지가 1개일 때(single-mode) UI 정리 */
+.inline-gallery-container.single-mode .gallery-nav {
+    display: none !important; /* 화살표만 제거 (캡션은 보이게 둠) */
+}
+
+/* 1개일 때는 클릭 커서 제거 */
+.inline-gallery-container.single-mode .gallery-slide {
+    cursor: default;
+}
+
+/* [신규] 중분류 카드 내부 메타데이터 그리드 (PC 기본) */
+.sub-card-criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* PC는 1fr로 넉넉하게 */
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px 0;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+.sub-card-criteria-grid .criteria-item {
+    display: flex;
+    align-items: flex-start;
+    min-width: 0; /* 자식 요소 폭주 방지 기본 설정 */
+}
+
+.sub-card-criteria-grid .criteria-icon {
+    margin-right: 8px;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.sub-card-criteria-grid .criteria-content {
+    flex: 1;
+    min-width: 0; /* 텍스트 박스 폭주 방지 */
+}
+
+.sub-card-criteria-grid .criteria-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    color: var(--text-primary);
+}
+
+.sub-card-criteria-grid .criteria-text {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
 }

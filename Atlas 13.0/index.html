@@ -1,7 +1,43 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" id="dynamic-viewport" content="width=device-width, initial-scale=1.0">
+<script>
+    (function() {
+        const viewport = document.getElementById('dynamic-viewport');
+        const html = document.documentElement;
+        
+        function updateViewport() {
+            // [핵심] 픽셀값 대신 '비율'로만 판단 (오작동 원천 차단)
+            // innerWidth/Height는 뷰포트 설정에 따라 변하므로, 
+            // 기기 회전 상태를 가장 확실하게 아는 방법은 가로/세로 길이 비교뿐입니다.
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // PC 화면(창이 매우 클 때)은 건드리지 않음 (안전장치)
+            if (screen.width > 1200) return;
+
+            if (width > height) {
+                // [가로 모드] -> 무조건 1024px
+                viewport.setAttribute('content', 'width=1024, user-scalable=no');
+                html.classList.add('landscape-mode');
+                html.classList.remove('portrait-mode');
+            } else {
+                // [세로 모드] -> 무조건 600px
+                viewport.setAttribute('content', 'width=600, user-scalable=no');
+                html.classList.remove('landscape-mode');
+                html.classList.add('portrait-mode');
+            }
+        }
+
+        // 이벤트 감지 (회전 및 리사이즈)
+        window.addEventListener('orientationchange', () => { setTimeout(updateViewport, 100); });
+        window.addEventListener('resize', updateViewport);
+        
+        // 초기 실행
+        updateViewport();
+    })();
+</script>
 <meta charset="UTF-8">
 <title>문명의 아틀라스</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
@@ -21,7 +57,8 @@
     <nav class="nav-tabs">
         <!-- 1. HOME -->
         <button class="tab-btn active" onclick="switchSection('home')"><span class="menu-icon">🏠</span>HOME</button>
-        
+
+        <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리 정보</button>        
         <!-- 2. 세계의 권역 -->
         <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의 권역</button>
         
@@ -203,7 +240,12 @@
         <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
     </main>
 </section>
-
+<!-- [신규] 1.7 지도와 지리 정보 섹션 -->
+<section id="section-maps" class="content-section">
+    <main class="grid-container" id="maps-grid">
+        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+    </main>
+</section>
 <!-- 2. 지역지리 섹션 (데이터 이식 완료) -->
 <section id="section-geo" class="content-section">
     <!-- 배경 지도 레이어 -->

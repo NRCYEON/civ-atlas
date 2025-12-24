@@ -2,6 +2,278 @@
 
 // [신규] 세계의 권역 데이터 (HTML/CSS 통합본)
 // [신규] 세계의 권역 데이터 (HTML/CSS 통합본)
+// [신규] 지도와 지리 정보 데이터 (뼈대)
+const mapsData = {
+    // mapsData 객체 내부의 "map-1" 부분을 아래 내용으로 교체하세요.
+
+    "map-1": {
+        title: "고지도와 세계 인식",
+        subtitle: "인류가 세상을 이해하고 그려온 발자취",
+        badge: "I",
+        theme: "#2c3e50",
+        iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.5"/>`,
+        criteria: [
+            { icon: "👁️", label: "세계관", text: "신화와 종교" },
+            { icon: "🧭", label: "목적", text: "항해와 통치" },
+            { icon: "📏", label: "진화", text: "상상과 측량" }
+        ],
+        subCards: [
+            {
+                title: "과학과 실용의 지도", desc: "신화에서 벗어나 수학과 측량으로 세상을 그리다",
+                criteria: [
+                    { icon: "📐", label: "기반", text: "수학, 천문학" },
+                    { icon: "🎯", label: "목적", text: "정확한 위치 파악" }
+                ],
+                items: [
+                    { name: "프톨레마이오스 세계지도", examples: ["2세기(15세기 복원)", "위도와 경도", "원뿔 도법"], meta: "📐 최초의 투영법 · 🌍 지리학의 시조", desc: "서양 지도학의 시조. 투영법을 최초로 적용하여 지구를 과학적으로 표현. 르네상스 시대에 복원되어 대항해시대의 이론적 토대가 됨." },
+                    { name: "타불라 페우팅게리아나", examples: ["4세기", "로마 도로망", "두루마리 지도"], meta: "🛣️ 로마의 도로 · 🚇 노선도의 원형", desc: "로마 제국의 도로망 지도. 지형의 정확도보다 도시 간 연결과 거리를 중시한 실용적 지도." },
+                    { name: "알 이드리시의 타불라 로제리아나", examples: ["1154년", "이슬람 지도학", "남쪽이 위"], meta: "☪️ 문명의 계승 · ⬆️ 남쪽을 위로", desc: "중세 암흑기 유럽을 대신해 그리스의 지식과 아랍의 정보를 집대성한 지도. 남쪽을 위로 배치한 것이 특징." }
+                ]
+            },
+            {
+                title: "신화와 종교의 지도", desc: "눈에 보이는 세상이 아닌, 믿음이 투영된 세상",
+                criteria: [
+                    { icon: "✝️", label: "기반", text: "성경, 신화" },
+                    { icon: "🎨", label: "형태", text: "도식적, 상징적" }
+                ],
+                items: [
+                    { name: "바빌로니아 점토판 지도", examples: ["기원전 6세기", "가장 오래된 지도", "원반형"], meta: "🧱 최고(最古)의 지도 · 🌊 신화적 세계관", desc: "현존하는 가장 오래된 세계지도. 바빌론을 중심으로 세상을 원반으로 묘사." },
+                    { name: "티오(T-O) 지도", examples: ["중세 유럽", "예루살렘 중심", "에덴동산(동쪽)"], meta: "✝️ 기독교 세계관 · 📍 예루살렘 중심", desc: "예루살렘을 중심에, 동쪽(에덴동산)을 위쪽에 배치. 아시아, 유럽, 아프리카를 T자형 물길로 나눈 관념적 지도." },
+                    { name: "헤러퍼드 마파 문디", examples: ["1300년경", "성경의 역사", "괴물과 전설"], meta: "📜 중세 백과사전 · 🐉 전설과 신화", desc: "지리 정보뿐만 아니라 성경의 역사와 전설 속 괴물을 한 장에 담아낸 거대한 종교화." }
+                ]
+            },
+            {
+                title: "대항해시대의 길잡이", desc: "바다를 건너 제국을 건설하기 위한 도구",
+                criteria: [
+                    { icon: "🧭", label: "기반", text: "나침반, 항해술" },
+                    { icon: "🚢", label: "목적", text: "항로 개척, 무역" }
+                ],
+                items: [
+                    { name: "포르톨라노 해도", examples: ["13~15세기", "방위선(Rhumb line)", "지중해 항해"], meta: "🧭 나침반 항해 · ⚓ 실전용 해도", desc: "나침반 항해를 위해 해안선과 항구를 정밀하게 그린 실전용 바다 지도." },
+                    { name: "발트제뮐러 지도", examples: ["1507년", "아메리카 명명", "신대륙 인식"], meta: "🌎 신대륙 발견 · 🇺🇸 아메리카 명명", desc: "신대륙에 최초로 '아메리카'라는 이름을 붙인 지도. 아시아와 분리된 독립된 대륙으로 인식." },
+                    { name: "메르카토르 세계지도", examples: ["1569년", "정각 도법", "항해의 표준"], meta: "🚢 항해의 표준 · 📐 정각 도법", desc: "구체인 지구를 평면에 펼쳐 직선 항해를 가능케 한 혁명적 지도. 고위도 면적 왜곡의 원인." }
+                ]
+            },
+            {
+                title: "동양의 세계관", desc: "중화사상에서 근대적 과학 수용까지",
+                criteria: [
+                    { icon: "🇨🇳", label: "기반", text: "중화사상, 실학" },
+                    { icon: "🌏", label: "변화", text: "세계 인식의 확장" }
+                ],
+                items: [
+                    { name: "화이도 (華夷圖)", examples: ["12세기", "중화사상", "만리장성"], meta: "🇨🇳 중화사상 · 🧱 문화적 위계", desc: "중국을 세계의 중심에 거대하게 그리고, 주변국을 오랑캐로 묘사하여 문화적 위계를 표현." },
+                    { name: "혼일강리역대국도지도", examples: ["1402년(조선)", "아프리카/유럽 포함", "개방적"], meta: "🇰🇷 조선 초기 · 🌍 개방적 세계관", desc: "동양 최고(最古)의 세계지도. 중화사상을 넘어 아프리카와 유럽까지 포함한 열린 시각." },
+                    { name: "천하도 (天下圖)", examples: ["조선 중기", "산해경", "상상의 나라"], meta: "📖 산해경 · 🌌 도교적 상상력", desc: "실재하지 않는 상상의 세계. 도교적 세계관과 전설 속 나라들을 원형으로 배치한 조선인의 내면 지도." },
+                    { name: "지구전후도", examples: ["1834년(최한기)", "목판본", "지구설 수용"], meta: "🔭 실학 사상 · 🌐 지구설 수용", desc: "최한기가 제작한 목판본. 서양의 과학적 지식을 수용하여 중화사상을 탈피하고 세계를 구체로 인식." }
+                ]
+            },
+            {
+                title: "조선의 지도학, 대동여지도", desc: "발로 쓴 국토의 기록, 지식의 대중화",
+                criteria: [
+                    { icon: "🗺️", label: "제작", text: "고산자 김정호" },
+                    { icon: "🖨️", label: "특징", text: "목판본, 분첩식" }
+                ],
+                items: [
+                    { name: "대동여지도 전도", examples: ["1861년", "1/16만 축척", "전통 측량"], meta: "🗺️ 김정호 · 📏 놀라운 정확성", desc: "서양의 측량 기술 없이 전통적인 방식으로 현대 지도에 버금가는 정확도를 달성한 걸작." },
+                    { name: "분첩 절첩식 구조", examples: ["22첩", "병풍식 접이", "휴대성"], meta: "📚 병풍식 접이 · 🎒 휴대성 극대화", desc: "거대한 지도를 책처럼 접어서 가지고 다닐 수 있게 만든 구조. 현대 도로 지도책의 원형." },
+                    { name: "목판 인쇄와 대중화", examples: ["대량 생산", "지식 보급", "목판본"], meta: "🖨️ 대량 생산 · 📢 지식의 보급", desc: "필사본의 한계를 넘어 목판으로 대량 생산하여 지리 정보의 대중화를 시도." },
+                    { name: "지도표와 산경표", examples: ["범례(기호)", "산자분수령", "도로 표시"], meta: "⛰️ 산자분수령 · 🏷️ 기호(범례) 사용", desc: "현대적인 기호를 사용하여 정보를 체계화하고, 산맥을 끊어지지 않는 선으로 연결하여 국토를 유기적으로 인식." }
+                ]
+            }
+        ]
+    },
+    // mapsData 객체 내부의 "map-2" 부분을 아래 내용으로 교체하세요.
+
+    "map-2": {
+        title: "지도의 구성 요소",
+        subtitle: "지도를 읽기 위한 약속과 언어",
+        badge: "II",
+        theme: "#8e44ad",
+        iconSVG: `<rect x="40" y="40" width="120" height="120" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M140,140 L160,160" stroke="currentColor" stroke-width="8" opacity="0.5"/>`,
+        criteria: [
+            { icon: "📏", label: "축척", text: "거리의 비율" },
+            { icon: "🧭", label: "방위", text: "북쪽의 기준" },
+            { icon: "🏷️", label: "기호", text: "약속된 상징" }
+        ],
+        subCards: [
+            {
+                title: "축척과 일반화", desc: "세상을 얼마나 줄이고 단순화할 것인가",
+                criteria: [
+                    { icon: "🔍", label: "대축척", text: "좁은 지역 상세" },
+                    { icon: "🌏", label: "소축척", text: "넓은 지역 간략" }
+                ],
+                items: [
+                    { name: "지적도 (1:500 ~ 1:6,000)", examples: ["토지 대장", "재산권 행사", "건축 허가"], meta: "🏠 대축척 지도 · 📏 필지 경계", desc: "건물 형태와 필지 경계선까지 정밀하게 묘사한 대축척 지도." },
+                    { name: "지형도 (1:25,000 ~ 1:50,000)", examples: ["등산 지도", "군사 작전도", "국토지리정보원"], meta: "⛰️ 등고선 · 🪖 표준 축척", desc: "등고선으로 지형 기복을 표현하여 등산, 군사, 국토 개발에 두루 쓰이는 표준 지도." },
+                    { name: "전도 (1:100만 이상)", examples: ["세계 전도", "대한민국 전도", "교과서 부도"], meta: "🗺️ 소축척 지도 · 📉 과감한 생략", desc: "도시와 하천은 점과 선으로 단순화되고, 세계와 국가를 한눈에 보여주는 지도." },
+                    { name: "지하철 노선도 (위상 지도)", examples: ["해리 벡(런던)", "수도권 전철", "도쿄 메트로"], meta: "🚇 위상수학 · 🔗 연결성 중심", desc: "축척과 방위를 무시하고 목적에 맞게 연결성만 남긴 극단적인 지도." }
+                ]
+            },
+            {
+                title: "방위와 기호의 역사", desc: "약속된 언어와 방향의 기준",
+                criteria: [
+                    { icon: "⬆️", label: "방위", text: "문화적 관습" },
+                    { icon: "🔑", label: "기호", text: "정보의 표준화" }
+                ],
+                items: [
+                    { name: "T-O 지도 (동쪽이 위)", examples: ["중세 유럽", "헤러퍼드 지도", "에덴동산"], meta: "✝️ 중세 유럽 · 🌅 Orient(동쪽)", desc: "성지 예루살렘이 있는 동쪽을 위로 두어 '오리엔테이션'의 어원이 된 지도." },
+                    { name: "알 이드리시 지도 (남쪽이 위)", examples: ["이슬람 지도학", "시칠리아 왕국", "메카 방향"], meta: "☪️ 이슬람 · 🕋 메카 방향", desc: "메카가 있는 남쪽을 위로 둔 지도. 북쪽이 언제나 지도의 위는 아니다." },
+                    { name: "대동여지도 지도표", examples: ["김정호", "목판본", "범례"], meta: "🏷️ 범례의 표준화 · 🏔️ 산과 강", desc: "가항 하천, 역참 등을 22개의 기호로 표준화해 누구나 쉽게 읽도록 한 범례." },
+                    { name: "오픈스트리트맵 (OSM)", examples: ["위키백과식 지도", "집단 지성", "디지털 태그"], meta: "🌐 집단 지성 · 💻 디지털 기호", desc: "전 세계 사용자가 합의한 태그와 기호로 만들어가는, 현대의 표준화된 디지털 지도 플랫폼." }
+                ]
+            },
+            {
+                title: "세 가지 북쪽", desc: "나침반이 가리키는 곳은 진짜 북쪽이 아니다",
+                criteria: [
+                    { icon: "★", label: "진북", text: "북극성" },
+                    { icon: "🧭", label: "자북", text: "나침반" },
+                    { icon: "🗺️", label: "도북", text: "지도 위" }
+                ],
+                items: [
+                    { name: "진북 (True North)", examples: ["북극성", "지리적 북극점", "경선"], meta: "★ 북극성 · 📐 변하지 않는 기준", desc: "북극성(지리적 북극점)의 방향. 변하지 않는 영원한 기준이며, 지도상의 경선이 향하는 곳." },
+                    { name: "자북 (Magnetic North)", examples: ["나침반", "지구 자기장", "캐나다 북부"], meta: "🧭 나침반 N극 · 🧲 지구 자기장", desc: "나침반의 N극이 가리키는 방향. 지구 자기장의 변화로 매년 위치가 조금씩 이동함." },
+                    { name: "도북 (Grid North)", examples: ["지도상의 북쪽", "모눈(Grid)", "TM 좌표계"], meta: "🗺️ 지도상의 북쪽 · 📏 모눈(Grid)", desc: "평면 지도에 모눈을 그릴 때 설정한 세로선의 위쪽 방향. 지도 제작상의 기준." },
+                    { name: "자침 편차 (Declination)", examples: ["독도법", "나침반 보정", "G-M Angle"], meta: "📐 각도 차이 · 🧭 독도법 필수", desc: "진북과 자북 사이의 각도 차이. 지도(도북)와 나침반(자북)을 일치시키기 위해 반드시 보정해야 하는 오차." }
+                ]
+            }
+        ]
+    },
+    // mapsData 객체 내부의 "map-3" 부분을 아래 내용으로 교체하세요.
+
+    "map-3": {
+        title: "지도 투영법",
+        subtitle: "둥근 지구를 평면에 담는 수학적 딜레마",
+        badge: "III",
+        theme: "#2980b9",
+        iconSVG: `<path d="M20,100 Q100,20 180,100 T20,100" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/><path d="M100,20 V180" stroke="currentColor" stroke-width="2" opacity="0.5"/>`,
+        criteria: [
+            { icon: "📐", label: "원리", text: "3차원 ➔ 2차원" },
+            { icon: "⚠️", label: "왜곡", text: "면적, 각도, 거리" },
+            { icon: "🗺️", label: "종류", text: "원통, 원뿔, 평면" }
+        ],
+        subCards: [
+            {
+                title: "정각 도법 (Conformal)", desc: "모양은 지키되, 크기를 포기한다",
+                items: [
+                    { 
+                        name: "메르카토르 도법", 
+                        examples: ["항해지도", "구글맵(Web Mercator)"], 
+                        meta: "🚢 항해의 표준 · 📐 각도 정확", 
+                        desc: "경선과 위선이 직각으로 교차하여 나침반 항해에 유리하나, 고위도로 갈수록 면적이 극단적으로 확대됨.",                        
+                    },
+                    { 
+                        name: "횡축 메르카토르 (TM)", 
+                        examples: ["한국 지형도", "군사 지도"], 
+                        meta: "🇰🇷 한국 표준 · ↕️ 남북 방향 유리", 
+                        desc: "지구를 옆으로 뉘어 투영한 방식. 중앙 경선 부근의 왜곡이 적어 남북으로 긴 나라의 대축척 지도에 사용.",                        
+                    },
+                    { 
+                        name: "람베르트 정각 원뿔 도법", 
+                        examples: ["항공도", "미국 전도"], 
+                        meta: "✈️ 항공도 · 🌐 중위도 최적", 
+                        desc: "원뿔을 씌워 투영한 방식. 중위도 지역의 형태 왜곡이 적어 동서로 긴 나라(미국, 러시아)나 항공도에 적합.",
+                    }
+                ]
+            },
+            {
+                title: "정적 도법 (Equal-Area)", desc: "크기는 지키되, 모양을 포기한다",
+                items: [
+                    { 
+                        name: "페터스 도법", 
+                        examples: ["유니세프 지도", "제3세계"], 
+                        meta: "🌍 제3세계 강조 · ⚖️ 면적의 평등", 
+                        desc: "메르카토르 도법의 제국주의적 시각을 비판하며 등장. 적도 지방의 실제 크기를 보여주지만 모양이 길게 찌그러짐.",
+                    },
+                    { 
+                        name: "몰바이데 도법", 
+                        examples: ["세계 전도", "기후 분포도"], 
+                        meta: "🥚 타원형 지도 · 📊 분포도 표준", 
+                        desc: "지구를 타원형으로 표현하여 면적 비를 정확하게 유지. 세계 전도나 인구, 기후 분포도 제작에 널리 쓰임.",
+                    },
+                    { 
+                        name: "구드 호몰로사인 도법", 
+                        examples: ["교과서 부도", "해양 지도"], 
+                        meta: "🍊 찢어진 귤껍질 · 🌊 바다의 단절", 
+                        desc: "대륙의 모양과 면적 왜곡을 최소화하기 위해 바다 부분을 과감하게 찢어서 펼친 단열 도법.",
+                    }
+                ]
+            },
+            {
+                title: "정거 및 방위 도법", desc: "특정 지점에서의 거리와 방향을 지킨다",
+                items: [
+                    { 
+                        name: "정거 방위 도법", 
+                        examples: ["UN기", "항공 노선도"], 
+                        meta: "🇺🇳 UN기 · ✈️ 항공 노선도", 
+                        desc: "중심점에서 모든 지점까지의 직선 거리가 정확함. 최단 경로를 파악해야 하는 항공 노선도나 지진파 분석에 사용.",                        
+                    },
+                    { 
+                        name: "심사 도법 (Gnomonic)", 
+                        examples: ["대권 항로", "항해 계획"], 
+                        meta: "📏 대권 항로 · ⚓ 항해 계획", 
+                        desc: "지도상의 모든 직선이 지구상의 최단 거리(대권)가 되는 도법. 항해나 항공의 계획 단계에서 경로 파악용으로 쓰임.",                        
+                    },
+                    { 
+                        name: "평사 도법 (Stereographic)", 
+                        examples: ["기상도", "천문도"], 
+                        meta: "☁️ 기상도 · 🔭 천문도", 
+                        desc: "각도가 정확하고 원이 원으로 표현되는 특징이 있어, 구름의 모양이나 별자리를 그리는 기상도와 천문도에 활용.",                        
+                    }
+                ]
+            },
+            {
+                title: "절충 도법 (Compromise)", desc: "적당히 타협해서 보기 좋게 만든다",
+                items: [
+                    { 
+                        name: "로빈슨 도법", 
+                        examples: ["내셔널 지오그래픽(과거)", "세계 전도"], 
+                        meta: "📖 내셔널 지오그래픽 · ⚖️ 시각적 균형", 
+                        desc: "면적이나 각도 어느 하나도 완벽하지 않지만, 전체적인 왜곡을 줄여 지구가 가장 자연스럽게 보이도록 만든 도법.",                        
+                    },
+                    { 
+                        name: "빈켈 트리펠 도법", 
+                        examples: ["현재 표준", "교과서"], 
+                        meta: "🌐 현재의 표준 · 📉 왜곡 최소화", 
+                        desc: "면적, 각도, 거리의 왜곡을 수학적으로 최소화하여 현재 내셔널 지오그래픽 등에서 세계 지도의 표준으로 사용.",                        
+                    },
+                    { 
+                        name: "반데어그린텐 도법", 
+                        examples: ["구형 세계지도", "벽걸이 지도"], 
+                        meta: "🌕 원형 지도 · 📜 과거의 표준", 
+                        desc: "지구를 원형으로 표현한 도법. 과거에 널리 쓰였으나 극지방의 왜곡이 심해 현재는 로빈슨이나 빈켈 트리펠로 대체됨.",                        
+                    }
+                ]
+            }
+        ]
+    },
+    "map-4": {
+        title: "주제도와 통계 지도",
+        subtitle: "목적에 따라 정보를 시각화하는 방법",
+        badge: "IV",
+        theme: "#c0392b",
+        iconSVG: `<circle cx="60" cy="60" r="10" fill="currentColor" opacity="0.5"/><circle cx="140" cy="100" r="20" fill="currentColor" opacity="0.5"/><circle cx="80" cy="140" r="15" fill="currentColor" opacity="0.5"/>`,
+        criteria: [
+            { icon: "📊", label: "데이터", text: "통계의 시각화" },
+            { icon: "🎨", label: "표현", text: "점, 선, 면" },
+            { icon: "🥴", label: "변형", text: "카토그램 (왜곡)" }
+        ],
+        subCards: []
+    },
+    "map-5": {
+        title: "디지털 지구와 GIS",
+        subtitle: "살아있는 지도, 데이터로 분석하는 세상",
+        badge: "V",
+        theme: "#d35400",
+        iconSVG: `<path d="M20,140 L100,180 L180,140 M20,100 L100,140 L180,100 M20,60 L100,100 L180,60" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
+        criteria: [
+            { icon: "💻", label: "기술", text: "GIS, GPS, RS" },
+            { icon: "🛰️", label: "수집", text: "인공위성, 드론" },
+            { icon: "📱", label: "활용", text: "내비게이션, 입지" }
+        ],
+        subCards: []
+    }
+};
+
 const geoData = {
     "1": {
         title: "동아시아",
@@ -1741,26 +2013,27 @@ const climateData = {
             mapImage: null // 지도 없음
         },
         features: [],
+        /* --- 위 코드를 아래 코드로 통째로 교체하세요 --- */
         subClimates: [
             {
-                code: "Ds", name: "고지 지중해성 기후", desc: "겨울은 춥고 여름은 건조한 특이 기후", graph: "images/Ds.webp",
+                code: "Ds", name: "고지 지중해성 기후", desc: "여름은 건조하고 겨울은 혹독한 산악 기후", graph: "images/Ds.webp",
                 items: [
-                    { name: "대륙 서안 고지대", examples: ["시에라네바다 산맥", "캐스케이드 산맥"], desc: "" },
-                    { name: "서아시아 산악", examples: ["아나톨리아 고원", "힌두쿠시 산맥"], desc: "" }
+                    { name: "대륙 서안 고지대", examples: ["시에라네바다 산맥", "캐스케이드 산맥"], desc: "건조한 여름과 혹독한 겨울이 공존하는 태평양 습기가 막힌 산맥의 비그늘." },
+                    { name: "서아시아 산악", examples: ["아나톨리아 고원", "힌두쿠시 산맥"], desc: "대륙 깊숙한 고원이 빚어낸, 여름은 건조하고 겨울은 혹독하게 추운 기후." }
                 ]
             },
             {
-                code: "As", name: "열대 하계 건조 기후", desc: "열대임에도 여름이 건조한 기후", graph: "images/As.webp",
+                code: "As", name: "열대 하계 건조 기후", desc: "우기와 건기가 뒤바뀐 열대의 이단아", graph: "images/As.webp",
                 items: [
-                    { name: "지형성 비그늘", examples: ["하와이 일부", "베트남 중부 해안"], desc: "" },
-                    { name: "해안 지역", examples: ["브라질 북동부 (레시페, 나탈)"], desc: "" }
+                    { name: "지형성 비그늘", examples: ["하와이 일부", "베트남 중부 해안"], desc: "여름 몬순이 산맥에 막혀, 겨울 대신 여름에 건기가 찾아오는 열대." },
+                    { name: "해안 지역", examples: ["브라질 북동부 (레시페, 나탈)"], desc: "열대 수렴대의 계절적 이동으로 인해, 가장 더운 여름에 오히려 비가 적게 내리는 해안." }
                 ]
             },
             {
-                code: "Cfc", name: "아극 해양성 기후", desc: "고위도임에도 겨울이 온화한 기후", graph: "images/Cfc.webp",
+                code: "Cfc", name: "아극 해양성 기후", desc: "극지방 앞에서 바다가 붙잡은 마지막 온기", graph: "images/Cfc.webp",
                 items: [
-                    { name: "북대서양 고위도", examples: ["아이슬란드", "페로 제도", "노르웨이 해안"], desc: "" },
-                    { name: "태평양/남반구", examples: ["알류샨 열도", "푼타아레나스(칠레)"], desc: "" }
+                    { name: "북대서양 고위도", examples: ["아이슬란드", "페로 제도", "노르웨이 해안"], desc: "북대서양 난류의 영향으로 위도를 거스르는 온화한 겨울을 가진 바다의 땅." },
+                    { name: "태평양/남반구", examples: ["알류샨 열도", "푼타아레나스(칠레)"], desc: "대양의 영향으로 겨울이 얼지 않는, 연교차가 매우 작은 해양성 기후." }
                 ]
             }
         ]
@@ -2006,12 +2279,6 @@ const agricultureData = {
         badge: "I",
         theme: "#4CAF50",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.3"/><path d="M60,60 C80,80 120,80 140,60" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
-        criteria: [
-            { icon: "🌱", label: "생육 조건", text: "고온 다습" },
-            { icon: "🗺️", label: "재배지 유형", text: "충적 평야, 삼각주" },
-            { icon: "📊", label: "부양력", text: "최상" },
-            { icon: "🍚", label: "대표 음식", text: "밥, 쌀국수, 스시" }
-        ],
         subCards: [
             {
                 title: "쌀 (Rice)", desc: "몬순 아시아의 거대한 인구를 부양하는 문명의 주춧돌",
@@ -2089,12 +2356,6 @@ const agricultureData = {
         badge: "II",
         theme: "#795548",
         iconSVG: `<path d="M100,50 L50,150 L150,150 Z" fill="currentColor" opacity="0.4"/><circle cx="100" cy="150" r="10" fill="currentColor" opacity="0.6"/>`,
-        criteria: [
-            { icon: "🌱", label: "생육 조건", text: "서늘~고온 (넓은 적응력)" },
-            { icon: "🗺️", label: "재배지 유형", text: "산간 비탈, 구릉지" },
-            { icon: "💪", label: "생존력", text: "척박지 적응력 최상" },
-            { icon: "🍲", label: "대표 음식", text: "피시 앤 칩스, 군고구마" }
-        ],
         subCards: [
             {
                 title: "감자 & 고구마", desc: "구대륙을 굶주림에서 구원한 신대륙의 선물",
@@ -2173,12 +2434,6 @@ const agricultureData = {
             badge: "III",
             theme: "#6F4E37", // 새로운 테마 색상 (커피색)
             iconSVG: `<path d="M50,150 Q20,150 20,120 V80 H80 V120 Q80,150 50,150 Z" fill="currentColor" opacity="0.3"/><path d="M120,60 Q160,20 160,100 Q120,180 80,100 Q80,20 120,60 Z" fill="currentColor" opacity="0.2"/>`,
-            criteria: [
-                { icon: "☕", label: "종류", text: "커피, 차, 코코아" },
-                { icon: "🚬", label: "특성", text: "각성 및 기호품" },
-                { icon: "⛰️", label: "입지", text: "열대 고산/구릉" },
-                { icon: "🏛️", label: "역사", text: "카페, 차마고도" }
-            ],
             subCards: [
                 {
                     title: "커피 (Coffee)", desc: "세계인을 깨운 고원의 선물",
@@ -2250,12 +2505,6 @@ const agricultureData = {
             badge: "III+", // 순서 유지를 위해 + 기호 사용
             theme: "#FF9800", // 기존 agri-3의 테마색 계승
             iconSVG: `<path d="M100,20 Q180,100 100,180 Q20,100 100,20 Z" fill="currentColor" opacity="0.4"/><path d="M100,40 Q160,100 100,160 Q40,100 100,40 Z" fill="currentColor" opacity="0.3"/>`,
-            criteria: [
-                { icon: "🏭", label: "용도", text: "산업 원자재" },
-                { icon: "👕", label: "주요 품목", text: "목화, 고무" },
-                { icon: "🌴", label: "생산 방식", text: "플랜테이션" },
-                { icon: "💰", label: "역사", text: "삼각 무역" }
-            ],
             subCards: [
                 {
                     title: "목화 (Cotton)", desc: "산업혁명과 노예제를 지탱한 불편한 동력",
@@ -4318,11 +4567,7 @@ const jumpConnections = {
         { section: 'livestock', card: 'agri-6', label: '유목 (양)' },
         { section: 'religion', card: 'religion-3', label: '이슬람 발상' }
     ],
-    'climate-a': [ // 열대 기후
-        { section: 'special', card: 'special-4', label: '카르스트' },
-        { section: 'freshwater', card: 'hydro-2', label: '아마존/콩고' },
-        { section: 'agriculture', card: 'agri-3', label: '플랜테이션' }
-    ],
+
     'climate-a': [ // 열대 기후
         { section: 'special', card: 'special-4', label: '카르스트' },
         { section: 'freshwater', card: 'hydro-2', label: '아마존/콩고' },

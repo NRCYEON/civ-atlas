@@ -1,3 +1,167 @@
+/* ========================================================================== */
+/* [수정됨] 인라인 갤러리 엔진 (ID 중복 문제 해결을 위한 DOM 탐색 방식 적용) */
+/* ========================================================================== */
+/* ========================================================================== */
+/* [최종] 스마트 갤러리 엔진 (대표 이미지 우선 로드 & 자동 필터링)             */
+/* ========================================================================== */
+window.InlineGallery = {
+    dataStore: {},
+
+    // [1] 데이터 등록 (후보군 등록)
+    register: function(id, candidates) {
+        this.dataStore[id] = {
+            candidates: candidates || [], // 로딩 전 후보 리스트
+            images: [],                   // 실제 로딩 성공한 이미지
+            verified: false,              // 검증 여부
+            currentIndex: 0
+        };
+    },
+
+    // [2] 토글 (열기/닫기)
+    toggle: function(id, btn, event) {
+        if (event) { event.stopPropagation(); event.preventDefault(); }
+
+        const container = btn.closest('.sub-title-group').nextElementSibling;
+        if (!container) return;
+
+        const data = this.dataStore[id];
+        if (!data) return;
+
+        const isOpen = container.classList.contains('open');
+
+        if (isOpen) {
+            // 닫기
+            container.classList.remove('open');
+            container.style.maxHeight = null;
+            btn.classList.remove('active');
+            btn.innerHTML = '📷';
+        } else {
+            // 열기
+            btn.classList.add('active');
+            btn.innerHTML = '🔼';
+            container.classList.add('open');
+
+            // 검증되지 않았으면 이미지 로딩 시도
+            if (!data.verified) {
+                this.verifyAndRender(id, container);
+            } else {
+                // 이미 검증됐으면 바로 렌더링 (높이 계산)
+                this.updateHeight(container);
+            }
+        }
+    },
+
+    // [3] 이미지 검증 및 로드 (핵심 로직)
+    verifyAndRender: async function(id, container) {
+        const data = this.dataStore[id];
+        container.innerHTML = `<div class="gallery-empty-state"><div style="font-size:1.5rem;">⏳</div><div>이미지 확인 중...</div></div>`;
+        this.updateHeight(container);
+
+        // 1. 대표 이미지(Main)가 있는지 먼저 확인
+        const mainCandidate = data.candidates.find(c => c.isMain);
+        if (mainCandidate) {
+            const isMainValid = await this.checkImage(mainCandidate.src);
+            if (isMainValid) {
+                // 대표 이미지가 있으면 그것만 등록하고 종료
+                data.images = [mainCandidate];
+                data.verified = true;
+                this.render(id, container);
+                return;
+            }
+        }
+
+        // 2. 대표 이미지가 없으면 개별 아이템 이미지 확인
+        const itemCandidates = data.candidates.filter(c => !c.isMain);
+        const promises = itemCandidates.map(async (c) => {
+            const isValid = await this.checkImage(c.src);
+            return isValid ? c : null;
+        });
+
+        const results = await Promise.all(promises);
+        data.images = results.filter(img => img !== null); // 유효한 것만 남김
+        data.verified = true;
+        this.render(id, container);
+    },
+
+    // 이미지 존재 여부 체크 (비동기)
+    checkImage: function(src) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = src;
+        });
+    },
+
+    // [4] 렌더링
+    render: function(id, container) {
+        const data = this.dataStore[id];
+        const images = data.images;
+
+        // 이미지가 하나도 없으면 준비중 표시
+        if (images.length === 0) {
+            container.innerHTML = `
+                <div class="gallery-empty-state">
+                    <div style="font-size: 2.5rem; margin-bottom: 10px;">🚧</div>
+                    <div style="font-size: 1rem; font-weight: 700; color: #868e96;">이미지 준비 중입니다</div>
+                </div>`;
+            this.updateHeight(container);
+            return;
+        }
+
+        // 1개면 싱글 모드 (버튼/캡션 숨김), 2개 이상이면 일반 모드
+        if (images.length === 1) {
+            container.classList.add('single-mode');
+        } else {
+            container.classList.remove('single-mode');
+        }
+
+        let slidesHTML = '';
+        images.forEach(img => {
+            slidesHTML += `
+                <div class="gallery-slide">
+                    <img class="gallery-image" src="${img.src}" alt="이미지" onload="this.classList.add('loaded')">
+                    <div class="gallery-caption-overlay">${img.title || ''}</div>
+                </div>`;
+        });
+
+        const controlsHTML = images.length > 1 ? `
+            <button class="gallery-nav prev" onclick="window.InlineGallery.move('${id}', -1, event)">◀</button>
+            <button class="gallery-nav next" onclick="window.InlineGallery.move('${id}', 1, event)">▶</button>
+        ` : '';
+
+        container.innerHTML = `
+            <div class="gallery-track">
+                ${slidesHTML}
+            </div>
+            ${controlsHTML}
+        `;
+        
+        this.updateHeight(container);
+    },
+
+    // 높이 강제 업데이트
+    updateHeight: function(container) {
+        const scrollHeight = container.scrollHeight > 200 ? container.scrollHeight : 200;
+        container.style.maxHeight = scrollHeight + "px";
+    },
+
+    // [5] 슬라이드 이동
+    move: function(id, direction, event) {
+        if (event) { event.stopPropagation(); event.preventDefault(); }
+        
+        const data = this.dataStore[id];
+        if (!data || data.images.length <= 1) return;
+
+        const btn = event.target.closest('button');
+        const container = btn.closest('.inline-gallery-container');
+        const track = container.querySelector('.gallery-track');
+        
+        const total = data.images.length;
+        data.currentIndex = (data.currentIndex + direction + total) % total;
+        track.style.transform = `translateX(-${data.currentIndex * 100}%)`;
+    }
+};
 // [전역 변수 선언]
 let activeCardId = null;
 // [신규] 도약(Jump) 연결 고리 데이터 정의
@@ -19,17 +183,113 @@ const bgBtn = document.getElementById('bg-view-btn');
 const bgModal = document.getElementById('bg-modal');
 const returnBtn = document.getElementById('return-jump-btn'); // [추가] 돌아가기 버튼 객체
 
+/* ========================================================================== */
+/* [최종 수정] 패널 콘텐츠 생성 함수 (인라인 스타일 제거 및 클래스 기반 제어) */
+/* ========================================================================== */
+window.generatePanelContent = function(data, cardId) {
+    let html = '';
+
+    // (1) 상단 기준 (Criteria)
+    if (data.criteria) {
+        if (data.criteria.isSpecial) {
+            html += `<div class="panel-criteria-group"><button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText || '지도 보기'}</button><div class="criteria-wrapper"><div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">`;
+            data.criteria.items.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
+            html += `</div></div>`;
+            if (data.criteria.image) html += `<div class="climate-map-area"><img src="${data.criteria.image}" class="climate-map-img"></div>`;
+            html += `</div>`;
+        } else if (Array.isArray(data.criteria)) {
+            const colCount = data.criteria.length;
+            html += `<div class="panel-criteria-group" style="display: grid; grid-template-columns: repeat(${colCount}, 1fr) !important; gap: 15px; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px dashed rgba(0,0,0,0.1);">`;
+            data.criteria.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
+            html += `</div>`;
+        }
+    }
+
+    // (2) 하위 카드 (Sub Cards)
+    html += `<div class="panel-grid">`;
+    if (data.subCards) {
+        data.subCards.forEach((card, index) => {
+            const subCardId = `sub-card-${cardId}-${index}`;
+            
+            let collectedImages = [];
+            const subCardIndex = index + 1;
+            collectedImages.push({
+                src: `images/gallery/${cardId}-${subCardIndex}.webp`,
+                title: card.title,
+                isMain: true
+            });
+
+            if (card.items) {
+                card.items.forEach((item, itemIndex) => {
+                    const textOnly = item.name.replace(/<[^>]*>?/gm, '');
+                    collectedImages.push({
+                        src: `images/gallery/${cardId}-${subCardIndex}-${itemIndex + 1}.webp`,
+                        title: textOnly,
+                        isMain: false
+                    });
+                });
+            }
+            
+            if (window.InlineGallery) {
+                window.InlineGallery.register(subCardId, collectedImages);
+            }
+
+            html += `
+            <div class="sub-region-card" id="${subCardId}">
+                <div class="sub-title-group">
+                    <div class="sub-title-number"></div>
+                    <div class="sub-title-content">
+                        <h3 class="sub-title-heading">${card.title}</h3>
+                        <p class="sub-title-description">${card.desc}</p>
+                    </div>
+                    <button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">📷</button>
+                </div>
+
+                <div id="gallery-${subCardId}" class="inline-gallery-container"></div>
+                
+                <!-- [수정됨] 인라인 스타일 제거, 전용 클래스(sub-card-criteria-grid) 사용 -->
+                ${card.criteria ? `
+                <div class="sub-card-criteria-grid">
+                    ${card.criteria.map(c => `
+                    <div class="criteria-item">
+                        <span class="criteria-icon">${c.icon}</span>
+                        <div class="criteria-content">
+                            <span class="criteria-label">${c.label}</span>
+                            <span class="criteria-text">${c.text}</span>
+                        </div>
+                    </div>`).join('')}
+                </div>` : ''}
+                
+                <ul class="detail-list">`;
+            
+            if (card.items) {
+                card.items.forEach(item => {
+                    const linkedName = createSearchLink(item.name);
+                    const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
+                    const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
+                    html += `<li class="detail-item"><div class="detail-header"><span class="detail-name">${linkedName}</span><span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span></div>${metaInfo}<span class="detail-desc">${item.desc}</span></li>`;
+                });
+            }
+            html += `</ul></div>`;
+        });
+    }
+    html += `</div>`;
+
+    return html;
+};
+
     // [1] 섹션 전환 기능 (모바일 활성화 오류 수정)
 function switchSection(sectionId) {
     const body = document.body;
     
     const bgMap = { 
         'home': "url('images/world-map-main.webp')", 
+        'maps': "url('images/maps-bg.webp')",
         'ocean': "url('images_ocean/ocean-bg.webp')", 
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
-        'special': "url('images_topo/special.webp')", 
-        'freshwater': "url('images_topo/freshwater.webp')", 
+        'special': "url('images/special.webp')", 
+        'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
         'livestock': "url('images_human/livestock.webp')",
         'resources': "url('images_human/resources.webp')", 
@@ -149,8 +409,213 @@ function createSearchLink(text) { const cleanText = text.replace(/<[^>]+>/g, '')
 const ambientThemes = { 1: 'linear-gradient(135deg, #f5f5f5 0%, #cfd9df 100%)', 2: 'linear-gradient(135deg, #e0f7fa 0%, #80deea 100%)', 3: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)', 4: 'linear-gradient(135deg, #fffde7 0%, #fff9c4 100%)', 5: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', 6: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)', 7: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', 8: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%)', 9: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)' };
 const geoFocus = { 1: { pos: '88% 28%', size: '260%' }, 2: { pos: '92% 75%', size: '240%' }, 3: { pos: '74% 42%', size: '300%' }, 4: { pos: '56% 38%', size: '230%' }, 5: { pos: '53% 65%', size: '230%' }, 6: { pos: '51% 18%', size: '350%' }, 7: { pos: '18% 25%', size: '230%' }, 8: { pos: '29% 75%', size: '230%' }, 9: { pos: '66% 32%', size: '300%' } };
 
-// [3] 카드 활성화 (투명화 자동 복구 포함)
-// [3] 카드 활성화 (데이터 분리 로직 적용)
+// 3. 카드 생성 함수 (renderCards): 페이지 로딩 시 실행됨
+function renderCards(containerId, dataObj) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    Object.keys(dataObj).forEach(key => {
+        const data = dataObj[key];
+        const cardId = `card-${key}`;
+        
+        if (document.getElementById(cardId)) return;
+
+        const article = document.createElement('article');
+        article.className = 'region-card';
+        article.id = cardId;
+        article.onclick = (event) => activateCard(key, event);
+        article.style.setProperty('--theme', data.theme);
+
+        let svgContent = '';
+        if (data.iconSVG) {
+            svgContent = `<svg class="card-bg-icon" viewBox="0 0 200 200">${data.iconSVG}</svg>`;
+        }
+
+        // [핵심] 여기서 generatePanelContent에 'key'(고유ID)를 넘겨줍니다.
+        article.innerHTML = `
+            ${svgContent}
+            <div class="card-header">
+                <div class="header-content">
+                    <h2>${data.title}</h2>
+                    <p>${data.subtitle}</p>
+                </div>
+                <div class="expand-icon">▼</div>
+            </div>
+            <div class="hidden-data">
+                ${generatePanelContent(data, key)} 
+            </div>
+        `;
+
+        container.appendChild(article);
+    });
+}
+
+// 4. 카드 활성화 함수 (activateCard): 클릭 시 패널을 열고 내용을 채움
+function activateCard(id, event) {
+    if (event) { event.stopPropagation(); event.preventDefault(); }
+    if (typeof resetTransparency === 'function') resetTransparency();
+
+    const header = document.querySelector('header');
+    if (header) { header.classList.add('scrolled', 'header-shrunk'); }
+    if (activeCardId === id) { closeAllPanels(); return; }
+    
+    document.querySelectorAll('.region-card').forEach(card => { card.classList.remove('active'); card.classList.add('dimmed'); });
+    stopTextRotation();
+    if (closeTimeout) clearTimeout(closeTimeout);
+    
+    activeCardId = id;
+    const clickedCard = document.getElementById(`card-${id}`);
+    if (!clickedCard) return;
+    
+    clickedCard.classList.add('active');
+    clickedCard.classList.remove('dimmed');
+    if (ambientThemes[id]) document.body.style.background = ambientThemes[id];
+
+    // 배경 지도 이동 로직
+    const geoBg = document.getElementById('geo-bg');
+    const geoKey = id.toString().replace('geo-', '');
+    if (geoBg) {
+        if (geoFocus[geoKey]) {
+            geoBg.style.backgroundPosition = geoFocus[geoKey].pos;
+            geoBg.style.backgroundSize = geoFocus[geoKey].size;
+        } else {
+            geoBg.style.backgroundPosition = 'center 85%';
+            geoBg.style.backgroundSize = 'cover';
+        }
+    }
+    
+    const contentArea = document.getElementById('detail-content-area');
+    let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() || window.getComputedStyle(clickedCard).borderLeftColor;
+
+    // [핵심] explorationData가 있으면 사용, 없으면 data.js의 객체 탐색
+    if (typeof explorationData !== 'undefined' && explorationData[id]) {
+        const data = explorationData[id];
+        themeColor = data.theme || themeColor;
+        contentArea.innerHTML = generatePanelContent(data, id); 
+    } else {
+        // 기존 HTML 긁어오기 (renderCards에서 이미 올바른 ID로 생성됨)
+        contentArea.innerHTML = clickedCard.querySelector('.hidden-data').innerHTML;
+    }
+
+    // 모바일 그리드 강제 조정
+    if (window.innerWidth <= 1024) {
+        const grid = contentArea.querySelector('.panel-criteria-group');
+        if (grid) {
+            grid.style.setProperty('grid-template-columns', 'repeat(2, 1fr)', 'important');
+        }
+    }
+
+    initDynamicLists(contentArea);
+    autoNumberSubCards(contentArea);
+    detailPanel.style.setProperty('--panel-theme', themeColor);
+
+    // 도약 버튼 생성
+    const jumpList = jumpConnections[id];
+    if (jumpList && jumpList.length > 0) {
+        const jumpBtnContainer = document.createElement('div');
+        jumpBtnContainer.className = 'jump-btn-container';
+        const guideText = document.createElement('span');
+        guideText.className = 'jump-guide-text';
+        guideText.innerText = '더 알아보기';
+        jumpBtnContainer.appendChild(guideText);
+        jumpList.forEach(data => {
+            const jumpBtn = document.createElement('button');
+            jumpBtn.className = 'jump-link-btn';
+            jumpBtn.innerHTML = `🚀 ${data.label}`;
+            jumpBtn.onclick = function() { executeJump(data.section, data.card); };
+            jumpBtnContainer.appendChild(jumpBtn);
+        });
+        contentArea.appendChild(jumpBtnContainer);
+    }
+
+    detailPanel.classList.remove('open');
+    detailPanel.style.display = 'block';
+    insertPanelAfterRow(clickedCard);
+    
+    if (window.innerWidth <= 1024) setupMobilePagination(contentArea); 
+    
+    requestAnimationFrame(() => { 
+        requestAnimationFrame(() => { 
+            detailPanel.classList.add('open'); 
+        }); 
+    });
+    
+    startTextRotation(contentArea);
+    
+    // 스크롤 이동
+    setTimeout(() => {
+        let targetY;
+        const headerHeight = 50;
+        const panelTop = detailPanel.getBoundingClientRect().top + window.scrollY;
+
+        if (window.innerWidth <= 1024) {
+            targetY = panelTop - headerHeight;
+        } 
+        else {
+            const pcHeaderHeight = document.querySelector('header')?.offsetHeight || 0;
+            targetY = clickedCard.offsetTop - pcHeaderHeight - 20;
+        }
+
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }, 400);
+    
+    if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
+}
+
+
+/* ========================================================================== */
+/* [패널 생성 함수] 데이터를 HTML로 변환하고 갤러리를 등록하는 역할 */
+/* ========================================================================== */
+
+
+
+// [수정] 카드 자동 생성 시스템 (표준형) - ID 전달 기능 추가
+function renderCards(containerId, dataObj) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    Object.keys(dataObj).forEach(key => {
+        const data = dataObj[key];
+        const cardId = `card-${key}`;
+        
+        // 이미 존재하는 카드는 건너뜀 (중복 방지)
+        if (document.getElementById(cardId)) return;
+
+        const article = document.createElement('article');
+        article.className = 'region-card';
+        article.id = cardId;
+        article.onclick = (event) => activateCard(key, event);
+        
+        // 테마 색상 적용
+        article.style.setProperty('--theme', data.theme);
+
+        // SVG 아이콘 처리
+        let svgContent = '';
+        if (data.iconSVG) {
+            svgContent = `<svg class="card-bg-icon" viewBox="0 0 200 200">${data.iconSVG}</svg>`;
+        }
+
+        // 내부 HTML 조립
+        // [핵심] generatePanelContent(data, key) -> key(ID)를 반드시 넘겨줘야 함
+        article.innerHTML = `
+            ${svgContent}
+            <div class="card-header">
+                <div class="header-content">
+                    <h2>${data.title}</h2>
+                    <p>${data.subtitle}</p>
+                </div>
+                <div class="expand-icon">▼</div>
+            </div>
+            <div class="hidden-data">
+                ${generatePanelContent(data, key)} 
+            </div>
+        `;
+
+        container.appendChild(article);
+    });
+}
+
+// [수정] 카드 활성화 함수 - ID 전달 및 모바일 대응 강화
 function activateCard(id, event) {
     if (event) { event.stopPropagation(); event.preventDefault(); }
     if (typeof resetTransparency === 'function') resetTransparency();
@@ -184,16 +649,16 @@ function activateCard(id, event) {
         }
     }
     
-    // [핵심 변경] 데이터가 data.js에 있으면 그걸 쓰고, 없으면 기존 HTML 긁어오기
     const contentArea = document.getElementById('detail-content-area');
     let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() || window.getComputedStyle(clickedCard).borderLeftColor;
 
+    // [핵심 수정] explorationData가 있으면 사용, 없으면 data.js의 객체 탐색
+    // generatePanelContent 호출 시 반드시 'id'를 두 번째 인자로 전달해야 함
     if (typeof explorationData !== 'undefined' && explorationData[id]) {
-        // 1. 데이터 기반 렌더링
         const data = explorationData[id];
         themeColor = data.theme || themeColor;
-        contentArea.innerHTML = generatePanelContent(data); // 하단에 헬퍼 함수 추가 필요
-        // [모바일 긴급 패치] 화면이 1024px 이하라면, PC용 강제 스타일을 무시하고 2열로 덮어씌움
+        contentArea.innerHTML = generatePanelContent(data, id); 
+        
         if (window.innerWidth <= 1024) {
             const grid = contentArea.querySelector('.panel-criteria-group');
             if (grid) {
@@ -201,11 +666,11 @@ function activateCard(id, event) {
             }
         }
         initDynamicLists(contentArea);
-        autoNumberSubCards(contentArea); // 동적 리스트 초기화
+        autoNumberSubCards(contentArea);
     } else {
-        // 2. 기존 HTML 긁어오기 (기존 섹션 호환)
+        // 기존 HTML 긁어오기 방식 (이미 renderCards에서 올바른 ID로 생성됨)
         contentArea.innerHTML = clickedCard.querySelector('.hidden-data').innerHTML;
-        // [모바일 긴급 패치] 화면이 1024px 이하라면, PC용 강제 스타일을 무시하고 2열로 덮어씌움
+        
         if (window.innerWidth <= 1024) {
             const grid = contentArea.querySelector('.panel-criteria-group');
             if (grid) {
@@ -218,7 +683,7 @@ function activateCard(id, event) {
 
     detailPanel.style.setProperty('--panel-theme', themeColor);
 
-    // 도약 버튼 생성 (기존 로직 유지)
+    // 도약 버튼 생성
     const jumpList = jumpConnections[id];
     if (jumpList && jumpList.length > 0) {
         const jumpBtnContainer = document.createElement('div');
@@ -241,6 +706,9 @@ function activateCard(id, event) {
     detailPanel.style.display = 'block';
     insertPanelAfterRow(clickedCard);
     
+    // 모바일 페이지네이션
+    if (window.innerWidth <= 1024) setupMobilePagination(contentArea); 
+    
     requestAnimationFrame(() => { 
         requestAnimationFrame(() => { 
             detailPanel.classList.add('open'); 
@@ -248,82 +716,25 @@ function activateCard(id, event) {
     });
     
     startTextRotation(contentArea);
+    
+    // 스크롤 이동
     setTimeout(() => {
-        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-        const targetY = clickedCard.offsetTop - headerHeight - 20;
+        let targetY;
+        const headerHeight = 50;
+        const panelTop = detailPanel.getBoundingClientRect().top + window.scrollY;
+
+        if (window.innerWidth <= 1024) {
+            targetY = panelTop - headerHeight;
+        } 
+        else {
+            const pcHeaderHeight = document.querySelector('header')?.offsetHeight || 0;
+            targetY = clickedCard.offsetTop - pcHeaderHeight - 20;
+        }
+
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, 400);
     
     if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
-}
-
-// [수정] 데이터를 HTML로 변환하는 헬퍼 함수 (최상단 4x1, 중분류 2x2 완벽 적용)
-function generatePanelContent(data) {
-    let html = '';
-    
-    // 1. 상단 기준 (Criteria) - 최상단 패널
-    if (data.criteria) {
-        // [특수 구조] 인구 변천 모델 등 이미지 포함
-        if (data.criteria.isSpecial) {
-            html += `<div class="panel-criteria-group">`;
-            if (data.criteria.buttonText) {
-                html += `<button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText}</button>`;
-            }
-            html += `<div class="criteria-wrapper">`;
-            html += `<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">`;
-            data.criteria.items.forEach(c => {
-                html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`;
-            });
-            html += `</div></div>`;
-            if (data.criteria.image) {
-                html += `<div class="climate-map-area"><img src="${data.criteria.image}" alt="참고 이미지" class="climate-map-img"></div>`;
-            }
-            html += `</div>`;
-        } 
-        // [일반 구조] 최상단 메타데이터 -> 데이터 개수만큼 열 생성 (예: 4개면 4x1)
-        else if (Array.isArray(data.criteria)) {
-            const colCount = data.criteria.length;
-            html += `<div class="panel-criteria-group" style="display: grid; grid-template-columns: repeat(${colCount}, 1fr) !important; gap: 15px; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px dashed rgba(0,0,0,0.1);">`;
-            data.criteria.forEach(c => {
-                html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`;
-            });
-            html += `</div>`;
-        }
-    }
-
-    // 2. 패널 그리드 (Sub Cards)
-    html += `<div class="panel-grid">`;
-    data.subCards.forEach(card => {
-        html += `<div class="sub-region-card">
-            <div class="sub-title-group"><div class="sub-title-number"></div><div class="sub-title-content"><h3 class="sub-title-heading">${card.title}</h3><p class="sub-title-description">${card.desc}</p></div></div>`;
-        
-        // [중분류 메타데이터] 무조건 2열로 고정 (2x2 배열 유지)
-        if (card.criteria) {
-            html += `<div class="panel-criteria-group" style="display: grid; grid-template-columns: repeat(2, 1fr) !important; gap: 10px; margin: 15px 0 25px; padding: 15px 0; border-top: 1px dashed rgba(0,0,0,0.08); border-bottom: 1px dashed rgba(0,0,0,0.08);">`;
-            card.criteria.forEach(c => {
-                html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`;
-            });
-            html += `</div>`;
-        }
-
-        html += `<ul class="detail-list">`;
-        
-        card.items.forEach(item => {
-            const linkedName = createSearchLink(item.name);
-            const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
-            const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
-
-            html += `<li class="detail-item">
-                <div class="detail-header"><span class="detail-name">${linkedName}</span><span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span></div>
-                ${metaInfo}
-                <span class="detail-desc">${item.desc}</span>
-            </li>`;
-        });
-        html += `</ul></div>`;
-    });
-    html += `</div>`;
-
-    return html;
 }
 
 // [4] 패널 삽입 위치 계산
@@ -374,11 +785,12 @@ function closeAllPanels(event) {
     // (switchSection 함수의 bgMap 객체를 그대로 가져와 사용)
     const bgMapForReset = { 
         'home': "url('images/world-map-main.webp')", 
+        'maps': "url('images/maps-bg.webp')",
         'ocean': "url('images_ocean/ocean-bg.webp')", 
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
-        'special': "url('images_topo/special.webp')", 
-        'freshwater': "url('images_topo/freshwater.webp')", 
+        'special': "url('images/special.webp')", 
+        'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
         'livestock': "url('images_human/livestock.webp')", 
         'resources': "url('images_human/resources.webp')", 
@@ -454,17 +866,23 @@ btn.innerHTML = isOpen ? '🔼 접기' : btn.dataset.originalText; }
 // [11] 패럴랙스 & 스크롤 보정
 window.addEventListener('scroll', () => { const geoSection = document.getElementById('section-geo'); if (!geoSection || !geoSection.classList.contains('active')) return; const scrollY = window.scrollY; const bgLayer = document.getElementById('geo-bg'); const dimLayer = document.getElementById('geo-dim'); if (bgLayer && dimLayer) { bgLayer.style.transform = `translateY(${-scrollY * 0.05}px)`; const progress = Math.min(scrollY / 600, 1); bgLayer.style.filter = `blur(${progress * 3}px)`; dimLayer.style.backgroundColor = `rgba(12, 22, 59, ${progress * 0.6})`; } });
 const originalScrollTo = window.scrollTo;
-window.scrollTo = function(options) { const geoSection = document.getElementById('section-geo'); if (geoSection && geoSection.classList.contains('active') && activeCardId) { const card = document.getElementById(`card-${activeCardId}`); if (card) { const headerHeight = document.querySelector('header')?.offsetHeight || 0; const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20; originalScrollTo.call(window, { top: targetY, behavior: 'smooth' }); return; } } originalScrollTo.apply(window, arguments); };
+window.scrollTo = function(options) { 
+    const geoSection = document.getElementById('section-geo'); 
+    // [수정] PC 화면(1024px 초과)일 때만 작동하도록 제한
+    if (window.innerWidth > 1024 && geoSection && geoSection.classList.contains('active') && activeCardId) { 
+        const card = document.getElementById(`card-${activeCardId}`); 
+        if (card) { 
+            const headerHeight = document.querySelector('header')?.offsetHeight || 0; 
+            const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20; 
+            originalScrollTo.call(window, { top: targetY, behavior: 'smooth' }); 
+            return; 
+        } 
+    } 
+    originalScrollTo.apply(window, arguments); 
+};
 
 // [12] 그래프 토글
 function toggleGraph(button) { event.stopPropagation(); const graphContainer = button.nextElementSibling; const accordionBody = button.closest('.climate-accordion-body'); if (!graphContainer || !accordionBody) return; const isOpen = graphContainer.classList.toggle('open'); button.classList.toggle('active', isOpen); button.innerHTML = isOpen ? '🔼 닫기' : '📊 보기'; const currentAccordionHeight = parseInt(accordionBody.style.maxHeight || accordionBody.scrollHeight); const graphHeight = graphContainer.scrollHeight; if (isOpen) { graphContainer.style.maxHeight = graphHeight + "px"; accordionBody.style.maxHeight = (currentAccordionHeight + graphHeight) + "px"; } else { graphContainer.style.maxHeight = null; accordionBody.style.maxHeight = Math.max(0, currentAccordionHeight - graphHeight) + "px"; } }
-
-// [13] 시네마틱 포토 갤러리
-const galleryData = {}; 
-function openPhotoGallery(cardId, images) { const visiblePanel = document.getElementById('detail-content-area'); if (!visiblePanel) return; const card = visiblePanel.querySelector(`#${cardId}`); if (!card) return; galleryData[cardId] = { images: images, index: 0 }; updateGalleryImage(card, cardId); card.classList.add('photo-mode'); }
-function closePhotoGallery(cardId) { const visiblePanel = document.getElementById('detail-content-area'); const card = visiblePanel ? visiblePanel.querySelector(`#${cardId}`) : document.getElementById(cardId); if (card) card.classList.remove('photo-mode'); }
-function navigateGallery(cardId, direction) { const visiblePanel = document.getElementById('detail-content-area'); const card = visiblePanel.querySelector(`#${cardId}`); const data = galleryData[cardId]; if (!card || !data) return; data.index = (data.index + direction + data.images.length) % data.images.length; updateGalleryImage(card, cardId); }
-function updateGalleryImage(card, cardId) { const data = galleryData[cardId]; const currentImg = data.images[data.index]; const overlay = card.querySelector('.gallery-overlay'); const imgEl = card.querySelector('.gallery-img'); if (imgEl) imgEl.loading = "lazy"; const captionEl = card.querySelector('.gallery-caption h4'); if (imgEl && overlay) { imgEl.onload = () => { overlay.classList.remove('image-error'); imgEl.style.opacity = 1; }; imgEl.onerror = () => { overlay.classList.add('image-error'); }; imgEl.style.opacity = 0.5; imgEl.src = currentImg.src; if (captionEl) { const total = data.images.length; captionEl.innerText = total > 1 ? `${data.index + 1}/${total}. ${currentImg.title}` : currentImg.title; } } }
 
 // [14] 패널 라벨 업데이트
 function updateActiveLabel() { document.querySelectorAll('.nav-group').forEach(group => { const activeTab = group.querySelector('.sub-tab-btn.active'); if (activeTab) { const titleEl = activeTab.querySelector('.menu-title'); const iconEl = activeTab.querySelector('.menu-icon'); const labelText = titleEl ? (titleEl.innerText || titleEl.textContent || '').trim() : ''; const iconText = iconEl ? (iconEl.innerText || iconEl.textContent || '').trim() : ''; if (labelText) { group.setAttribute('data-active-tab', iconText + ' ' + labelText); } else { group.removeAttribute('data-active-tab'); } } else { group.removeAttribute('data-active-tab'); } }); }
@@ -735,8 +1153,14 @@ if (climateBandsBtn) {
 if (returnBtn) {
     returnBtn.addEventListener('click', returnToOrigin);
 }
-// [신규] 중분류 카드 자동 번호 매기기 함수
+
+// [수정] 중분류 카드 자동 번호 매기기 함수 (기후 섹션 예외 처리 추가)
 function autoNumberSubCards(container) {
+    // 1. 현재 활성화된 카드가 'climate'로 시작하면(기후 섹션이면) 즉시 종료
+    // 기후 섹션은 숫자가 아니라 이모지를 보여줘야 하기 때문입니다.
+    if (activeCardId && String(activeCardId).startsWith('climate')) return;
+
+    // 2. 그 외의 섹션(지형, 인문 등)은 기존대로 번호를 매김
     const subCards = container.querySelectorAll('.sub-region-card');
     subCards.forEach((card, index) => {
         const numberElement = card.querySelector('.sub-title-number');
@@ -745,64 +1169,7 @@ function autoNumberSubCards(container) {
         }
     });
 }
-// [신규] 카드 자동 생성 시스템 (표준형)
-function renderCards(containerId, dataObj) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
 
-    // 기존 수동 카드 제거 (안전장치)
-    // container.innerHTML = ''; // 일단은 주석 처리 (테스트 후 활성화)
-
-    Object.keys(dataObj).forEach(key => {
-        const data = dataObj[key];
-        const cardId = `card-${key}`;
-        
-        // 이미 존재하는 카드는 건너뜀 (중복 방지)
-        if (document.getElementById(cardId)) return;
-
-        const article = document.createElement('article');
-        article.className = 'region-card';
-        article.id = cardId;
-        article.onclick = (event) => activateCard(key, event);
-        
-        // 테마 색상 적용
-        article.style.setProperty('--theme', data.theme);
-
-        // SVG 아이콘 처리
-        let svgContent = '';
-        if (data.iconSVG) {
-            svgContent = `<svg class="card-bg-icon" viewBox="0 0 200 200">${data.iconSVG}</svg>`;
-        }
-
-        // 뱃지 처리 (로마자 등)
-        let badgeContent = '';
-        if (data.badge) {
-            // CSS 가상요소(::before)로 처리되던 것을 데이터 기반으로 변경하려면
-            // CSS 수정이 필요할 수 있으나, 일단 기존 구조를 유지하기 위해
-            // style.css의 .header-content h2::before { content: counter(...) } 와 충돌하지 않게
-            // 별도 처리는 하지 않고, CSS counter-reset을 활용합니다.
-            // 다만, data.js에 badge가 명시된 경우 이를 활용하는 커스텀 로직이 필요할 수 있습니다.
-            // 현재 CSS는 순서대로 I, II, III...를 매기므로, 데이터 순서만 맞으면 자동 해결됩니다.
-        }
-
-        // 내부 HTML 조립
-        article.innerHTML = `
-            ${svgContent}
-            <div class="card-header">
-                <div class="header-content">
-                    <h2>${data.title}</h2>
-                    <p>${data.subtitle}</p>
-                </div>
-                <div class="expand-icon">▼</div>
-            </div>
-            <div class="hidden-data">
-                ${generatePanelContent(data)}
-            </div>
-        `;
-
-        container.appendChild(article);
-    });
-}
 
 // [신규] 기후 카드 전용 렌더링 함수 (고산/특수 기후 구분선 제거 적용)
 function renderClimateCards(containerId, dataObj) {
@@ -977,6 +1344,7 @@ function renderClimateCards(containerId, dataObj) {
 /* [최종 수정] 모바일 햄버거 메뉴 기능 (v2.0)            */
 /* ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+    renderCards('maps-grid', mapsData);
     const desktopNav = document.querySelector('.nav-tabs');
     const mobileNavContent = document.getElementById('mobile-nav-content');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -1100,4 +1468,63 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ... 추후 다른 섹션 추가
 });
+// [신규] 모바일 페이지네이션 생성 및 연동 함수 (매번 실행됨)
+// [수정] 모바일 페이지네이션 생성 및 연동 함수 (스크롤 끝 감지 로직 추가)
+function setupMobilePagination(contentArea) {
+    // 1. 모바일 환경이 아니면 중단
+    if (window.innerWidth > 1024) return;
+
+    const panelGrid = contentArea.querySelector('.panel-grid');
+    if (!panelGrid) return;
+
+    // 2. 기존 점 제거
+    const oldDots = document.querySelector('.pagination-dots');
+    if (oldDots) oldDots.remove();
+
+    // 3. 카드 개수 확인
+    const cards = panelGrid.querySelectorAll('.sub-region-card');
+    if (cards.length === 0) return;
+
+    // 4. 점 컨테이너 생성
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'pagination-dots';
+    
+    // 5. 카드 개수만큼 점 만들기
+    cards.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = i === 0 ? 'dot active' : 'dot';
+        dotsContainer.appendChild(dot);
+    });
+
+    const panel = document.getElementById('detail-panel-template');
+    panel.appendChild(dotsContainer);
+
+    // 6. 스크롤 이벤트 (핵심 수정)
+    panelGrid.onscroll = () => {
+        const scrollLeft = panelGrid.scrollLeft;
+        const scrollWidth = panelGrid.scrollWidth;
+        const clientWidth = panelGrid.clientWidth;
+        const cardWidth = cards[0].offsetWidth + 15; 
+        
+        // [핵심] 스크롤이 끝에 닿았는지 확인 (오차범위 5px 허용)
+        const isAtEnd = (scrollLeft + clientWidth) >= (scrollWidth - 5);
+
+        let activeIndex;
+
+        if (isAtEnd) {
+            // 끝에 닿았다면 무조건 마지막 점 활성화
+            activeIndex = cards.length - 1;
+        } else {
+            // 아니라면 기존대로 왼쪽 기준 계산
+            activeIndex = Math.round(scrollLeft / cardWidth);
+        }
+        
+        // 점 상태 업데이트
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((d, i) => {
+            if (i === activeIndex) d.classList.add('active');
+            else d.classList.remove('active');
+        });
+    };
+}
 
