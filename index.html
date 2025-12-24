@@ -57,7 +57,8 @@
     <nav class="nav-tabs">
         <!-- 1. HOME -->
         <button class="tab-btn active" onclick="switchSection('home')"><span class="menu-icon">🏠</span>HOME</button>
-        
+
+        <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리 정보</button>        
         <!-- 2. 세계의 권역 -->
         <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의 권역</button>
         
@@ -239,7 +240,12 @@
         <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
     </main>
 </section>
-
+<!-- [신규] 1.7 지도와 지리 정보 섹션 -->
+<section id="section-maps" class="content-section">
+    <main class="grid-container" id="maps-grid">
+        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+    </main>
+</section>
 <!-- 2. 지역지리 섹션 (데이터 이식 완료) -->
 <section id="section-geo" class="content-section">
     <!-- 배경 지도 레이어 -->
