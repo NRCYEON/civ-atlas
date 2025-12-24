@@ -2805,3 +2805,47 @@ body {
 .inline-gallery-container.single-mode .gallery-slide {
     cursor: default;
 }
+
+/* [신규] 중분류 카드 내부 메타데이터 그리드 (PC 기본) */
+.sub-card-criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* PC는 1fr로 넉넉하게 */
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px 0;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+.sub-card-criteria-grid .criteria-item {
+    display: flex;
+    align-items: flex-start;
+    min-width: 0; /* 자식 요소 폭주 방지 기본 설정 */
+}
+
+.sub-card-criteria-grid .criteria-icon {
+    margin-right: 8px;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.sub-card-criteria-grid .criteria-content {
+    flex: 1;
+    min-width: 0; /* 텍스트 박스 폭주 방지 */
+}
+
+.sub-card-criteria-grid .criteria-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    color: var(--text-primary);
+}
+
+.sub-card-criteria-grid .criteria-text {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}

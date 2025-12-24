@@ -184,22 +184,20 @@ const bgModal = document.getElementById('bg-modal');
 const returnBtn = document.getElementById('return-jump-btn'); // [추가] 돌아가기 버튼 객체
 
 /* ========================================================================== */
-/* [최종 수정] 패널 콘텐츠 생성 함수 (중분류 메타데이터 2열 그리드 강제 적용)   */
+/* [최종 수정] 패널 콘텐츠 생성 함수 (인라인 스타일 제거 및 클래스 기반 제어) */
 /* ========================================================================== */
 window.generatePanelContent = function(data, cardId) {
     let html = '';
 
-    // (1) 상단 기준 (Criteria) - 패널 전체 설명
+    // (1) 상단 기준 (Criteria)
     if (data.criteria) {
         if (data.criteria.isSpecial) {
-            // 특수 기준 (인구 등)
             html += `<div class="panel-criteria-group"><button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText || '지도 보기'}</button><div class="criteria-wrapper"><div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">`;
             data.criteria.items.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
             html += `</div></div>`;
             if (data.criteria.image) html += `<div class="climate-map-area"><img src="${data.criteria.image}" class="climate-map-img"></div>`;
             html += `</div>`;
         } else if (Array.isArray(data.criteria)) {
-            // 일반 기준
             const colCount = data.criteria.length;
             html += `<div class="panel-criteria-group" style="display: grid; grid-template-columns: repeat(${colCount}, 1fr) !important; gap: 15px; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px dashed rgba(0,0,0,0.1);">`;
             data.criteria.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
@@ -207,25 +205,20 @@ window.generatePanelContent = function(data, cardId) {
         }
     }
 
-    // (2) 하위 카드 (Sub Cards) 생성
+    // (2) 하위 카드 (Sub Cards)
     html += `<div class="panel-grid">`;
     if (data.subCards) {
         data.subCards.forEach((card, index) => {
-            // 고유 ID 생성
             const subCardId = `sub-card-${cardId}-${index}`;
             
-            // 갤러리 이미지 후보군 생성
             let collectedImages = [];
             const subCardIndex = index + 1;
-
-            // 1. 대표 이미지
             collectedImages.push({
                 src: `images/gallery/${cardId}-${subCardIndex}.webp`,
                 title: card.title,
                 isMain: true
             });
 
-            // 2. 개별 아이템 이미지
             if (card.items) {
                 card.items.forEach((item, itemIndex) => {
                     const textOnly = item.name.replace(/<[^>]*>?/gm, '');
@@ -237,7 +230,6 @@ window.generatePanelContent = function(data, cardId) {
                 });
             }
             
-            // 갤러리 등록
             if (window.InlineGallery) {
                 window.InlineGallery.register(subCardId, collectedImages);
             }
@@ -253,13 +245,11 @@ window.generatePanelContent = function(data, cardId) {
                     <button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">📷</button>
                 </div>
 
-                <!-- 갤러리 컨테이너 -->
                 <div id="gallery-${subCardId}" class="inline-gallery-container"></div>
                 
-                <!-- [핵심 수정] 중분류 내부 메타데이터 (Criteria) 렌더링 -->
-                <!-- !important를 사용하여 CSS 파일의 flex 설정을 무시하고 2열 그리드를 강제합니다 -->
+                <!-- [수정됨] 인라인 스타일 제거, 전용 클래스(sub-card-criteria-grid) 사용 -->
                 ${card.criteria ? `
-                <div class="panel-criteria-group" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; margin-bottom: 20px; padding: 15px 0; border-top: 1px dashed rgba(0,0,0,0.1); border-bottom: 1px dashed rgba(0,0,0,0.1);">
+                <div class="sub-card-criteria-grid">
                     ${card.criteria.map(c => `
                     <div class="criteria-item">
                         <span class="criteria-icon">${c.icon}</span>
@@ -270,7 +260,6 @@ window.generatePanelContent = function(data, cardId) {
                     </div>`).join('')}
                 </div>` : ''}
                 
-                <!-- 리스트 아이템 -->
                 <ul class="detail-list">`;
             
             if (card.items) {
@@ -288,6 +277,7 @@ window.generatePanelContent = function(data, cardId) {
 
     return html;
 };
+
     // [1] 섹션 전환 기능 (모바일 활성화 오류 수정)
 function switchSection(sectionId) {
     const body = document.body;
