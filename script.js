@@ -822,6 +822,47 @@ function closeAllPanels(event) {
     });
 
     document.body.style.background = '';
+    // [배경 복구 로직 시작]
+    const currentSection = document.querySelector('.content-section.active');
+    const currentId = currentSection ? currentSection.id.replace('section-', '') : '';
+    
+    // 섹션별 배경 이미지 매핑 (switchSection 함수와 동일)
+    const bgMapForReset = { 
+        'home': "url('images/world-map-main.webp')", 
+        'maps': "url('images/maps-bg.webp')",
+        'ocean': "url('images_ocean/ocean-bg.webp')", 
+        'terrain': "url('images/world-physical-map.webp')", 
+        'climate': "url('images/world-climate.webp')", 
+        'special': "url('images/special.webp')", 
+        'soil': "url('images/soil-bg.webp')", 
+        'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
+        'freshwater': "url('images/freshwater.webp')", 
+        'agriculture': "url('images_human/agri.webp')",
+        'livestock': "url('images_human/livestock.webp')", 
+        'resources': "url('images_human/resources.webp')", 
+        'energy': "url('images_human/energy.webp')", 
+        'population': "url('images_human/population.webp')",
+        'industry': "url('images_human/industry.webp')", 
+        'city': "url('images_human/city.webp')", 
+        'language': "url('images_human/language.webp')",
+        'rural': "url('images/rural.webp')",
+        'urban': "url('images/urban.webp')",
+        'economic': "url('images/economic.webp')",
+        'geopolitics': "url('images/geopolitics.webp')", 
+        'religion': "url('images_human/religion.webp')" 
+    };
+
+    if (currentId === 'geo') {
+        document.body.style.background = 'none';
+    } else if (bgMapForReset[currentId]) {
+        document.body.style.backgroundImage = bgMapForReset[currentId];
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    } else {
+        document.body.style.backgroundColor = '#f5f7fa';
+    }
+    // [배경 복구 로직 끝]
     // (배경 복구 로직 생략 - 기존 유지)
 
     if (detailPanel.classList.contains('open')) {
