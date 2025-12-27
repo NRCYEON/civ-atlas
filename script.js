@@ -1377,7 +1377,8 @@ function renderCloudGrid(containerId, dataObj) {
             }
 
             // 이미지 경로 자동 생성
-            const imageName = cloud.english.toLowerCase() + ".webp";
+            // [수정] 파일명이 대문자로 시작한다면 toLowerCase()를 제거해야 함
+            const imageName = cloud.english + ".webp"; 
             card.style.setProperty('--bg-image', `url('images/${imageName}')`);
 
             // 태그 생성
