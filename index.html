@@ -54,149 +54,180 @@
 </head>
 <body>
 <header>
-    <nav class="nav-tabs">
-        <!-- 1. HOME -->
-        <button class="tab-btn active" onclick="switchSection('home')"><span class="menu-icon">🏠</span>HOME</button>
-
-        <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리 정보</button>        
-        <!-- 2. 세계의 권역 -->
-        <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의 권역</button>
+    <!-- [신규] 헤더 컨테이너: 좌우 분할을 위해 flex 적용 -->
+    <div class="header-container">
         
-        <!-- 3. 자연지리 그룹 -->
-        <div class="nav-group">
-            <button class="group-btn"><span class="menu-icon">🏔️</span>세계의 자연지리▼</button>
-            <div class="sub-menu">
-                <button class="sub-tab-btn" onclick="switchSection('terrain')">
-                    <span class="menu-icon">⛰️</span>
-                    <span class="text-group">
-                        <span class="menu-title">세계의 대지형</span>
-                        <span class="menu-desc">문명이 뿌리내린 터전</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('special')">
-                    <span class="menu-icon">🏜️</span>
-                    <span class="text-group">
-                        <span class="menu-title">다양한 특수 지형</span>
-                        <span class="menu-desc">자연이 조각한 천연의 예술품</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('freshwater')">
-                    <span class="menu-icon">🏞️</span>
-                    <span class="text-group">
-                        <span class="menu-title">담수 시스템</span>
-                        <span class="menu-desc">대지를 적시는 혈관, 문명을 키운 젖줄</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('ocean')">
-                    <span class="menu-icon">🌊</span>
-                    <span class="text-group">
-                        <span class="menu-title">대양과 바다</span>
-                        <span class="menu-desc">대륙을 가르고 이은 거대한 연결</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('climate')">
-                    <span class="menu-icon">🌡️</span>
-                    <span class="text-group">
-                        <span class="menu-title">세계의 기후</span>
-                        <span class="menu-desc">문명의 색채를 그린 지구 시스템</span>
-                    </span>
-                </button>
-            </div>
+        <!-- 1. 좌측: 로고형 HOME 버튼 -->
+        <div class="header-left">
+            <button class="logo-btn" onclick="switchSection('home')">
+                <span class="logo-icon">🌐</span>
+                <span class="logo-text">문명의 아틀라스</span>
+            </button>
         </div>
 
-        <!-- 4. 인문지리 그룹 -->
-        <div class="nav-group">
-            <button class="group-btn"><span class="menu-icon">🏛️</span>세계의 인문지리▼</button>
-            <div class="sub-menu">
-                <button class="sub-tab-btn" onclick="switchSection('population')">
-    <span class="menu-icon">👨‍👩‍👧‍👦</span>
-    <span class="text-group">
-        <span class="menu-title">세계의 인구</span>
-        <span class="menu-desc">문명의 주체, 인류의 분포와 흐름</span>
-    </span>
-</button>   
-                <button class="sub-tab-btn" onclick="switchSection('agriculture')">
-                    <span class="menu-icon">🌾</span>
-                    <span class="text-group">
-                        <span class="menu-title">세계의 농업</span>
-                        <span class="menu-desc">인류를 지탱하는 가장 위대한 노동</span>
-                    </span>
-                </button>
-
-                <button class="sub-tab-btn" onclick="switchSection('livestock')">
-    <span class="menu-icon">🐄</span>
-    <span class="text-group">
-        <span class="menu-title">가축과 목축업</span>
-        <span class="menu-desc">문명과 함께 진화한 동반자</span>
-    </span>
-</button>
-                <!-- [수정] 기존 자원 버튼 텍스트 변경 -->
-<button class="sub-tab-btn" onclick="switchSection('resources')">
-    <span class="menu-icon">⛏️</span>
-    <span class="text-group">
-        <span class="menu-title">지하 자원</span> <!-- 텍스트 변경 -->
-        <span class="menu-desc">문명을 세우고 일군 재료</span>
-    </span>
-</button>
-
-<!-- [신규] 에너지 버튼 추가 -->
-<button class="sub-tab-btn" onclick="switchSection('energy')">
-    <span class="menu-icon">⚡</span>
-    <span class="text-group">
-        <span class="menu-title">에너지와 발전</span>
-        <span class="menu-desc">세계를 움직이는 동력</span>
-    </span>
-</button>
-                <button class="sub-tab-btn" onclick="switchSection('industry')">
-                    <span class="menu-icon">🏭</span>
-                    <span class="text-group">
-                        <span class="menu-title">공업</span>
-                        <span class="menu-desc">도구의 진화가 부른 생산의 혁명</span>
-                    </span>
-                </button>     
-                <button class="sub-tab-btn" onclick="switchSection('city')">
-                    <span class="menu-icon">🏙️</span>
-                    <span class="text-group">
-                        <span class="menu-title">도시</span>
-                        <span class="menu-desc">인류가 건설한 거대한 문명의 집합체</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('language')">
-                    <span class="menu-icon">🗣️</span>
-                    <span class="text-group">
-                        <span class="menu-title">민족과 언어</span>
-                        <span class="menu-desc">생각과 문화를 전달하는 인류의 목소리</span>
-                    </span>
-                </button>
-                <button class="sub-tab-btn" onclick="switchSection('religion')">
-                    <span class="menu-icon">🛐</span>
-                    <span class="text-group">
-                        <span class="menu-title">종교</span>
-                        <span class="menu-desc">인간을 인류로 만든 거대한 사상</span>
-                    </span>
-                </button>
+        <!-- 2. 우측: 내비게이션 메뉴 -->
+        <nav class="header-right">
+            
+            <!-- [그룹 A] 기초 지리 (단일 섹션) -->
+            <div class="nav-cluster">
+                <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리 정보</button>
+                <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의 권역</button>
             </div>
-        </div>
-<!-- 5. 지리학의 탐구 그룹 (신설) -->
-        <div class="nav-group">
-            <button class="group-btn"><span class="menu-icon">🧭</span>지리학의 탐구▼</button>
-            <div class="sub-menu">
-                <button class="sub-tab-btn" onclick="switchSection('tourism')"><span class="menu-icon">✈️</span><span class="text-group"><span class="menu-title">여행과 관광 지리</span><span class="menu-desc">일상을 벗어나 새로운 공간으로</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('geopolitics')"><span class="menu-icon">🌐</span><span class="text-group"><span class="menu-title">지정학과 정치지리</span><span class="menu-desc">질서를 재편하는 보이지 않는 힘</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('conflict')"><span class="menu-icon">⚔️</span><span class="text-group"><span class="menu-title">갈등과 공존의 세계</span><span class="menu-desc">평화와 분쟁의 지정학</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('economic')"><span class="menu-icon">📈</span><span class="text-group"><span class="menu-title">경제 활동의 입지</span><span class="menu-desc">재화가 이동하는 법칙과 원리</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('rural')"><span class="menu-icon">🌾</span><span class="text-group"><span class="menu-title">촌락과 농업 공간</span><span class="menu-desc">인류 정착 생활의 원형</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('urban')"><span class="menu-icon">🏙️</span><span class="text-group"><span class="menu-title">도시의 시대적 변화</span><span class="menu-desc">시대 정신을 담아온 도시 공간</span></span></button>
-                <button class="sub-tab-btn" onclick="switchSection('cultural')"><span class="menu-icon">🎨</span><span class="text-group"><span class="menu-title">문화의 확산과 경관</span><span class="menu-desc">생각과 사상이 공간에 남긴 궤적</span></span></button>
+
+            <!-- 구분선 -->
+            <div class="nav-divider"></div>
+
+            <!-- [그룹 B] 심화 지리 (드롭다운 그룹) -->
+            <div class="nav-cluster">
+                <!-- 자연지리 -->
+                <div class="nav-group">
+                    <button class="group-btn"><span class="menu-icon">🏔️</span>세계의 자연지리▼</button>
+                    <div class="sub-menu">
+                        <button class="sub-tab-btn" onclick="switchSection('terrain')">
+                            <span class="menu-icon">⛰️</span>
+                            <span class="text-group">
+                                <span class="menu-title">세계의 대지형</span>
+                                <span class="menu-desc">문명이 뿌리내린 터전</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('special')">
+                            <span class="menu-icon">🏜️</span>
+                            <span class="text-group">
+                                <span class="menu-title">다양한 특수 지형</span>
+                                <span class="menu-desc">자연이 조각한 천연의 예술품</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('freshwater')">
+                            <span class="menu-icon">🏞️</span>
+                            <span class="text-group">
+                                <span class="menu-title">담수 시스템</span>
+                                <span class="menu-desc">대지를 적시는 혈관, 문명을 키운 젖줄</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('ocean')">
+                            <span class="menu-icon">🌊</span>
+                            <span class="text-group">
+                                <span class="menu-title">대양과 바다</span>
+                                <span class="menu-desc">대륙을 가르고 이은 거대한 연결</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('climate')">
+                            <span class="menu-icon">🌡️</span>
+                            <span class="text-group">
+                                <span class="menu-title">세계의 기후</span>
+                                <span class="menu-desc">문명의 색채를 그린 지구 시스템</span>
+                            </span>
+                        </button>
+                        <!-- [신규] 강수와 구름 버튼 -->
+                        <button class="sub-tab-btn" onclick="switchSection('cloud')">
+                            <span class="menu-icon">☁️</span>
+                            <span class="text-group">
+                                <span class="menu-title">강수와 구름의 유형</span>
+                                <span class="menu-desc">대기의 역동적인 파노라마</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('soil')">
+                            <span class="menu-icon">🟫</span>
+                            <span class="text-group">
+                                <span class="menu-title">세계의 토양</span>
+                                <span class="menu-desc">생명을 품은 대지의 피부</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 인문지리 -->
+                <div class="nav-group">
+                    <button class="group-btn"><span class="menu-icon">🏛️</span>세계의 인문지리▼</button>
+                    <div class="sub-menu">
+                        <button class="sub-tab-btn" onclick="switchSection('population')">
+                            <span class="menu-icon">👨‍👩‍👧‍👦</span>
+                            <span class="text-group">
+                                <span class="menu-title">세계의 인구</span>
+                                <span class="menu-desc">문명의 주체, 인류의 분포와 흐름</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('agriculture')">
+                            <span class="menu-icon">🌾</span>
+                            <span class="text-group">
+                                <span class="menu-title">세계의 농업</span>
+                                <span class="menu-desc">인류를 지탱하는 가장 위대한 노동</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('livestock')">
+                            <span class="menu-icon">🐄</span>
+                            <span class="text-group">
+                                <span class="menu-title">가축과 목축업</span>
+                                <span class="menu-desc">문명과 함께 진화한 동반자</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('resources')">
+                            <span class="menu-icon">⛏️</span>
+                            <span class="text-group">
+                                <span class="menu-title">지하 자원</span>
+                                <span class="menu-desc">문명을 세우고 일군 재료</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('energy')">
+                            <span class="menu-icon">⚡</span>
+                            <span class="text-group">
+                                <span class="menu-title">에너지와 발전</span>
+                                <span class="menu-desc">세계를 움직이는 동력</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('industry')">
+                            <span class="menu-icon">🏭</span>
+                            <span class="text-group">
+                                <span class="menu-title">공업</span>
+                                <span class="menu-desc">도구의 진화가 부른 생산의 혁명</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('city')">
+                            <span class="menu-icon">🏙️</span>
+                            <span class="text-group">
+                                <span class="menu-title">도시</span>
+                                <span class="menu-desc">인류가 건설한 거대한 문명의 집합체</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('language')">
+                            <span class="menu-icon">🗣️</span>
+                            <span class="text-group">
+                                <span class="menu-title">민족과 언어</span>
+                                <span class="menu-desc">생각과 문화를 전달하는 인류의 목소리</span>
+                            </span>
+                        </button>
+                        <button class="sub-tab-btn" onclick="switchSection('religion')">
+                            <span class="menu-icon">🛐</span>
+                            <span class="text-group">
+                                <span class="menu-title">종교</span>
+                                <span class="menu-desc">인간을 인류로 만든 거대한 사상</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 탐구 -->
+                <div class="nav-group">
+                    <button class="group-btn"><span class="menu-icon">🧭</span>지리학의 탐구▼</button>
+                    <div class="sub-menu" style="right: 0; left: auto;"> <!-- 오른쪽 끝 정렬 -->
+                        <button class="sub-tab-btn" onclick="switchSection('tourism')"><span class="menu-icon">✈️</span><span class="text-group"><span class="menu-title">여행과 관광 지리</span><span class="menu-desc">일상을 벗어나 새로운 공간으로</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('geopolitics')"><span class="menu-icon">🌐</span><span class="text-group"><span class="menu-title">지정학과 정치지리</span><span class="menu-desc">질서를 재편하는 보이지 않는 힘</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('conflict')"><span class="menu-icon">⚔️</span><span class="text-group"><span class="menu-title">갈등과 공존의 세계</span><span class="menu-desc">평화와 분쟁의 지정학</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('economic')"><span class="menu-icon">📈</span><span class="text-group"><span class="menu-title">경제 활동의 입지</span><span class="menu-desc">재화가 이동하는 법칙과 원리</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('rural')"><span class="menu-icon">🌾</span><span class="text-group"><span class="menu-title">촌락과 농업 공간</span><span class="menu-desc">인류 정착 생활의 원형</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('urban')"><span class="menu-icon">🏙️</span><span class="text-group"><span class="menu-title">도시의 시대적 변화</span><span class="menu-desc">시대 정신을 담아온 도시 공간</span></span></button>
+                        <button class="sub-tab-btn" onclick="switchSection('cultural')"><span class="menu-icon">🎨</span><span class="text-group"><span class="menu-title">문화의 확산과 경관</span><span class="menu-desc">생각과 사상이 공간에 남긴 궤적</span></span></button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
-    <!-- [신규] 모바일 전용 햄버거 버튼 -->
+
+        </nav>
+    </div>
+    
+    <!-- 모바일 버튼 (기존 유지) -->
     <button id="mobile-menu-btn" class="mobile-menu-toggle">
         <span class="hamburger-icon"></span>
     </button>
-    
-
 </header>
 <div id="mobile-nav-overlay"></div>
 <nav id="mobile-nav-panel">
@@ -240,6 +271,14 @@
         <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
     </main>
 </section>
+
+<!-- [신규] 1.8 세계의 토양 섹션 -->
+<section id="section-soil" class="content-section">
+    <main class="grid-container" id="soil-grid">
+        <!-- 자바스크립트가 soilData를 기반으로 카드를 생성합니다 -->
+    </main>
+</section>
+
 <!-- [신규] 1.7 지도와 지리 정보 섹션 -->
 <section id="section-maps" class="content-section">
     <main class="grid-container" id="maps-grid">
@@ -452,5 +491,51 @@
 <button id="return-jump-btn" class="return-jump-btn" title="이전 위치로 복귀">
     ↩️ 돌아가기
 </button>
+<!-- [수정] 심화 학습 아티클 모달 (이미지 위치 변경) -->
+<div id="article-modal" class="article-modal" onclick="closeArticleModal(event)">
+    <div class="article-content-box" onclick="event.stopPropagation()">
+        <button class="article-close-btn" onclick="closeArticleModal()">✕</button>
+        
+        <!-- 1. 제목 영역 -->
+        <div class="article-header">
+            <span class="article-badge">Deep Dive</span>
+            <h2 id="article-title">아티클 제목</h2>
+        </div>
+
+        <!-- 2. 이미지 영역 (제목 아래로 이동) -->
+        <div id="article-img-container" class="article-img-container">
+            <img id="article-img" src="" alt="Deep Dive Image">
+        </div>
+
+        <!-- 3. 본문 영역 -->
+        <div id="article-body" class="article-body">
+            <!-- 자바스크립트가 내용을 채웁니다 -->
+        </div>
+    </div>
+</div>
+<!-- [신규] 1.9 강수와 구름 섹션 -->
+<section id="section-cloud" class="content-section">
+    <!-- 하늘 배경과 구름들이 배치될 특수 컨테이너 -->
+    <div class="sky-container-wrapper">
+        <!-- 제트기류 (최상단) -->
+        <div id="jet-stream-layer">
+            <div class="jet-text-track">
+                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+            </div>
+        </div>
+        
+        <!-- 구름 그리드 -->
+        <main class="sky-grid-container" id="cloud-grid">
+            <!-- 자바스크립트가 구름과 기상 현상을 배치합니다 -->
+        </main>
+        <!-- [신규] 강수 유형 패널 (하단 추가) -->
+        <div id="precip-panel" class="precip-container">
+            <!-- 자바스크립트가 강수 카드를 채웁니다 -->
+        </div>
+    </div>
+</section>
 </body>
 </html>

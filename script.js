@@ -183,13 +183,11 @@ const bgBtn = document.getElementById('bg-view-btn');
 const bgModal = document.getElementById('bg-modal');
 const returnBtn = document.getElementById('return-jump-btn'); // [추가] 돌아가기 버튼 객체
 
-/* ========================================================================== */
-/* [최종 수정] 패널 콘텐츠 생성 함수 (인라인 스타일 제거 및 클래스 기반 제어) */
-/* ========================================================================== */
+/* [교체] 패널 콘텐츠 생성 함수 (기존 이미지 자동 연동) */
 window.generatePanelContent = function(data, cardId) {
     let html = '';
 
-    // (1) 상단 기준 (Criteria)
+    // (1) 상단 기준 (Criteria) - 기존 유지
     if (data.criteria) {
         if (data.criteria.isSpecial) {
             html += `<div class="panel-criteria-group"><button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText || '지도 보기'}</button><div class="criteria-wrapper"><div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">`;
@@ -210,30 +208,50 @@ window.generatePanelContent = function(data, cardId) {
     if (data.subCards) {
         data.subCards.forEach((card, index) => {
             const subCardId = `sub-card-${cardId}-${index}`;
+            const subCardIndex = index + 1;
+            
+            // [핵심] 이미지 경로 자동 생성 (기존 로직 활용)
+            // 중분류 대표 이미지 (Main)
+            const mainImageSrc = `images/gallery/${cardId}-${subCardIndex}.webp`;
             
             let collectedImages = [];
-            const subCardIndex = index + 1;
-            collectedImages.push({
-                src: `images/gallery/${cardId}-${subCardIndex}.webp`,
-                title: card.title,
-                isMain: true
-            });
+            collectedImages.push({ src: mainImageSrc, title: card.title, isMain: true });
+
+            // 세부 항목 이미지 경로 미리 생성하여 매핑
+            let itemImages = {}; 
 
             if (card.items) {
                 card.items.forEach((item, itemIndex) => {
                     const textOnly = item.name.replace(/<[^>]*>?/gm, '');
-                    collectedImages.push({
-                        src: `images/gallery/${cardId}-${subCardIndex}-${itemIndex + 1}.webp`,
-                        title: textOnly,
-                        isMain: false
-                    });
+                    // 세부 항목 이미지 (Sub)
+                    const itemImageSrc = `images/gallery/${cardId}-${subCardIndex}-${itemIndex + 1}.webp`;
+                    
+                    collectedImages.push({ src: itemImageSrc, title: textOnly, isMain: false });
+                    itemImages[itemIndex] = itemImageSrc; // 인덱스로 매핑해둠
                 });
             }
             
-            if (window.InlineGallery) {
-                window.InlineGallery.register(subCardId, collectedImages);
+            if (window.InlineGallery) { window.InlineGallery.register(subCardId, collectedImages); }
+
+            // [수정] 버튼 그룹 생성 (기존 갤러리 버튼 + 신규 딥다이브 버튼)
+            let btnGroupHTML = `<div class="sub-control-group">`;
+            
+            // 1. 신규 딥다이브 버튼 (아이콘만, 텍스트 제거)
+            if (card.deepDive) {
+                // 이미지 경로는 상단에서 생성된 mainImageSrc 사용
+                btnGroupHTML += `
+                <button class="sub-deep-dive-btn" onclick="openArticleModal(this)" title="심화 학습">
+                    📖
+                    <div class="hidden-article-content" data-title="${card.title}" data-image="${mainImageSrc}">${card.deepDive}</div>
+                </button>`;
             }
 
+            // 2. 기존 갤러리 버튼 (이 안으로 이동)
+            btnGroupHTML += `<button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">📷</button>`;
+            
+            btnGroupHTML += `</div>`;
+
+            // [수정] HTML 조립
             html += `
             <div class="sub-region-card" id="${subCardId}">
                 <div class="sub-title-group">
@@ -242,32 +260,38 @@ window.generatePanelContent = function(data, cardId) {
                         <h3 class="sub-title-heading">${card.title}</h3>
                         <p class="sub-title-description">${card.desc}</p>
                     </div>
-                    <button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">📷</button>
+                    <!-- 버튼 그룹 삽입 -->
+                    ${btnGroupHTML}
                 </div>
 
                 <div id="gallery-${subCardId}" class="inline-gallery-container"></div>
                 
-                <!-- [수정됨] 인라인 스타일 제거, 전용 클래스(sub-card-criteria-grid) 사용 -->
                 ${card.criteria ? `
                 <div class="sub-card-criteria-grid">
-                    ${card.criteria.map(c => `
-                    <div class="criteria-item">
-                        <span class="criteria-icon">${c.icon}</span>
-                        <div class="criteria-content">
-                            <span class="criteria-label">${c.label}</span>
-                            <span class="criteria-text">${c.text}</span>
-                        </div>
-                    </div>`).join('')}
+                    ${card.criteria.map(c => `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`).join('')}
                 </div>` : ''}
                 
                 <ul class="detail-list">`;
             
             if (card.items) {
-                card.items.forEach(item => {
+                card.items.forEach((item, itemIndex) => {
                     const linkedName = createSearchLink(item.name);
                     const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
                     const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
-                    html += `<li class="detail-item"><div class="detail-header"><span class="detail-name">${linkedName}</span><span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span></div>${metaInfo}<span class="detail-desc">${item.desc}</span></li>`;
+                    
+                    // [수정] 세부 항목 딥다이브 버튼 (자동 생성된 itemImages 사용)
+                    let itemDeepDiveBtn = '';
+                    if (item.deepDive) {
+                        // 해당 인덱스의 이미지 경로 가져오기
+                        const imgSrc = itemImages[itemIndex];
+                        itemDeepDiveBtn = `
+                        <span class="article-btn" onclick="openArticleModal(this)" title="심화 학습 읽기">
+                            📖
+                            <div class="hidden-article-content" data-title="${item.name}" data-image="${imgSrc}">${item.deepDive}</div>
+                        </span>`;
+                    }
+
+                    html += `<li class="detail-item"><div class="detail-header"><span class="detail-name">${linkedName}${itemDeepDiveBtn}</span><span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span></div>${metaInfo}<span class="detail-desc">${item.desc}</span></li>`;
                 });
             }
             html += `</ul></div>`;
@@ -288,6 +312,8 @@ function switchSection(sectionId) {
         'ocean': "url('images_ocean/ocean-bg.webp')", 
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
+        'soil': "url('images/soil-bg.webp')", 
+        'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
         'special': "url('images/special.webp')", 
         'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
@@ -790,6 +816,8 @@ function closeAllPanels(event) {
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
         'special': "url('images/special.webp')", 
+        'soil': "url('images/soil-bg.webp')", 
+        'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
         'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
         'livestock': "url('images_human/livestock.webp')", 
@@ -1340,191 +1368,171 @@ function renderClimateCards(containerId, dataObj) {
     });
 }
 
-/* ===================================================== */
-/* [최종 수정] 모바일 햄버거 메뉴 기능 (v2.0)            */
-/* ===================================================== */
+/* [신규] 구름 렌더링 함수 (독립 함수로 분리) */
+function renderCloudGrid(containerId, dataObj) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    // 데이터 그룹 순회 (상층 -> 중층 -> 하층 -> 수직)
+    const order = ["cloud-high", "cloud-mid", "cloud-low", "cloud-vertical"];
+
+    order.forEach(groupKey => {
+        const clouds = dataObj[groupKey];
+        if (!clouds) return;
+
+        clouds.forEach(cloud => {
+            const card = document.createElement('div');
+            // CSS 클래스 조합: 기본 + 행 위치 + (수직/성장 여부)
+            card.className = `cloud-card ${cloud.gridArea || ''}`;
+            
+            if (cloud.isVertical) {
+                card.classList.add('vertical-cloud');
+            }
+            if (cloud.isGrowing) {
+                card.classList.add('growing-cloud');
+            }
+
+            // 이미지 경로 자동 생성
+            const imageName = cloud.english.toLowerCase() + ".webp";
+            card.style.setProperty('--bg-image', `url('images/${imageName}')`);
+
+            // 태그 생성
+            let tagsHTML = '';
+            if (cloud.phenomena) {
+                tagsHTML = cloud.phenomena.map(p => `<span class="phenomenon-tag">${p}</span>`).join('');
+            }
+
+            // 내용 주입
+            card.innerHTML = `
+                <div class="cloud-title-group">
+                    <h3 class="cloud-name">${cloud.name}</h3>
+                    <span class="cloud-english">${cloud.english}</span>
+                </div>
+                <p class="cloud-desc">${cloud.desc}</p>
+                <div class="cloud-phenomena">${tagsHTML}</div>
+            `;
+            
+            container.appendChild(card);
+        });
+    });
+}
+
+/* [최종 통합] 페이지 로딩 및 초기화 */
 document.addEventListener('DOMContentLoaded', () => {
-    renderCards('maps-grid', mapsData);
-    const desktopNav = document.querySelector('.nav-tabs');
-    const mobileNavContent = document.getElementById('mobile-nav-content');
+    
+    // 1. 모든 데이터 렌더링 실행
+    if (typeof geoData !== 'undefined') renderCards('main-grid', geoData);
+    if (typeof terrainData !== 'undefined') renderCards('terrain-grid', terrainData);
+    if (typeof specialData !== 'undefined') renderCards('special-grid', specialData);
+    if (typeof freshwaterData !== 'undefined') renderCards('freshwater-grid', freshwaterData);
+    if (typeof oceanData !== 'undefined') renderCards('ocean-grid', oceanData);
+    if (typeof climateData !== 'undefined') renderClimateCards('climate-main-grid', climateData);
+    if (typeof populationData !== 'undefined') renderCards('population-grid', populationData);
+    if (typeof agricultureData !== 'undefined') renderCards('agriculture-grid', agricultureData);
+    if (typeof livestockData !== 'undefined') renderCards('livestock-grid', livestockData);
+    if (typeof resourcesData !== 'undefined') renderCards('resources-grid', resourcesData);
+    if (typeof energyData !== 'undefined') renderCards('energy-grid', energyData);
+    if (typeof industryData !== 'undefined') renderCards('industry-grid', industryData);
+    if (typeof cityData !== 'undefined') renderCards('city-grid', cityData);
+    if (typeof languageData !== 'undefined') renderCards('language-grid', languageData);
+    if (typeof religionData !== 'undefined') renderCards('religion-grid', religionData);
+    if (typeof tourismData !== 'undefined') renderCards('tourism-grid', tourismData);
+    if (typeof geopoliticsData !== 'undefined') renderCards('geopolitics-grid', geopoliticsData);
+    if (typeof conflictData !== 'undefined') renderCards('conflict-grid', conflictData);
+    if (typeof economicData !== 'undefined') renderCards('economic-grid', economicData);
+    if (typeof ruralData !== 'undefined') renderCards('rural-grid', ruralData);
+    if (typeof urbanData !== 'undefined') renderCards('urban-grid', urbanData);
+    if (typeof culturalData !== 'undefined') renderCards('cultural-grid', culturalData);
+    if (typeof soilData !== 'undefined') renderCards('soil-grid', soilData);
+    if (typeof mapsData !== 'undefined') renderCards('maps-grid', mapsData);
+    
+    // [중요] 구름 섹션 렌더링 호출
+    if (typeof cloudData !== 'undefined') renderCloudGrid('cloud-grid', cloudData);
+    if (typeof precipData !== 'undefined') renderPrecipitation('precip-panel', precipData);
+
+
+    // 2. 모바일 메뉴 기능 초기화
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileCloseBtn = document.getElementById('mobile-close-btn');
     const overlay = document.getElementById('mobile-nav-overlay');
     const panel = document.getElementById('mobile-nav-panel');
+    const mobileNavContent = document.getElementById('mobile-nav-content');
 
-    if (!desktopNav || !mobileNavContent) return;
+    if (!mobileMenuBtn || !mobileNavContent) return;
 
-    // 1. 데스크톱 메뉴 복사 (한 번만 실행)
-    mobileNavContent.innerHTML = desktopNav.innerHTML;
+    // 데스크톱 메뉴 복사 및 재조립
+    const allDesktopItems = document.querySelectorAll('.header-left .logo-btn, .header-right .tab-btn, .header-right .nav-group');
+    let mobileMenuHTML = '';
+    allDesktopItems.forEach(item => {
+        if (item.classList.contains('logo-btn')) {
+            const homeBtn = document.createElement('button');
+            homeBtn.className = 'tab-btn active'; 
+            homeBtn.setAttribute('onclick', "switchSection('home')");
+            homeBtn.innerHTML = `<span class="menu-icon">🏠</span>HOME`;
+            mobileMenuHTML += homeBtn.outerHTML;
+        } else {
+            mobileMenuHTML += item.outerHTML;
+        }
+    });
+    mobileNavContent.innerHTML = mobileMenuHTML;
 
+    // 메뉴 열고 닫는 함수
     const openMenu = () => {
         panel.classList.add('active');
         overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // 뒷배경 스크롤 방지
+        document.body.style.overflow = 'hidden';
     };
-
     const closeMenu = () => {
         panel.classList.remove('active');
         overlay.classList.remove('active');
-        document.body.style.overflow = ''; // 스크롤 방지 해제
+        document.body.style.overflow = '';
     };
 
-    // 2. 이벤트 리스너 연결
+    // 이벤트 연결
     mobileMenuBtn.addEventListener('click', openMenu);
     mobileCloseBtn.addEventListener('click', closeMenu);
     overlay.addEventListener('click', closeMenu);
 
-    // 3. 메뉴 항목 클릭 시 자동 닫기 및 아코디언 기능
+    // 패널 내부 클릭 동작
     mobileNavContent.addEventListener('click', (e) => {
         const targetButton = e.target.closest('button');
         if (!targetButton) return;
 
-        // 그룹 버튼(아코디언 토글)일 경우
         if (targetButton.classList.contains('group-btn')) {
             const currentGroup = targetButton.closest('.nav-group');
-            // 다른 열려있는 그룹은 닫기
             mobileNavContent.querySelectorAll('.nav-group.open').forEach(group => {
-                if (group !== currentGroup) {
-                    group.classList.remove('open');
-                }
+                if (group !== currentGroup) group.classList.remove('open');
             });
-            // 현재 그룹 토글
             currentGroup.classList.toggle('open');
-        } 
-        // 일반 메뉴 버튼(섹션 이동)일 경우
-        else {
+        } else {
             closeMenu();
         }
     });
 });
-
-// 페이지 로드 시 실행
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. 세계의 권역 (geo) 렌더링
-    renderCards('main-grid', geoData);
+/* [신규] 강수 유형 렌더링 함수 */
+function renderPrecipitation(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
     
-    // 2. 세계의 대지형 (terrain) 렌더링
-    renderCards('terrain-grid', terrainData);
+    container.innerHTML = '';
     
-    // 3. 세계의 특수 지형 (special) 렌더링
-    renderCards('special-grid', specialData);
-    
-    // 4. 담수 시스템 (freshwater) 렌더링
-    renderCards('freshwater-grid', freshwaterData);
-    
-    // 5. [신규] 대양과 바다 (ocean) 렌더링
-    renderCards('ocean-grid', oceanData);
-
-    // 6. [신규] 세계의 기후 (climate) 렌더링
-    renderClimateCards('climate-main-grid', climateData);
-
-    // 7. [신규] 세계의 인구 (population) 렌더링
-    renderCards('population-grid', populationData);
-
-    // 8. [신규] 농업과 목축업 (agriculture) 렌더링
-    renderCards('agriculture-grid', agricultureData);
-
-    // [신규] 가축과 목축업 (livestock) 렌더링 (추가)
-    renderCards('livestock-grid', livestockData);
-
-    // 9. [신규] 지하 자원 (resources) 렌더링
-    renderCards('resources-grid', resourcesData);
-
-    // 10. [신규] 에너지와 발전 (energy) 렌더링
-    renderCards('energy-grid', energyData);
-
-    // 11. [신규] 공업 (industry) 렌더링
-    renderCards('industry-grid', industryData);
-
-    // 12. [신규] 도시 (city) 렌더링
-    renderCards('city-grid', cityData);
-
-    // 13. [신규] 민족과 언어 (language) 렌더링
-    renderCards('language-grid', languageData);
-
-    // 14. [신규] 종교 (religion) 렌더링
-    renderCards('religion-grid', religionData);
-
-    // 15. [신규] 여행과 관광 지리 (tourism) 렌더링
-    renderCards('tourism-grid', tourismData);
-
-    // 16. [신규] 지정학과 정치지리 (geopolitics) 렌더링
-    renderCards('geopolitics-grid', geopoliticsData);
-
-    // 17. [신규] 갈등과 공존의 세계 (conflict) 렌더링
-    renderCards('conflict-grid', conflictData);
-
-    // 18. [신규] 경제 활동의 입지 (economic) 렌더링
-    renderCards('economic-grid', economicData);
-
-    // 19. [신규] 촌락과 농업 공간 (rural) 렌더링
-    renderCards('rural-grid', ruralData);
-
-    // 20. [신규] 도시의 시대적 변화 (urban) 렌더링
-    renderCards('urban-grid', urbanData);
-
-    // 21. [신규] 문화의 확산과 경관 (cultural) 렌더링
-    renderCards('cultural-grid', culturalData);
-    
-    // ... 추후 다른 섹션 추가
-});
-// [신규] 모바일 페이지네이션 생성 및 연동 함수 (매번 실행됨)
-// [수정] 모바일 페이지네이션 생성 및 연동 함수 (스크롤 끝 감지 로직 추가)
-function setupMobilePagination(contentArea) {
-    // 1. 모바일 환경이 아니면 중단
-    if (window.innerWidth > 1024) return;
-
-    const panelGrid = contentArea.querySelector('.panel-grid');
-    if (!panelGrid) return;
-
-    // 2. 기존 점 제거
-    const oldDots = document.querySelector('.pagination-dots');
-    if (oldDots) oldDots.remove();
-
-    // 3. 카드 개수 확인
-    const cards = panelGrid.querySelectorAll('.sub-region-card');
-    if (cards.length === 0) return;
-
-    // 4. 점 컨테이너 생성
-    const dotsContainer = document.createElement('div');
-    dotsContainer.className = 'pagination-dots';
-    
-    // 5. 카드 개수만큼 점 만들기
-    cards.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = i === 0 ? 'dot active' : 'dot';
-        dotsContainer.appendChild(dot);
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'precip-card';
+        
+        card.innerHTML = `
+            <div class="precip-header">
+                <h3 class="precip-title">${item.title}</h3>
+                <span class="precip-meta">${item.meta}</span>
+            </div>
+            <p class="precip-desc">${item.desc}</p>
+            <div class="precip-related">
+                <span class="related-label">연관 구름:</span> ${item.related}
+            </div>
+        `;
+        
+        container.appendChild(card);
     });
-
-    const panel = document.getElementById('detail-panel-template');
-    panel.appendChild(dotsContainer);
-
-    // 6. 스크롤 이벤트 (핵심 수정)
-    panelGrid.onscroll = () => {
-        const scrollLeft = panelGrid.scrollLeft;
-        const scrollWidth = panelGrid.scrollWidth;
-        const clientWidth = panelGrid.clientWidth;
-        const cardWidth = cards[0].offsetWidth + 15; 
-        
-        // [핵심] 스크롤이 끝에 닿았는지 확인 (오차범위 5px 허용)
-        const isAtEnd = (scrollLeft + clientWidth) >= (scrollWidth - 5);
-
-        let activeIndex;
-
-        if (isAtEnd) {
-            // 끝에 닿았다면 무조건 마지막 점 활성화
-            activeIndex = cards.length - 1;
-        } else {
-            // 아니라면 기존대로 왼쪽 기준 계산
-            activeIndex = Math.round(scrollLeft / cardWidth);
-        }
-        
-        // 점 상태 업데이트
-        const dots = dotsContainer.querySelectorAll('.dot');
-        dots.forEach((d, i) => {
-            if (i === activeIndex) d.classList.add('active');
-            else d.classList.remove('active');
-        });
-    };
 }
-

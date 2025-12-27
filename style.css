@@ -15,88 +15,147 @@
         transition: background 0.6s ease-in-out;
     }
 
-    /* [수정] 헤더를 '서리 낀 반투명 유리' 효과로 변경 */
+/* [전면 개편] 헤더 레이아웃 (좌측 로고 / 우측 메뉴) */
 header {
     position: sticky; top: 0; z-index: 1000;
-    
-    /* --- 불투명도 조절 영역 --- */
-    /* background: rgba(255, 255, 255, 0.3) !important;  <-- 이 숫자를 0.0 ~ 1.0 사이로 조절하세요 (예: 0.9) */
-    background: rgba(255, 255, 255, 0.7); 
-    /* --- ------------------ --- */
-    
-    /* 뒤에 비치는 배경을 더 밝고 화사하게 보정 */
-backdrop-filter: blur(1px) saturate(180%) brightness(1.2); 
--webkit-backdrop-filter: blur(1px) saturate(180%) brightness(1.2);
-    
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
     border-bottom: 1px solid rgba(0,0,0,0.05);
     padding: 0;
-    display: flex; flex-direction: column; align-items: center;
     transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+    width: 100%; /* 전체 너비 */
 }
 
-    /* [핵심] 마우스 오버 또는 하위 메뉴 활성 시 헤더 공간 확장 */
-    header:not(.header-shrunk):has(.nav-group:hover),
-    header:not(.header-shrunk):has(.sub-tab-btn.active) {
-        padding-bottom: 35px; /* 2단 메뉴가 들어갈 공간 확보 */
-    }
+/* 헤더 컨테이너: 좌우 분할의 핵심 */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    height: 60px;
+    padding: 0; /* 좌우 패딩 제거 */
+    box-sizing: border-box;
+}
 
-    /* 카드가 열려서 헤더가 줄어들었을 때 클릭 방지 해제 (중요 수정) */
-    /* [복구 완료] 카드가 열리면 헤더를 얇은 줄(약 1cm)로 축소 */
-    header.header-shrunk { 
-        height: 15px !important; /* 얇은 줄의 두께 설정 */
-        padding: 0 !important;   /* 위아래 여백 제거 */
-        overflow: hidden;        /* 내부 메뉴 글자 숨김 */
-        border-bottom: 1px solid rgba(0,0,0,0.1); /* 하단 경계선은 유지 */
-        pointer-events: auto;    
-    }
+/* 1. 좌측: 로고 영역 (좌측 패딩 추가) */
+.header-left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 0px; /* 로고 좌측 여백 확보 */
+}
 
-    /* 줄어든 헤더 내부의 메뉴 내용물은 투명하게 처리 */
-    header.header-shrunk .nav-tabs,
-    header.header-shrunk .sub-menu {
-        opacity: 0 !important; 
-        visibility: hidden !important; 
-        pointer-events: none;
-    }
-
-    .nav-tabs {
-        display: flex; gap: 30px; justify-content: center;
-        padding: 15px 0; width: 100%; position: relative; z-index: 2;
-        height: 60px; align-items: center;
-    }
-
-    /* 1단 메뉴 버튼 */
-    /* 1단 메뉴 버튼 (초기화) */
-    .tab-btn, .group-btn {
-    background: transparent; border: none; padding: 5px 10px;
-    font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 700;
-    /* [수정] 기본 글씨색에 80% 투명도 적용 */
-    color: color-mix(in srgb, var(--text-primary) 80%, transparent);
+.logo-btn {
+    background: transparent;
+    border: none;
     cursor: pointer;
-    position: relative; 
-    /* [핵심 수정] 버튼을 투명 다리보다 훨씬 위로 올려서 클릭 씹힘 방지 */
-    z-index: 5000; 
-    transition: all 0.3s;
-border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    height: 100%;
+    transition: transform 0.2s;
 }
-/* [추가] 1단 메뉴에 마우스를 올리면 옅은 배경색으로 히트박스 표시 */
-    .tab-btn:hover, .group-btn:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
-    .tab-btn:hover, .group-btn:hover,
-    .tab-btn.active, .group-btn.active,
-    .nav-group:hover .group-btn,
-    .nav-group:has(.sub-tab-btn.active) .group-btn { 
-        color: var(--text-primary); 
-    }
-    
-    /* 1단 메뉴 밑줄 (활성 상태) */
-    .tab-btn.active::after,
-    .nav-group:has(.sub-tab-btn.active) .group-btn::after {
-        content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 3px;
-        background: var(--text-primary); border-radius: 2px;
-    }
+.logo-btn:hover { transform: scale(1.02); }
 
+.logo-icon { font-size: 1.8rem; line-height: 1; }
+.logo-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
+
+/* 2. 우측: 내비게이션 영역 (우측 패딩 추가) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 100%;
+    padding-right: 0px; /* 메뉴 우측 여백 확보 */
+}
+
+/* 메뉴 그룹 (Cluster) */
+.nav-cluster {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 버튼 간 간격 */
+    height: 100%;
+}
+
+/* 구분선 */
+.nav-divider {
+    width: 1px;
+    height: 18px;
+    background-color: rgba(0,0,0,0.15);
+    margin: 0 5px;
+}
+
+/* 버튼 스타일 재정의 */
+.tab-btn, .group-btn {
+    background: transparent; border: none;
+    height: 100%; /* 헤더 높이 꽉 채우기 */
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    margin: 0;
+    font-family: 'Noto Serif KR', serif; 
+    font-size: 1.05rem; 
+    font-weight: 700;
+    color: color-mix(in srgb, var(--text-primary) 70%, transparent); /* 기본 연하게 */
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    border-radius: 8px; /* 호버 시 배경 둥글게 */
+}
+
+/* 아이콘 간격 */
+.menu-icon { margin-right: 6px; font-size: 1.1rem; }
+
+/* 호버 및 활성 상태 */
+.tab-btn:hover, .group-btn:hover,
+.tab-btn.active, .group-btn.active,
+.nav-group:hover .group-btn,
+.nav-group:has(.sub-tab-btn.active) .group-btn {
+    color: var(--text-primary); /* 진하게 */
+    background-color: rgba(0,0,0,0.04); /* 연한 배경 */
+}
+
+/* 드롭다운 메뉴 위치 조정 */
+.sub-menu {
+    top: 80px; /* 헤더 바로 아래 */
+    right: 0;  /* 우측 정렬 */
+    left: auto; /* 좌측 정렬 해제 */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* 헤더 확장 (드롭다운 열릴 때) */
+header:not(.header-shrunk):has(.nav-group:hover),
+header:not(.header-shrunk):has(.sub-tab-btn.active) {
+    padding-bottom: 0; /* 기존 패딩 제거 (드롭다운이 덮는 방식) */
+}
+
+/* 헤더 축소 시 (스크롤 내렸을 때) */
+header.header-shrunk {
+    height: 50px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+header.header-shrunk .header-container {
+    height: 50px !important;
+}
+header.header-shrunk .logo-text {
+    font-size: 1.2rem;
+}
+header.header-shrunk .header-right {
+    opacity: 0; pointer-events: none; /* 메뉴 숨김 */
+}
     /* 그룹 컨테이너 */
     /* [패널 개선] 수직 드롭다운 및 활성 탭 고정 스타일 */
 .nav-group {
@@ -134,10 +193,28 @@ border-radius: 8px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto; /* 다시 클릭 가능 상태로 복구 */
-    transform: translateY(0);
+    transform: translateY(25);
     
     /* 열릴 때는 부드럽게 등장 */
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* [신규] 드롭다운 메뉴 호버 끊김 방지용 '투명 다리' */
+.nav-group::before {
+    content: '';
+    position: absolute;
+    top: 100%; /* 메뉴 버튼 바로 아래부터 시작 */
+    left: 0;
+    width: 100%;
+    height: 10px; /* 추가 판정 영역의 높이 (틈의 크기) */
+    
+    background: transparent; /* 눈에는 보이지 않음 */
+    display: none; /* 평소에는 숨겨 둠 */
+}
+
+/* 마우스를 올렸을 때만 '투명 다리'를 활성화 */
+.nav-group:hover::before {
+    display: block;
 }
 
 .sub-tab-btn {
@@ -211,30 +288,57 @@ border-radius: 8px;
 
 .sub-tab-btn.active .menu-desc { color: #fff; opacity: 0.8; }
 
-/* [핵심] 활성화된 항목이 헤더 확장 공간에 남는 스타일 */
-/* [패널 개선] 활성 라벨 스타일: 폰트 통일 및 볼드 해제 */
+/* [재수정] 밑줄: 글자 바로 아래에 위치 */
+.tab-btn.active::after,
+.nav-group:has(.sub-tab-btn.active) .group-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; 
+    left: 10px;
+    right: 10px;
+    width: auto;
+    height: 3px;
+    background: var(--text-primary);
+    z-index: 10;
+}
+
+/* [재수정] 알약: 밑줄 바로 아래에 딱 붙임 */
 .nav-group::after {
     content: attr(data-active-tab);
     position: absolute;
-    top: 60px;
+    /* 밑줄(bottom: 15px) 바로 아래인 bottom: -15px 지점 */
+    /* top 기준으로는 헤더 높이(60px) - 15px + 알파 */
+    top: 45px; 
     left: 50%;
     transform: translateX(-50%);
+    
     background: var(--text-primary);
     color: #fff;
-    padding: 4px 12px;
-    border-radius: 20px;
-    /* 폰트 통일 및 굵기 조절 */
-    font-family: 'Noto Serif KR', serif; 
-    font-size: 1.0rem;
-    font-weight: 400; /* 볼드 해제 (일반 굵기) */
+    padding: 4px 10px;
+    border-radius: 12px;
+    
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.9rem;
+    font-weight: 400;
     white-space: nowrap;
+    
     opacity: 0;
     transition: opacity 0.3s;
     pointer-events: none;
+    z-index: 2000;
 }
 
+/* 활성 상태일 때만 표시 */
 .nav-group:has(.sub-tab-btn.active)::after {
-    opacity: 1; /* 활성 항목이 있을 때만 표시 */
+    opacity: 1;
+}
+
+/* [수정] 헤더 높이 자동 확장 (PC 전용으로 격리) */
+@media (min-width: 1025px) {
+    header:not(.header-shrunk):has(.sub-tab-btn.active) {
+        height: auto;
+        padding-bottom: 25px; /* 알약이 들어갈 공간만큼 헤더를 늘림 */
+    }
 }
 
 /* 헤더 높이 확장 유지 */
@@ -2376,7 +2480,7 @@ body.bg-geopolitics {
     background: linear-gradient(135deg, var(--panel-theme, #2d3436) 0%, #2d3436 100%);
     color: #fff;
     border: none;
-    padding: 6px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-family: 'Pretendard', sans-serif;
     font-weight: 400; /* [수정] 600 -> 400 (볼드체 제거, 얇게) */
@@ -2848,4 +2952,474 @@ body {
     font-size: 0.9rem;
     line-height: 1.4;
     color: var(--text-secondary);
+}
+
+/* [신규] 심화 학습 아티클 모달 스타일 */
+.article-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+    z-index: 20000; display: none; opacity: 0;
+    align-items: center; justify-content: center;
+    transition: opacity 0.3s ease;
+}
+.article-modal.show { display: flex; opacity: 1; }
+
+.article-content-box {
+    background: #fff; width: 800px; max-width: 90%; max-height: 85vh;
+    border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    overflow: hidden; display: flex; flex-direction: column;
+    position: relative; animation: slideUp 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.article-close-btn {
+    position: absolute; top: 20px; right: 20px;
+    background: transparent; border: none; font-size: 1.5rem;
+    cursor: pointer; color: #636e72; transition: color 0.2s;
+}
+.article-close-btn:hover { color: #2d3436; }
+
+.article-header {
+    padding: 40px 40px 20px 40px; border-bottom: 1px solid #eee; background: #f8f9fa;
+}
+.article-badge {
+    display: inline-block; background: #2d3436; color: #fff;
+    font-size: 0.8rem; font-weight: 700; padding: 4px 10px;
+    border-radius: 20px; margin-bottom: 10px; font-family: 'Inter', sans-serif;
+}
+.article-header h2 {
+    margin: 0; font-family: 'Noto Serif KR', serif; font-size: 2rem;
+    color: #2d3436; line-height: 1.3;
+}
+.article-body {
+    padding: 40px; overflow-y: auto; font-size: 1.05rem;
+    line-height: 1.8; color: #2d3436; font-family: 'Pretendard', sans-serif;
+}
+.article-body h3 {
+    font-size: 1.4rem; margin-top: 30px; margin-bottom: 15px;
+    color: #2d3436; border-left: 4px solid var(--panel-theme, #3498db);
+    padding-left: 15px;
+}
+.article-body p { margin-bottom: 20px; text-align: justify; word-break: keep-all; }
+.article-body ul { margin-bottom: 20px; padding-left: 20px; }
+.article-body li { margin-bottom: 10px; }
+.article-body strong { color: #000; font-weight: 700; background: linear-gradient(to top, #ffeaa7 50%, transparent 50%); }
+
+/* 리스트 내 책 아이콘 버튼 */
+.article-btn {
+    cursor: pointer; margin-left: 8px; font-size: 1.1rem;
+    transition: transform 0.2s; display: inline-block; vertical-align: middle;
+}
+.article-btn:hover { transform: scale(1.2) rotate(10deg); }
+.hidden-article-content { display: none; }
+/* [수정] 아티클 모달 상단 이미지 스타일 */
+.article-img-container {
+    display: none; 
+    width: 100%;
+    height: 350px; /* 높이를 고정해야 contain 효과가 예쁘게 나옵니다 */
+    overflow: hidden;
+    background-color: #f8f9fa; /* 여백 부분의 배경색 (회색조) */
+    border-bottom: 1px solid #eee;
+    text-align: center; /* 이미지를 가운데 정렬 */
+}
+
+.article-img-container img {
+    width: 100%;
+    height: 100%;
+    
+    /* [핵심 수정] cover -> contain */
+    /* 비율을 유지하며 이미지를 다 보여줍니다. 남는 공간은 여백이 됩니다. */
+    object-fit: contain; 
+    
+    object-position: center;
+    display: block;
+}
+
+/* 본문 패딩 조정 (이미지와 간격 확보) */
+.article-body {
+    padding: 30px 40px 40px 40px; /* 상단 패딩을 조금 줄임 */
+    /* 나머지 속성 유지 */
+    overflow-y: auto; font-size: 1.05rem;
+    line-height: 1.8; color: #2d3436; font-family: 'Pretendard', sans-serif;
+}
+
+/* [신규] 중분류 카드용 딥다이브 버튼 (갤러리 버튼과 유사한 스타일) */
+.sub-deep-dive-btn {
+    background: transparent;
+    border: 1px solid var(--panel-theme, #2d3436);
+    color: var(--panel-theme, #2d3436);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    margin-left: 8px; /* 갤러리 버튼과의 간격 */
+}
+
+.sub-deep-dive-btn:hover {
+    background: var(--panel-theme, #2d3436);
+    color: #fff;
+}
+
+/* [신규] 중분류 버튼 그룹 컨테이너 (우측 상단 고정) */
+.sub-control-group {
+    position: absolute; /* 기존 갤러리 버튼의 위치 속성을 가져옴 */
+    top: 0;
+    right: 0;
+    display: flex;      /* 버튼들을 가로로 나열 */
+    gap: 5px;           /* 버튼 사이 간격 */
+    z-index: 10;
+}
+
+/* [중요] 그룹 안에 들어간 기존 갤러리 버튼의 절대 위치 속성 해제 */
+.sub-control-group .inline-gallery-btn {
+    position: static !important; /* absolute 무력화 */
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* [신규] 딥다이브 버튼 스타일 (아이콘만 표시) */
+.sub-deep-dive-btn {
+    background: transparent;
+    border: 1px solid #b2bec3;
+    color: #636e72;
+    border-radius: 50%; /* 원형 버튼 */
+    width: 32px;        /* 갤러리 버튼 높이와 맞춤 */
+    height: 32px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.sub-deep-dive-btn:hover {
+    background: var(--panel-theme, #2d3436);
+    color: #fff;
+    border-color: var(--panel-theme, #2d3436);
+    transform: translateY(-2px);
+}
+
+/* ===================================================== */
+/* [신규] 강수와 구름 섹션 전용 스타일 (Sky Grid)        */
+/* ===================================================== */
+
+/* 1. 섹션 전체 배경: 하늘 그라데이션 */
+#section-cloud.active {
+    /* 우주(검남색) -> 성층권(진파랑) -> 대류권(하늘색) -> 지표(흰색/연회색) */
+    background: linear-gradient(to bottom, #0f2027 0%, #203a43 20%, #2c5364 50%, #87CEEB 85%, #f7f9fc 100%) !important;
+    background-attachment: fixed !important;
+    padding-top: 80px; /* 헤더 공간 */
+    padding-bottom: 100px;
+    min-height: 150vh; /* 스크롤을 유도하기 위해 높이 확보 */
+}
+
+/* 2. 구름 그리드 컨테이너 */
+.sky-grid-container {
+    display: grid;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+    
+    /* [핵심] 4열 구조: 적운형 | 층운형 | 강수/현상 | 수직발달 */
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    
+    /* 행 구조: 제트기류(별도) | 상층 | 중층 | 하층 */
+    grid-template-rows: 200px 200px 250px; 
+    /* 높이는 구름의 두께감에 따라 조정 */
+}
+
+/* [재수정] 구름 카드 스타일 (텍스트 중앙 정렬 복구) */
+.cloud-card {
+    /* 기본 배경색 (유리 효과) */
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    padding: 20px;
+    
+    position: relative; /* 가상 요소 기준점 */
+    overflow: hidden;   /* 이미지 넘침 방지 */
+    
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    
+    /* [복구] 텍스트 중앙 정렬 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;     /* 다시 가운데로 */
+    text-align: center;      /* 텍스트도 가운데 정렬 */
+    
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* [핵심] 배경 이미지 레이어 (가상 요소) */
+.cloud-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+    /* JS에서 주입한 이미지 URL 사용 */
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* [마스킹] 좌상단(보임) -> 우하단(투명) */
+    -webkit-mask-image: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%);
+    mask-image: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%);
+    
+    z-index: 0;
+    opacity: 1.0; /* 이미지 선명도 */
+    transition: transform 0.5s ease;
+}
+
+/* 호버 시 이미지 확대 및 카드 부상 */
+.cloud-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.cloud-card:hover::before {
+    transform: scale(1.05);
+}
+
+/* 4. 특수 배치 (수직 발달 구름: 적란운) */
+.cloud-card.vertical-cloud {
+    grid-row: 1 / span 3;
+    grid-column: 4;
+    /* 적란운은 배경색을 좀 더 어둡게 */
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(0,0,0,0.2));
+    justify-content: flex-start;
+    padding-top: 40px;
+}
+
+/* 공백을 없애서 '해당 클래스를 가진 요소'를 선택해야 함 */
+.cloud-card.row-high { border-top: 3px solid rgba(255,255,255,0.8); }
+.cloud-card.row-mid { border-top: 3px solid rgba(129, 236, 236, 0.8); }
+.cloud-card.row-low { border-top: 3px solid rgba(116, 185, 255, 0.8); }
+
+/* 6. 텍스트 스타일 (이미지 위에 뜨도록 z-index 설정) */
+.cloud-title-group, .cloud-desc, .cloud-phenomena {
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.3); /* 가독성 확보 */
+}
+
+.cloud-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+
+.cloud-desc {
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 500;
+    line-height: 1.5;
+    word-break: keep-all;
+    margin-top: 8px;
+    opacity: 0.95;
+}
+
+/* 아이콘 삭제 */
+.cloud-icon { display: none; }
+
+/* 7. 기상 현상 태그 (강수 등) */
+.phenomenon-tag {
+    margin-top: 10px;
+    background: rgba(0,0,0,0.6);
+    color: #ffeb3b; /* 노란색 강조 */
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* [수정] 제트기류 레이어 스타일 */
+#jet-stream-layer {
+    width: 100%;
+    height: 50px; /* 높이 살짝 축소 */
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1); /* 옅은 배경 */
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    overflow: hidden; /* 글자가 밖으로 나가지 않게 */
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 흐르는 텍스트 트랙 */
+.jet-text-track {
+    display: flex;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    animation: jetStreamFlow 20s linear infinite; /* 20초 동안 천천히 흐름 */
+}
+
+/* 개별 텍스트 덩어리 */
+.jet-text-track span {
+    display: inline-block;
+    padding-right: 100px; /* 글자 간 간격 */
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.7); /* 은은한 흰색 */
+    font-family: 'Inter', sans-serif;
+}
+
+/* 애니메이션 정의: 왼쪽에서 오른쪽으로 흐름 (편서풍 방향) */
+@keyframes jetStreamFlow {
+    from { transform: translateX(-50%); } /* 중간부터 시작해서 */
+    to { transform: translateX(0%); }     /* 오른쪽으로 이동 */
+}
+
+/* 모바일 대응: 1열로 쭉 나열 */
+@media (max-width: 1024px) {
+    .sky-grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto; /* 높이 자동 */
+        gap: 15px;
+    }
+    .cloud-card.vertical-cloud {
+        grid-row: auto; /* 수직 관통 해제 */
+        grid-column: auto;
+        min-height: 300px;
+    }
+}
+
+/* [신규] 구름 제목 그룹 스타일 */
+.cloud-title-group {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+}
+
+/* 한국어 제목 (기존 스타일 유지) */
+.cloud-name {
+    margin-bottom: 2px !important; /* 아래 여백 줄임 */
+}
+
+/* [신규] 영어 명칭 스타일 */
+.cloud-english {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+}
+
+/* [재수정] 적운 전용 스타일 (찌그러짐 방지) */
+.cloud-card.growing-cloud {
+    /* 1. 크기 조절: transform 대신 직접 높이를 늘림 (120% 효과) */
+    height: 120%; 
+    margin-top: 5%; /* 중심을 맞추기 위해 위로 올림 */
+    
+    /* 2. 이동 및 회전: 이제 찌그러지지 않음 */
+    transform: translateX(275px) rotate(-2deg);
+    
+    z-index: 5;
+    background-color: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.15);
+}
+
+/* 텍스트 역보정 불필요 (scale을 안 썼으므로 제거) */
+/* .cloud-card.growing-cloud > * { ... } 삭제 */
+
+/* 호버 시: 회전과 쏠림을 유지한 채 위로 부상 */
+.cloud-card.growing-cloud:hover {
+    transform: translateX(275px) rotate(2deg) translateY(-10px);
+    z-index: 20;
+    box-shadow: 15px 20px 30px rgba(0,0,0,0.2);
+}
+
+/* [신규] 강수 유형 패널 스타일 */
+.precip-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4개 가로 나열 */
+    gap: 20px;
+    max-width: 1400px;
+    margin: 40px auto 0; /* 구름 그리드와 간격 */
+    padding: 0 20px;
+}
+
+.precip-card {
+    background: rgba(0, 0, 0, 0.4); /* 어두운 반투명 배경 */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    transition: transform 0.2s;
+}
+
+.precip-card:hover {
+    transform: translateY(-5px);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.precip-header {
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+}
+
+.precip-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 5px 0;
+}
+
+.precip-meta {
+    font-size: 0.8rem;
+    color: #ffd700; /* 노란색 강조 */
+    font-weight: 500;
+}
+
+.precip-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 15px;
+    word-break: keep-all;
+}
+
+.precip-related {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255,255,255,0.1);
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.related-label {
+    font-weight: 700;
+    color: #fff;
+    margin-right: 5px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 1024px) {
+    .precip-container {
+        grid-template-columns: 1fr; /* 세로로 쌓기 */
+    }
 }
