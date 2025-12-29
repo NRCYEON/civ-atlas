@@ -34,7 +34,7 @@ window.InlineGallery = {
             container.classList.remove('open');
             container.style.maxHeight = null;
             btn.classList.remove('active');
-            btn.innerHTML = '📷';
+            btn.innerHTML = '🖼️';
         } else {
             // 열기
             btn.classList.add('active');
@@ -247,7 +247,7 @@ window.generatePanelContent = function(data, cardId) {
             }
 
             // 2. 기존 갤러리 버튼 (이 안으로 이동)
-            btnGroupHTML += `<button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">📷</button>`;
+            btnGroupHTML += `<button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">🖼️</button>`;
             
             btnGroupHTML += `</div>`;
 
@@ -314,6 +314,7 @@ function switchSection(sectionId) {
         'climate': "url('images/world-climate.webp')", 
         'soil': "url('images/soil-bg.webp')", 
         'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
+        'earth-system': "black", // [신규] 우주 배경을 위해 검은색으로 시작 (CSS로 제어 예정)
         'special': "url('images/special.webp')", 
         'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
@@ -328,7 +329,10 @@ function switchSection(sectionId) {
         'urban': "url('images/urban.webp')",
         'economic': "url('images/economic.webp')",
         'geopolitics': "url('images/geopolitics.webp')", 
-        'religion': "url('images_human/religion.webp')" 
+        'religion': "url('images_human/religion.webp')",
+        'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
+        'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
+        'cultural': "url('images/cultural.webp')"      // 문화의 확산과 경관
     };
 
     body.style.background = ''; 
@@ -836,6 +840,7 @@ function closeAllPanels(event) {
         'special': "url('images/special.webp')", 
         'soil': "url('images/soil-bg.webp')", 
         'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
+        'earth-system': "black", // [신규] 우주 배경을 위해 검은색으로 시작 (CSS로 제어 예정)
         'freshwater': "url('images/freshwater.webp')", 
         'agriculture': "url('images_human/agri.webp')",
         'livestock': "url('images_human/livestock.webp')", 
@@ -849,7 +854,10 @@ function closeAllPanels(event) {
         'urban': "url('images/urban.webp')",
         'economic': "url('images/economic.webp')",
         'geopolitics': "url('images/geopolitics.webp')", 
-        'religion': "url('images_human/religion.webp')" 
+        'religion': "url('images_human/religion.webp')", 
+        'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
+        'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
+        'cultural': "url('images/cultural.webp')"      // 문화의 확산과 경관
     };
 
     if (currentId === 'geo') {
@@ -1344,12 +1352,16 @@ function renderClimateCards(containerId, dataObj) {
                 const linkedName = createSearchLink(item.name);
                 const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
                 
+                // [추가] 메타데이터가 있으면 HTML 생성, 없으면 빈 문자열
+                const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
+                
                 itemsHTML += `
                     <li class="detail-item">
                         <div class="detail-header">
                             <span class="detail-name">${linkedName}</span>
                             <span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span>
                         </div>
+                        ${metaInfo} <!-- [추가] 여기에 메타데이터 삽입 -->
                         <span class="detail-desc">${item.desc}</span>
                     </li>`;
             });
@@ -1604,4 +1616,81 @@ function setupMobilePagination(contentArea) {
             else d.classList.remove('active');
         });
     };
+}
+
+/* [복구] 아티클 모달 제어 함수 (Deep Dive) */
+function openArticleModal(btn) {
+    // 버튼 내부에 숨겨진 데이터 찾기
+    const hiddenContent = btn.querySelector('.hidden-article-content');
+    if (!hiddenContent) return;
+
+    // 데이터 추출
+    const title = hiddenContent.dataset.title;
+    const imageSrc = hiddenContent.dataset.image;
+    const bodyContent = hiddenContent.innerHTML;
+
+    // 모달 요소 가져오기
+    const modal = document.getElementById('article-modal');
+    const modalTitle = document.getElementById('article-title');
+    const modalImgContainer = document.getElementById('article-img-container');
+    const modalImg = document.getElementById('article-img');
+    const modalBody = document.getElementById('article-body');
+
+    if (modal && modalTitle && modalBody) {
+        // 내용 주입
+        modalTitle.innerHTML = title;
+        modalBody.innerHTML = bodyContent;
+
+        // 이미지 처리 (이미지가 있을 때만 표시)
+        if (imageSrc && imageSrc !== "undefined" && modalImgContainer && modalImg) {
+            modalImg.src = imageSrc;
+            modalImgContainer.style.display = 'block';
+        } else if (modalImgContainer) {
+            modalImgContainer.style.display = 'none';
+        }
+
+        // 모달 열기 (애니메이션 적용)
+        modal.style.display = 'flex';
+        requestAnimationFrame(() => {
+            modal.classList.add('show');
+        });
+        document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+    }
+}
+
+function closeArticleModal(event) {
+    const modal = document.getElementById('article-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        // 애니메이션(0.3초)이 끝난 뒤 display: none 처리
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // 스크롤 복구
+        }, 300);
+    }
+}
+
+/* [지구 시스템] 엘니뇨/라니냐 토글 */
+function setEnso(state) {
+    const container = document.querySelector('.earth-system-ocean-view');
+    const btns = document.querySelectorAll('.enso-controls button');
+    
+    // 클래스 초기화
+    container.classList.remove('elnino', 'lanina');
+    
+    // 버튼 활성 상태 초기화
+    btns.forEach(btn => btn.classList.remove('active'));
+    
+    // 상태 적용
+    if (state !== 'normal') {
+        container.classList.add(state);
+    }
+    
+    // 클릭한 버튼 활성화 (텍스트로 찾기)
+    const targetBtn = Array.from(btns).find(btn => {
+        if (state === 'normal') return btn.innerText === '평상시';
+        if (state === 'elnino') return btn.innerText === '엘니뇨';
+        if (state === 'lanina') return btn.innerText === '라니냐';
+    });
+    if (targetBtn) targetBtn.classList.add('active');
 }

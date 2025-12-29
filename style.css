@@ -3423,3 +3423,552 @@ body {
         grid-template-columns: 1fr; /* 세로로 쌓기 */
     }
 }
+
+/* [재수정] 기후 섹션 전용: 딥다이브 버튼만 숨김 (갤러리는 유지) */
+#section-climate .sub-deep-dive-btn {
+    display: none !important;
+}
+
+/* [핵심] 제목 우측 여백 축소 (강제 개행 해결) */
+/* 기존 110px(버튼 2개 공간) -> 40px(화살표 공간)로 줄여서 텍스트 공간 확보 */
+#section-climate .sub-title-heading {
+    padding-right: 40px !important; 
+    white-space: nowrap !important; /* 줄바꿈 금지 */
+}
+
+/* ===================================================== */
+/* [신규] 지구 시스템 섹션 전용 스타일 (Earth System)    */
+/* ===================================================== */
+
+/* 1. 섹션 전체 컨테이너 */
+#section-earth-system.active {
+    padding: 0 !important; /* 전체 화면을 쓰기 위해 패딩 제거 */
+    background-color: #000; /* 기본 배경 검정 */
+    overflow-x: hidden;
+}
+
+/* [제1구간] 우주 배경 및 별 */
+.earth-system-space-view {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(circle at 30% 30%, #1a1a2e 0%, #000000 80%);
+    overflow: hidden;
+    perspective: 1000px; /* 3D 효과를 위한 원근감 */
+}
+
+/* 별 (간단한 먼지 효과) */
+.space-stars {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    opacity: 0.8;
+}
+
+/* 지구 컨테이너 (위치 및 크기 재설정) */
+.earth-container {
+    position: absolute;
+    /* 
+       [위치 조절] 
+       bottom: 화면 아래에서 얼마나 떨어질지 (음수면 아래로 숨김)
+       right: 화면 오른쪽에서 얼마나 떨어질지 (음수면 오른쪽으로 숨김)
+    */
+    bottom: -15%; 
+    right: -5%;
+    
+    /* 
+       [크기 조절] 
+       SVG 좌표계(1000x1000)를 담기 위해 컨테이너를 키움 
+       글자가 잘리지 않도록 충분히 크게 설정
+    */
+    width: 1000px;
+    height: 1000px;
+    z-index: 10;
+    
+    /* 디버깅용: 영역 확인이 필요하면 아래 주석을 해제하세요 */
+    /* border: 1px solid red; */ 
+}
+
+/* 지구 본체 (구체) */
+.earth-sphere {
+    /* 컨테이너(1000px) 내에서 지구가 차지할 크기와 위치 */
+    width: 800px;  
+    height: 800px;
+    
+    /* 지구를 컨테이너의 오른쪽 아래로 밀어넣음 (왼쪽 상단 여백 확보용) */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    
+    border-radius: 50%;
+    background: #2c3e50;
+    box-shadow: -20px -20px 50px rgba(0,0,0,0.8) inset,
+                10px 10px 30px rgba(255,255,255,0.1) inset,
+                0 0 20px rgba(74, 144, 226, 0.3);
+    overflow: hidden;
+}
+
+/* 지구 텍스처 (지도 이미지) */
+/* 실제 이미지가 없으므로 그라데이션으로 대륙 느낌만 냄 */
+.earth-texture {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: url('images/world-map-clear.webp'); /* 기존 지도 재활용 */
+    background-size: cover;
+    opacity: 0.6;
+    animation: earth-rotate 60s linear infinite; /* 자전 효과 */
+}
+
+@keyframes earth-rotate {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* 대기권 (푸른 빛) */
+.earth-atmosphere {
+    position: absolute;
+    top: -10px; left: -10px; right: -10px; bottom: -10px;
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(74, 144, 226, 0.6) inset;
+    pointer-events: none;
+}
+
+/* 대기 대순환 SVG 오버레이 */
+.circulation-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 20;
+    /* transform: rotate(-15deg); <-- 회전 제거 */
+}
+
+.cell-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.8); /* 선명하게 */
+    stroke-width: 3; /* 굵게 */
+    stroke-dasharray: 15 10; /* 점선 간격 조정 */
+    animation: flow-dash 3s linear infinite;
+}
+
+/* [지구 시스템] 페렐 순환 역회전 (톱니바퀴 원리) */
+#ferrel-cell {
+    animation-name: flow-dash-reverse; /* 역방향 애니메이션 적용 */
+}
+
+@keyframes flow-dash-reverse {
+    to { stroke-dashoffset: 25; } /* 양수 값으로 이동 (반대 방향) */
+}
+
+/* [지구 시스템] 항상풍대 (바람 띠) 스타일 - 수정본 */
+.wind-bands-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 5;
+    opacity: 0.85; /* [수정] 0.7 -> 0.85 (조금 더 진하게) */
+    pointer-events: none;
+}
+
+.earth-system-space-view .wind-band {
+    position: absolute;
+    left: 0;
+    width: 60%; 
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 3px rgba(0,0,0,1);
+    box-sizing: border-box;
+    border-bottom: 1px dashed rgba(255,255,255,0.2); 
+}
+
+/* 기압대 텍스트 공통 스타일 */
+.pressure-label {
+    position: absolute;
+    left: 0;
+    width: 60%;
+    text-align: left;
+    /* [수정] 150px -> 360px (지구 위로 오도록 우측으로 대폭 이동) */
+    padding-left: 360px; 
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px #000, 0 0 5px #000;
+    z-index: 6;
+}
+
+/* 1. 극고압대 (맨 위) */
+.polar-high-label { top: 0%; }
+
+/* 2. 극동풍대 (위도 60~90도) */
+.earth-system-space-view .polar-easterlies {
+    top: 2%;
+    height: 15%;
+    /* [수정] 투명도 0.15 -> 0.3 (조금 더 진하게) */
+    background: linear-gradient(90deg, rgba(100, 200, 255, 0.3), transparent);
+    padding-left: 450px; 
+}
+
+/* 3. 한대전선대 (극동풍과 편서풍 사이) */
+.polar-front-label { top: 17%; transform: translateY(-50%); }
+
+/* 4. 편서풍대 (위도 30~60도) */
+.earth-system-space-view .westerlies {
+    top: 17%;
+    height: 18%;
+    /* [수정] 투명도 0.15 -> 0.3 */
+    background: linear-gradient(90deg, rgba(255, 100, 100, 0.3), transparent);
+    padding-left: 300px; 
+}
+
+/* 5. 아열대고압대 (편서풍과 무역풍 사이) */
+.subtropical-high-label { top: 35%; transform: translateY(-50%); }
+
+/* 6. 무역풍대 (위도 0~30도) */
+.earth-system-space-view .trade-winds {
+    top: 35%;
+    height: 18%;
+    /* [수정] 투명도 0.15 -> 0.3 */
+    background: linear-gradient(90deg, rgba(255, 200, 100, 0.3), transparent);
+    padding-left: 200px; 
+}
+
+/* 7. 열대수렴대 (맨 아래) */
+.itcz-label { top: 53%; }
+
+/* 바람 방향 애니메이션 (기존 유지) */
+.earth-system-space-view .wind-band span {
+    display: inline-block;
+    white-space: nowrap;
+}
+.earth-system-space-view .polar-easterlies span,
+.earth-system-space-view .trade-winds span {
+    animation: wind-flow-left 10s linear infinite;
+}
+.earth-system-space-view .westerlies span {
+    animation: wind-flow-right 10s linear infinite;
+}
+@keyframes wind-flow-left {
+    0% { transform: translateX(30px); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateX(-30px); opacity: 0; }
+}
+@keyframes wind-flow-right {
+    0% { transform: translateX(-30px); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateX(30px); opacity: 0; }
+}
+
+.cell-label {
+    fill: #fff;
+    font-size: 20px; /* 글자 크기 확대 */
+    font-weight: 700;
+    text-shadow: 0 0 10px #000, 0 0 5px #000; /* 그림자 강화 */
+    text-anchor: start; /* 왼쪽 정렬 */
+}
+
+@keyframes flow-dash {
+    to { stroke-dashoffset: -25; } /* 애니메이션 속도 조정 */
+}
+
+/* [지구 시스템] 열수지 및 에너지 불균형 - 재수정본 */
+.energy-balance-container {
+    position: absolute;
+    top: 0; 
+    left: 40%; 
+    width: 20%; 
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 공통 그룹 스타일 */
+.balance-group {
+    position: absolute;
+    left: 0; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 위치 잡기 (극지방을 하단으로 이동하여 잘림 방지) */
+.polar-balance { top: 20%; left: 80px; }   /* [수정] 10% -> 20% (아래로 내림) */
+.equator-balance { top: 60%; left: 0; }
+
+/* 화살표 컨테이너 */
+.balance-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 화살표 공통 */
+.arrow {
+    width: 250px;
+    border-radius: 4px;
+    opacity: 0.8; 
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    position: relative;
+    /* transform-origin 제거 (개별 적용) */
+}
+
+/* 입사 (노랑) */
+.arrow.input {
+    background: linear-gradient(to right, transparent, #f1c40f);
+}
+.arrow.input::after {
+    content: '▶'; 
+    position: absolute; 
+    right: -18px; /* [수정] 몸통에 딱 붙도록 조정 */
+    top: 50%; 
+    transform: translateY(-53%); /* [수정] 수직 중앙 정렬 미세 조정 */
+    color: #f1c40f; 
+    font-size: 35px; /* [수정] 머리 크기 확대 (20px -> 35px) */
+    line-height: 1;
+}
+
+/* 방출 (빨강) */
+.arrow.output {
+    background: linear-gradient(to left, transparent, #e74c3c);
+}
+.arrow.output::after {
+    content: '◀'; 
+    position: absolute; 
+    left: -18px; /* [수정] 몸통에 딱 붙도록 조정 */
+    top: 50%; 
+    transform: translateY(-53%); /* [수정] 수직 중앙 정렬 미세 조정 */
+    color: #e74c3c; 
+    font-size: 35px; /* [수정] 머리 크기 확대 (20px -> 35px) */
+    line-height: 1;
+}
+
+/* [복구] 기울어진 화살표 (극지방 방출용) */
+.arrow.tilted {
+    transform: rotate(30deg); /* [복구] 시계 방향 30도 회전 유지 */
+    transform-origin: right center; /* 지구 쪽을 축으로 회전 */
+    margin-bottom: 20px; 
+}
+
+/* [수정] 기울어진 화살표 머리 위치 보정 */
+.arrow.tilted::after {
+    left: -22px; /* 머리가 잘리지 않게 위치 조정 */
+    /* rotate 속성은 상위 요소(.arrow.tilted)에서 상속받으므로 여기서는 제외 */
+}
+
+
+/* 두께 조절 */
+.arrow.large { height: 30px; }
+.arrow.small { height: 20px; }
+
+/* 텍스트 설명 */
+.balance-text h3 {
+    margin: 0; color: #fff; font-size: 1.5rem;
+    text-shadow: 0 0 10px #000;
+    text-align: right; 
+}
+.balance-text p {
+    margin: 5px 0 0 0; color: #ccc; font-size: 0.9rem;
+    text-shadow: 0 0 5px #000;
+    text-align: right;
+}
+
+/* 열 수송 흐름선 (중간) */
+.heat-transport-flow {
+    position: absolute;
+    top: 40%; 
+    right: 0; 
+    height: 15%;
+    border-right: 3px dashed rgba(255, 255, 255, 0.5); 
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    padding-right: 20px;
+}
+
+.heat-transport-flow span {
+    color: #fff; font-weight: 700; font-size: 1.1rem;
+    text-shadow: 0 0 10px #000;
+    line-height: 1.4;
+    text-align: right;
+}
+
+.heat-transport-flow::before {
+    content: '▲'; 
+    position: absolute; top: -15px; right: -11px; 
+    color: rgba(255, 255, 255, 0.5); font-size: 20px;
+}
+
+/* [제2구간] 바다의 길 */
+.earth-system-ocean-view {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* 배경 지도 설정 */
+    background-image: url('images_ocean/ocean-bg.webp');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+/* 엘니뇨/라니냐 오버레이 (태평양 적도) */
+.enso-overlay {
+    position: absolute;
+    /* [수정] top 45% -> 50%, left 50% -> 40% (좌측으로 이동하여 태평양 중앙에 맞춤) */
+    top: 50%; left: 40%;
+    transform: translate(-50%, -50%);
+    width: 60%; height: 20%;
+    pointer-events: none;
+    transition: all 0.5s ease;
+    opacity: 0; 
+}
+
+/* 웜 풀 (수온 상승 구역) */
+.warm-pool {
+    position: absolute;
+    top: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(255, 50, 50, 0.6), transparent 70%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
+/* 상태별 스타일 */
+/* 엘니뇨: 동태평양(오른쪽) 수온 상승 */
+.earth-system-ocean-view.elnino .enso-overlay { opacity: 1; }
+.earth-system-ocean-view.elnino .warm-pool {
+    left: 50%; width: 40%; /* 동쪽으로 이동 */
+}
+.earth-system-ocean-view.elnino .enso-label::after { content: "무역풍 약화, 동태평양 수온 상승"; }
+
+/* 라니냐: 서태평양(왼쪽) 수온 과열 */
+.earth-system-ocean-view.lanina .enso-overlay { opacity: 1; }
+.earth-system-ocean-view.lanina .warm-pool {
+    left: 10%; width: 40%; /* 서쪽으로 이동 */
+    background: radial-gradient(ellipse at center, rgba(200, 0, 0, 0.8), transparent 70%); /* 더 진하게 */
+}
+.earth-system-ocean-view.lanina .enso-label::after { content: "무역풍 강화, 서태평양 수온 과열"; }
+
+/* 라벨 */
+.enso-label {
+    position: absolute;
+    bottom: -40px; width: 100%;
+    text-align: center;
+    color: #fff; font-weight: 700; font-size: 1.2rem;
+    text-shadow: 0 0 5px #000;
+}
+
+/* 컨트롤 패널 */
+.enso-controls {
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 30px;
+}
+
+.enso-controls button {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.enso-controls button.active {
+    background: #fff;
+    color: #000;
+}
+
+/* 정보 카드 (Glassmorphism) - 시인성 개선 */
+.ocean-card {
+    position: absolute;
+    /* [수정] 배경 투명도 0.6 -> 0.3 (조금 더 투명하게) */
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+    width: 175px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+    z-index: 10; 
+}
+.ocean-card:hover { transform: scale(1.05); background: rgba(0,0,0,0.6); }
+
+.ocean-card h3 { 
+    margin: 0 0 5px 0; 
+    font-size: 1rem; 
+    color: #ffd700; 
+    /* [수정] 제목 가운데 맞춤 */
+    text-align: center; 
+}
+.ocean-card p { 
+    margin: 0; 
+    font-size: 0.85rem; 
+    line-height: 1.4; 
+    text-align: center; /* [추가] 본문 가운데 정렬 */
+}
+
+/* 카드 위치 (지도 좌표에 맞춰 정밀 조정) */
+
+/* 1. 쿠로시오 (일본 근해 - 좌측 상단) */
+.kuroshio { top: 25%; left: 12%; } 
+
+/* 2. 캘리포니아 (북미 서안 - 중앙 상단) */
+.california { top: 18%; left: 30%; }
+
+/* 3. 페루 (남미 서안 - 중앙 하단) */
+.peru-current { top: 60%; left: 42%; }
+
+/* 4. 멕시코 만류 (북대서양 - 우측 상단) */
+/* [수정] 좌상단으로 미세 이동 (20%->18%, 60%->58%) */
+.gulf-stream { top: 18%; left: 58%; }
+
+/* 5. 남극 순환류 (남극해 - 하단 중앙) [신규] */
+.antarctic { top: 80%; left: 50%; transform: translateX(-50%); }
+/* 6. 소말리아 해류 (아프리카의 뿔 - 우측 상단) */
+.somali { top: 35%; left: 80%; }
+
+/* 7. 벵겔라 해류 (아프리카 남서안 - 우측 하단) */
+.benguela { top: 58%; left: 70%; }
+
+/* [해류별 호버 이동 효과 - 강도 3배 확대] */
+
+/* 1. 쿠로시오 (북동쪽 ↗) */
+.kuroshio:hover { transform: scale(1.01) translate(8px, -42px); }
+
+/* 2. 캘리포니아 (남동쪽 ↘) */
+.california:hover { transform: scale(1.01) translate(22px, 42px); }
+
+/* 3. 페루 (북서쪽 ↖) */
+.peru-current:hover { transform: scale(1.01) translate(8px, -42px); }
+
+/* 4. 멕시코 만류 (북동쪽 ↗) */
+.gulf-stream:hover { transform: scale(1.01) translate(15px, -32px); }
+
+/* 5. 소말리아 (북동쪽 ↗) */
+.somali:hover { transform: scale(1.01) translate(15px, -35px); }
+
+/* 6. 벵겔라 (북서쪽 ↖) */
+.benguela:hover { transform: scale(1.01) translate(-6px, -36px); }
+

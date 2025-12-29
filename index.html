@@ -111,6 +111,13 @@
                                 <span class="menu-desc">대륙을 가르고 이은 거대한 연결</span>
                             </span>
                         </button>
+                        <button class="sub-tab-btn" onclick="switchSection('earth-system')">
+    <span class="menu-icon">🌏</span>
+    <span class="text-group">
+        <span class="menu-title">지구 시스템</span>
+        <span class="menu-desc">대기와 해양의 거대한 순환</span>
+    </span>
+</button>
                         <button class="sub-tab-btn" onclick="switchSection('climate')">
                             <span class="menu-icon">🌡️</span>
                             <span class="text-group">
@@ -513,6 +520,162 @@
         </div>
     </div>
 </div>
+<!-- [신규] 1.45 지구 시스템 섹션 -->
+<section id="section-earth-system" class="content-section">
+    <!-- 제1구간: 우주에서 본 지구 (대기 대순환 & 열수지) -->
+    <div class="earth-system-space-view">
+        <div class="space-stars"></div> <!-- 별 배경 -->
+        
+        <!-- 중앙 컨테이너 -->
+        <div class="earth-container">
+            <!-- 1. 지구 본체 -->
+            <div class="earth-sphere">
+                <div class="earth-texture"></div>
+                
+                <!-- [신규] 항상풍대 (바람 띠) 및 기압대 -->
+                <div class="wind-bands-overlay">
+                    <!-- 1. 극고압대 (Polar High) -->
+                    <div class="pressure-label polar-high-label">극고압대</div>
+
+                    <!-- 2. 극동풍대 -->
+                    <div class="wind-band polar-easterlies">
+                        <span>↙↙ 극동풍 ↙↙</span>
+                    </div>
+
+                    <!-- 3. 한대전선대 (Polar Front) -->
+                    <div class="pressure-label polar-front-label">한대전선대</div>
+
+                    <!-- 4. 편서풍대 -->
+                    <div class="wind-band westerlies">
+                        <span>↗↗ 편서풍 ↗↗</span>
+                    </div>
+
+                    <!-- 5. 아열대고압대 (Subtropical High) -->
+                    <div class="pressure-label subtropical-high-label">아열대고압대</div>
+
+                    <!-- 6. 무역풍대 -->
+                    <div class="wind-band trade-winds">
+                        <span>↙↙ 무역풍 ↙↙</span>
+                    </div>
+
+                    <!-- 7. 열대수렴대 (ITCZ) -->
+                    <div class="pressure-label itcz-label">열대수렴대</div>
+                </div>
+
+                <div class="earth-shadow"></div>
+                <div class="earth-atmosphere"></div>
+            </div>
+
+            <!-- 2. 대기 대순환 도식 -->
+            <svg class="circulation-svg" viewBox="0 0 1000 1000">
+                
+                <!-- 1. 해들리 순환 (적도 부근) -->
+                <path id="hadley-cell" class="cell-path" 
+                      d="M 180,600 Q 120,530 180,460 Q 240,530 180,600" />
+                <text class="cell-label" x="100" y="550" text-anchor="end">해들리 순환</text>
+                
+                <!-- 2. 페렐 순환 (중위도) -->
+                <path id="ferrel-cell" class="cell-path" 
+                      d="M 200,440 Q 140,370 240,300 Q 280,370 200,440" />
+                <text class="cell-label" x="120" y="370" text-anchor="end">페렐 순환</text>
+                
+                <!-- 3. 극 순환 (고위도) - [수정] 우측으로 약 10도 기울임 -->
+                <!-- 기존: M 260,280 ... -->
+                <!-- 수정: 상단 제어점을 우측 하단으로 이동하여 곡률 맞춤 -->
+                <path id="polar-cell" class="cell-path" 
+                      d="M 260,280 Q 230,220 370,160 Q 390,240 260,280" />
+                <text class="cell-label" x="200" y="190" text-anchor="end">극 순환</text>
+            </svg>
+        </div>
+        
+        <!-- 3. 열수지 (에너지 불균형) -->
+        <div class="energy-balance-container">
+            <!-- 1. 극지방 (상단, 에너지 부족) -->
+            <div class="balance-group polar-balance">
+                <div class="balance-arrows">
+                    <!-- [수정] 방출(빨강)을 위로, 입사(노랑)를 아래로 순서 변경 -->
+                    <div class="arrow output large tilted" title="지구 복사 (많음)"></div>
+                    <div class="arrow input small" title="태양 복사 (적음)"></div>
+                </div>
+                <div class="balance-text">
+                    <h3>에너지 부족 (-)</h3>
+                    <p>고위도: 열 방출 > 열 흡수</p>
+                </div>
+            </div>           
+
+            <!-- 3. 적도 (하단, 에너지 과잉) -->
+            <div class="balance-group equator-balance">
+                <div class="balance-arrows">
+                    <div class="arrow input large" title="태양 복사 (많음)"></div>
+                    <div class="arrow output small" title="지구 복사 (적음)"></div>
+                </div>
+                <div class="balance-text">
+                    <h3>에너지 과잉 (+)</h3>
+                    <p>저위도: 열 흡수 > 열 방출</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 제2구간: 바다의 길 (해양 순환 & 엘니뇨) -->
+    <div class="earth-system-ocean-view">
+        <!-- 1. 배경 지도 (CSS로 처리) -->
+        
+        <!-- 2. 엘니뇨/라니냐 오버레이 (태평양 적도 부근) -->
+        <div id="enso-overlay" class="enso-overlay">
+            <div class="warm-pool"></div> <!-- 수온 상승 구역 -->
+            <div class="wind-arrow"></div> <!-- 바람 방향 -->
+            <div class="enso-label">평상시</div>
+        </div>
+
+        <!-- 3. 컨트롤 패널 -->
+        <div class="enso-controls">
+            <button onclick="setEnso('normal')" class="active">평상시</button>
+            <button onclick="setEnso('elnino')">엘니뇨</button>
+            <button onclick="setEnso('lanina')">라니냐</button>
+        </div>
+
+        <!-- 4. 해류 정보 카드 (주요 지점) -->
+        <div class="ocean-cards-container">
+            <!-- 멕시코 만류 -->
+            <div class="ocean-card gulf-stream">
+                <h3>멕시코 만류 (난류)</h3>
+                <p>서안해양성기후의 근원</p>
+            </div>
+            <!-- 페루 해류 -->
+            <div class="ocean-card peru-current">
+                <h3>페루 해류 (한류)</h3>
+                <p>용승 작용으로 황금 어장 형성<br>사막 기후 유발</p>
+            </div>
+            <!-- 쿠로시오 해류 -->
+            <div class="ocean-card kuroshio">
+                <h3>쿠로시오 해류 (난류)</h3>
+                <p>동아시아의 기후와 어업에<br>영향을 주는 검은 조류</p>
+            </div>
+            <!-- 캘리포니아 해류 -->
+            <div class="ocean-card california">
+                <h3>캘리포니아 해류 (한류)</h3>
+                <p>북미 서안에 서늘한 여름과<br>안개를 가져옴</p>
+            </div>
+            <!-- 남극 순환류 (신규 추가) -->
+            <div class="ocean-card antarctic">
+                <h3>남극 순환류 (한류)</h3>
+                <p>지구를 한 바퀴 도는<br>가장 거대한 해류</p>
+            </div>
+            <!-- 소말리아 해류 (인도양) -->
+            <div class="ocean-card somali">
+                <h3>소말리아 해류 (계절풍)</h3>
+                <p>계절풍에 따라 방향이 바뀌는<br>몬순 해류</p>
+            </div>
+            <!-- 벵겔라 해류 (남대서양) -->
+            <div class="ocean-card benguela">
+                <h3>벵겔라 해류 (한류)</h3>
+                <p>안개가 자욱한 해안 사막<br>나미브를 만든 한류</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- [신규] 1.9 강수와 구름 섹션 -->
 <section id="section-cloud" class="content-section">
     <!-- 하늘 배경과 구름들이 배치될 특수 컨테이너 -->

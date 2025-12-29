@@ -43,7 +43,7 @@ const mapsData = {
                 ]
             },
             {
-                title: "대항해시대의 길잡이", desc: "바다를 건너 제국을 건설하기 위한 도구",
+                title: "대항해시대의 세계지도", desc: "바다를 건너 제국을 건설하기 위한 도구",
                 criteria: [
                     { icon: "🧭", label: "기반", text: "나침반, 항해술" },
                     { icon: "🚢", label: "목적", text: "항로 개척, 무역" }
@@ -55,7 +55,7 @@ const mapsData = {
                 ]
             },
             {
-                title: "동양의 세계관", desc: "중화사상에서 근대적 과학 수용까지",
+                title: "동양의 고지도", desc: "중화사상에서 근대적 과학 수용까지",
                 criteria: [
                     { icon: "🇨🇳", label: "기반", text: "중화사상, 실학" },
                     { icon: "🌏", label: "변화", text: "세계 인식의 확장" }
@@ -110,7 +110,7 @@ const mapsData = {
                 ]
             },
             {
-                title: "방위와 기호의 역사", desc: "약속된 언어와 방향의 기준",
+                title: "방위와 기호", desc: "약속된 언어와 방향의 기준",
                 criteria: [
                     { icon: "⬆️", label: "방위", text: "문화적 관습" },
                     { icon: "🔑", label: "기호", text: "정보의 표준화" }
@@ -123,7 +123,7 @@ const mapsData = {
                 ]
             },
             {
-                title: "세 가지 북쪽", desc: "나침반이 가리키는 곳은 진짜 북쪽이 아니다",
+                title: "지도와 북쪽", desc: "나침반이 가리키는 곳은 진짜 북쪽이 아니다",
                 criteria: [
                     { icon: "★", label: "진북", text: "북극성" },
                     { icon: "🧭", label: "자북", text: "나침반" },
@@ -392,7 +392,69 @@ const mapsData = {
             { icon: "🛰️", label: "수집", text: "인공위성, 드론" },
             { icon: "📱", label: "활용", text: "내비게이션, 입지" }
         ],
-        subCards: []
+        subCards: [
+            {
+                title: "원격 탐사와 위성 항법", desc: "우주의 눈으로 지구를 기록하고 위치를 파악하다",
+                criteria: [
+                    { icon: "🛰️", label: "수집 수단", text: "인공위성, 드론" },
+                    { icon: "📡", label: "핵심 원리", text: "전자기파, 시차 계산" }
+                ],
+                items: [
+                    { name: "원격 탐사 (Remote Sensing)", examples: ["기상 위성", "구글 어스", "군사 정찰", "환경 감시"], meta: "🛰️ 비접촉 관측 · 📷 광범위 정보 수집", desc: "직접 가지 않고 인공위성이나 항공기를 이용해 멀리서 지구 표면의 정보를 수집하는 기술." },
+                    { name: "위성 항법 시스템 (GNSS)", examples: ["GPS(미국)", "갈릴레오(유럽)", "베이두(중국)", "글로나스"], meta: "📍 위치 결정 · ⏱️ 시간 동기화", desc: "인공위성에서 보내는 신호를 수신하여 지상물의 정확한 위치(좌표)와 시간을 파악하는 시스템." },
+                    { name: "드론과 항공 측량", examples: ["3D 지형 매핑", "재난 현장 파악", "정밀 농업"], meta: "✈️ 저고도 고해상도 · 🏗️ 국지적 정밀 지도", desc: "저고도에서 고해상도 데이터를 수집하여, 위성보다 정밀하고 신속하게 국지적인 지도를 제작." }
+                ]
+            },
+            {
+                title: "지리 정보 시스템 (GIS)", desc: "공간 데이터를 중첩하고 분석하여 의사결정을 내리는 뇌",
+                criteria: [
+                    { icon: "💻", label: "핵심 기능", text: "중첩(Layering), 분석" },
+                    { icon: "🧠", label: "데이터", text: "벡터(점/선/면), 래스터" }
+                ],
+                items: [
+                    { 
+                        name: "중첩 분석 (Layering)", 
+                        examples: ["입지 선정", "환경 영향 평가", "재해 위험도"], 
+                        meta: "📚 레이어 결합 · 🔍 복합적 의사결정", 
+                        desc: "지형, 도로, 인구 등 서로 다른 정보를 투명 비닐처럼 겹쳐서 최적지나 위험 지역 등 새로운 정보를 도출.",
+                        deepDive: `
+                            <h3>지도로 전염병을 잡다: 존 스노우와 콜레라</h3>
+                            <p>1854년 런던 소호 지구에서 콜레라가 창궐하여 수백 명이 사망했습니다. 당시 사람들은 전염병이 '나쁜 공기(미아즈마)'를 통해 퍼진다고 믿었습니다. 하지만 의사 <strong>존 스노우(John Snow)</strong>의 생각은 달랐습니다.</p>
+                            
+                            <p>그는 런던 지도를 펼쳐 놓고 <strong>사망자의 위치를 점으로 표시</strong>하기 시작했습니다. 그러자 놀라운 패턴이 드러났습니다. 사망자들이 특정 거리의 <strong>공용 물 펌프</strong> 주변에 집중되어 있었던 것입니다. 그는 당국을 설득해 해당 펌프의 손잡이를 제거했고, 거짓말처럼 콜레라 확산이 멈췄습니다.</p>
+                            
+                            <p>이 사건은 지도가 단순히 '위치'를 보여주는 그림이 아니라, <strong>데이터를 공간적으로 분석하여 문제를 해결하는 도구</strong>가 될 수 있음을 증명했습니다. 이것이 바로 현대 <strong>GIS(지리 정보 시스템)</strong>의 시초이자, 공간 역학(Spatial Epidemiology)의 탄생입니다.</p>
+                        `
+                    },
+                    { name: "벡터와 래스터", examples: ["행정구역도(벡터)", "위성사진(래스터)", "디지털 지도"], meta: "📐 점/선/면 vs 🔲 픽셀", desc: "현실 세계를 명확한 경계를 가진 도형(벡터)이나 연속적인 격자무늬(래스터)로 디지털화하여 표현하는 방식." },
+                    { name: "입지 선정과 공간 분석", examples: ["편의점 출점", "119 최단 경로", "쓰레기 매립지"], meta: "🏪 상권 분석 · 🚒 네트워크 분석", desc: "데이터에 기반하여 시설물의 최적 위치를 찾거나, 출발지에서 목적지까지의 가장 효율적인 경로를 계산." }
+                ]
+            },
+            {
+                title: "위치 기반 서비스 (LBS)", desc: "스마트폰을 통해 우리 일상과 실시간으로 상호작용하는 지도",
+                criteria: [
+                    { icon: "📱", label: "플랫폼", text: "모바일 기기" },
+                    { icon: "📍", label: "활용", text: "길찾기, O2O, AR" }
+                ],
+                items: [
+                    { name: "내비게이션과 길 찾기", examples: ["TMAP", "구글 지도", "실시간 교통 정보"], meta: "🚗 최적 경로 안내 · 🚦 실시간 정보 반영", desc: "GPS와 GIS를 결합하여 실시간 교통 상황을 반영한 최적의 이동 경로를 안내. 종이 지도를 대체함." },
+                    { name: "O2O 서비스와 물류", examples: ["우버(Uber)", "배달의민족", "로켓배송 라우팅"], meta: "🛵 플랫폼 경제 · 📦 라스트 마일", desc: "위치 정보를 기반으로 승객과 기사, 주문자와 배달원을 실시간으로 연결하는 온-오프라인 연계 서비스." },
+                    { name: "증강 현실 (AR) 정보", examples: ["포켓몬 GO", "AR 도보 내비게이션", "시설물 관리"], meta: "👓 현실 + 가상 · 🎮 상호작용", desc: "카메라로 비춘 현실 공간 위에 길 안내나 상점 정보 등 가상의 지리 정보를 덧입혀 보여주는 기술." }
+                ]
+            },
+            {
+                title: "지도의 진화", desc: "기계가 읽고 대중이 만드는, 살아있는 지도로의 확장",
+                criteria: [
+                    { icon: "🤖", label: "대상", text: "자율주행차, AI" },
+                    { icon: "🌐", label: "주체", text: "대중, 집단지성" }
+                ],
+                items: [
+                    { name: "정밀 도로 지도 (HD Map)", examples: ["자율주행", "차선/신호등 정보", "cm 단위 정밀도"], meta: "🚗 기계를 위한 지도 · 📏 초정밀 데이터", desc: "자율주행차의 안전한 운행을 위해 차선, 신호등, 표지판 등의 정보를 cm 단위로 정밀하게 구축한 지도." },
+                    { name: "디지털 트윈 (Digital Twin)", examples: ["싱가포르 버추얼 시티", "지하 매설물 관리", "재난 시뮬레이션"], meta: "🏙️ 가상 복제 · ⚠️ 모의 실험", desc: "현실 국토를 가상 공간에 똑같이 복제하여, 도시 문제나 재난 상황을 미리 시뮬레이션하고 제어하는 기술." },
+                    { name: "참여형 지도 (VGI)", examples: ["오픈스트리트맵(OSM)", "커뮤니티 매핑", "위키맵"], meta: "👥 집단 지성 · 🗺️ 지도 권력 분산", desc: "전문가가 아닌 일반 대중이 직접 지리 정보를 생산하고 공유하여 만드는 지도. 정보의 민주화." }
+                ]
+            }
+        ]
     }
 };
 
@@ -796,7 +858,7 @@ const geoData = {
     },
     "7": {
         title: "앵글로아메리카",
-        subtitle: "대서양과 태평양을 이은 서구 프론티어",
+        subtitle: "대서양에서 태평양까지 뻗어나간 서구 프론티어",
         badge: "VII",
         theme: "#00cec9",
         iconSVG: `<rect x="0" y="20" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="60" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="100" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="140" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="180" width="200" height="20" fill="currentColor" opacity="0.3"/><path d="M20,10 L30,35 L10,20 L30,20 L10,35 Z" fill="currentColor" opacity="0.5"/>`,
@@ -888,7 +950,7 @@ const geoData = {
         ],
         subCards: [
             {
-                title: "브라질", desc: "삼바와 축구의 나라",
+                title: "브라질", desc: "다양한 자연이 살아 숨쉬는 삼바의 나라",
                 criteria: [
                     { icon: "☁️", label: "주요 기후대", text: "Aw, Af" },
                     { icon: "💰", label: "상품 작물", text: "<b>커피</b>, <b>사탕수수</b>, 대두" }
@@ -915,7 +977,7 @@ const geoData = {
                 title: "건조 권역", desc: "두 얼굴의 사막",
                 criteria: [
                     { icon: "☁️", label: "주요 기후대", text: "BWk" },
-                    { icon: "💰", label: "상품 작물", text: "뚜렷한 작물 없음 (목축)" }
+                    { icon: "💰", label: "주요 자원", text: "리튬" }
                 ],
                 items: [
                     { name: "파타고니아사막", examples: ["<i data-flag=\"🇦🇷\">아르헨티나</i> (남부)", "티에라델푸에고", "우수아이아", "빙하", "바릴로체", "토레스 델 파이네"], meta: "🌬️ 강한 편서풍 · 🐑 양 방목", desc: "편서풍의 비그늘. 바람이 빚은 사막." },
@@ -940,7 +1002,7 @@ const geoData = {
                     { icon: "💰", label: "상품 작물", text: "<b>사탕수수</b>, 바나나" }
                 ],
                 items: [
-                    { name: "기아나 고지", examples: ["<i data-flag=\"🇸🇷\">수리남</i>", "<i data-flag=\"🇬🇾\">가이아나</i>", "프랑스령 기아나", "엔젤 폭포", "카이엔", "조지타운"], meta: "⛰️ 테푸이 · 🚀 우주센터", desc: "남미의 작은 유럽, 열강이 가른 잃어버린 고원의 호라이마" },
+                    { name: "기아나 고지", examples: ["<i data-flag=\"🇸🇷\">수리남</i>", "<i data-flag=\"🇬🇾\">가이아나</i>", "호라이마산", "프랑스령 기아나", "앙헬폭포", "조지타운"], meta: "⛰️ 테푸이 · 🚀 우주센터", desc: "남미의 작은 유럽, 열강이 가른 잃어버린 테푸이 고원" },
                     { name: "카리브 연안", examples: ["<i data-flag=\"🇨🇺\">쿠바</i>", "아바나 <span class=\"cap\"></span>", "<i data-flag=\"🇭🇹\">아이티</i>", "<i data-flag=\"🇯🇲\">자메이카</i>", "나소", "산토도밍고", "산후안"], meta: "🏖️ 휴양지 · 🚬 시가", desc: "흑인 노예, 사탕수수 프플랜테이션" }
                 ]
             },
@@ -1093,7 +1155,7 @@ const terrainData = {
         ],
         subCards: [
             {
-                title: "고기 습곡 산지 (고생대)", desc: "오랜 침식으로 완만해진, 석탄을 품은 고대의 산맥.",
+                title: "고기 습곡 산지", desc: "오랜 침식으로 완만해진, 석탄을 품은 고대의 산맥.",
                 criteria: [
                     { icon: "⏳", label: "형성 시기", text: "고생대" },
                     { icon: "⚫", label: "주요 자원", text: "석탄" }
@@ -1107,7 +1169,7 @@ const terrainData = {
                 ]
             },
             {
-                title: "순상지 (Shields)", desc: "대륙의 가장 오래된 핵, 철광석을 품은 고대의 땅.",
+                title: "순상지", desc: "대륙의 가장 오래된 핵, 철광석을 품은 고대의 땅.",
                 criteria: [
                     { icon: "📜", label: "기원", text: "선캄브리아기 대륙의 핵" },
                     { icon: "⛏️", label: "주요 자원", text: "철광석" }
@@ -1119,7 +1181,7 @@ const terrainData = {
                 ]
             },
             {
-                title: "탁상지 (Tablelands)", desc: "순상지 위에 퇴적층이 쌓여 형성된, 테이블 형태의 대지.",
+                title: "탁상지", desc: "순상지 위에 퇴적층이 쌓여 형성된, 테이블 형태의 대지.",
                 criteria: [
                     { icon: " 📜", label: "기원", text: "순상지 위 퇴적층" },
                     { icon: "💎", label: "주요 자원", text: "다이아몬드/보크사이트" }
@@ -1880,7 +1942,7 @@ const climateData = {
         theme: "#0984e3",
         iconSVG: `<path d="M100,20 L140,180 H60 Z" fill="currentColor" opacity="0.4"/><path d="M50,80 L80,180 H20 Z" fill="currentColor" opacity="0.3"/><path d="M150,80 L180,180 H120 Z" fill="currentColor" opacity="0.3"/>`,
         guides: {
-            group2: [{char:"f", text:"연중 습윤"}, {char:"w", text:"동계 건조"}, {char:"s", text:"하계 건조"}],
+            group2: [{char:"f", text:"연중 습윤"}, {char:"w", text:"겨울 건조"}, {char:"s", text:"여름 건조"}],
             group3: [{char:"a", text:"더운 여름"}, {char:"b", text:"온난 여름"}, {char:"c", text:"여름 서늘"}, {char:"d", text:"극한 겨울"}]
         },
         criteria: {
@@ -1913,7 +1975,7 @@ const climateData = {
                 ]
             },
             {
-                code: "Dw", name: "냉대 동계 건조 기후", desc: "춥고 건조한 겨울, 여름 강수 집중", graph: "images/Dw.webp",
+                code: "Dw", name: "냉대 겨울 건조 기후", desc: "춥고 건조한 겨울, 여름 강수 집중", graph: "images/Dw.webp",
                 items: [
                     { name: "동북아시아 대륙성 기후대", examples: ["서울", "베이징", "평양", "선양", "다롄"], desc: "시베리아 고기압의 영향, 벼농사의 북방 한계선" },
                     { name: "시베리아 및 극동 러시아", examples: ["이르쿠츠크", "하바롭스크", "치타", "울란우데"], desc: "세계에서 가장 연교차가 큰 지역" }
@@ -2019,30 +2081,37 @@ const climateData = {
             {
                 code: "BWh", name: "아열대 고온 사막", desc: "연평균 18℃ 이상, 저위도 사막", graph: "images/BWh.webp",
                 items: [
-                    { name: "아프리카/중동", examples: ["카이로", "리야드", "두바이", "바그다드", "사하라 사막"], desc: "세계에서 가장 크고 뜨거운 사막 벨트" },
-                    { name: "아메리카/호주", examples: ["피닉스", "라스베이거스", "멕시칼리", "호주 아웃백"], desc: "신대륙의 대표적인 고온 건조 지대" }
+                    { name: "사하라 사막", examples: ["카이로", "타만라세트", "시와 오아시스"], meta: "☀️ 아열대 고압대 · 🐫 베르베르인", desc: "극심한 일교차를 자랑하는 세계 최대의 사막." },
+                    { name: "아라비아 사막", examples: ["리야드", "두바이", "룹알할리"], meta: "☀️ 아열대 고압대 · 🛢️ 석유 매장", desc: "과거 대상 무역로이자 현재의 거대 유전." },
+                    { name: "그레이트 빅토리아 사막", examples: ["앨리스 스프링스", "쿠버 페디", "울룰루"], meta: "☀️ 아열대 고압대 · 🏜️ 아웃백", desc: "산화철 토양에 뒤덮힌 내륙의 붉은 사막." }
                 ]
             },
             {
                 code: "BWk", name: "중위도 한랭 사막", desc: "연평균 18℃ 미만, 중위도 사막", graph: "images/BWk.webp",
                 items: [
-                    { name: "중앙아시아", examples: ["타클라마칸 사막", "고비 사막", "카라쿰 사막", "키질쿰 사막"], desc: "대륙 내부에 위치하여 극심한 연교차를 보이는 사막." },
-                    { name: "한류성 사막", examples: ["<i data-flag=\"🇨🇱\">아타카마 사막</i>", "<i data-flag=\"🇳🇦\">나미브 사막</i>", "소노라 사막", "훔볼트 한류"], desc: "연중 맑은 날씨가 지속되는 가장 건조한 사막." },
-                    { name: "지형성 사막", examples: ["<i data-flag=\"🇦🇷\">파타고니아 사막</i>", "그레이트베이슨 사막", "안데스 산맥 비그늘"], desc: "항상풍의 비그늘(Rain Shadow)에 위치하여 형성된 사막." }
+                    { name: "나미브 사막", examples: ["왈비스베이", "스바코프문트", "소서스블레이"], meta: "🌊 벵겔라 한류 · 🌫️ 안개 사막", desc: "한류로 인해 비 대신 안개만 끼는 해안 사막." },
+                    { name: "아타카마 사막", examples: ["안토파가스타", "산 페드로 데 아타카마"], meta: "🌊 훔볼트 한류 · 🔭 리튬", desc: "한류와 산맥이 수분을 차단해 형성된 가장 건조한 사막." },
+                    { name: "키질쿰·카라쿰 사막", examples: ["부하라", "히바", "아슈가바트"], meta: "🌏 대륙도 · 🐫 실크로드", desc: "강과 오아시스로 이어진 내륙 실크로드." },
+                    { name: "타클라마칸 & 고비 사막", examples: ["카슈가르", "둔황", "울란바토르"], meta: "⛰️ 지형성 · 🦖 공룡 화석", desc: "히말라야산맥이 인도양 습기를 막아 형성한 거대한 분지 사막." },
+                    { name: "파타고니아 사막", examples: ["코모도로 리바다비아", "네우켄"], meta: "⛰️ 비그늘 · 🌬️ 편서풍", desc: "안데스의 편서풍 비그늘에 형성된 사막." }
                 ]
             },
             {
                 code: "BSh", name: "열대/아열대 스텝", desc: "연평균 18℃ 이상, 사바나 인접", graph: "images/BSh.webp",
                 items: [
-                    { name: "아프리카/인도", examples: ["사헬 지대", "칼라하리 사막 주변", "데칸 고원 서부"], desc: "사막과 사바나 사이의 점이 지대" },
-                    { name: "호주/멕시코", examples: ["호주 대찬정 분지", "멕시코 북부", "텍사스 서부"], desc: "대륙 내부의 광활한 반건조 목축 지대" }
+                    { name: "사헬 지대", examples: ["니제르", "차드", "말리"], meta: "🏜️ 사막화 최전선 · 🌾 수수와 조", desc: "기후 변화와 과도한 방목으로 확장 중인 사하라" },
+                    { name: "데칸 고원 서부", examples: ["푸네", "벵갈루루", "하이데라바드"], meta: "⛰️ 서고츠 비그늘 · 🧶 목화 재배", desc: "서고츠 산맥이 몬순을 막아 형성된 레구르 고원." },
+                    { name: "호주 대찬정 분지", examples: ["퀸즐랜드 내륙", "뉴사우스웨일스 서부"], meta: "💧 지하수 관개 · 🐑 양 방목", desc: "지하수를 퍼 올려 양을 키우는 호주 목축업의 심장." },
+                    { name: "칼라하리 주변", examples: ["보츠와나", "나미비아 내륙"], meta: "🦁 사바나 점이 · 🏹 산족(부시맨)", desc: "야생동물과 수렵 채집민의 터전." }
                 ]
             },
             {
                 code: "BSk", name: "중위도 온대 스텝", desc: "연평균 18℃ 미만, 온대 인접", graph: "images/BSk.webp",
                 items: [
-                    { name: "유라시아 대초원", examples: ["몽골 초원", "카자흐스탄", "우크라이나 흑토지대", "앙카라", "마드리드"], desc: "기마민족의 역사가 깃든 비옥한 흑토 지대" },
-                    { name: "북미 프레리 & 그레이트플레인스", examples: ["덴버", "캘거리", "오클라호마시티"], desc: "북미 대륙의 광활한 곡창지대와 목축지" }
+                    { name: "유라시아 대초원", examples: ["몽골 초원", "카자흐스탄", "우크라이나"], meta: "⚫ 흑토(체르노젬) · 🐎 유목과 밀", desc: "헝가리 푸스타에서 만주까지 이어지는 거대한 풀의 바다. 비옥한 흑토 지대로 세계적인 밀 생산지." },
+                    { name: "북미 그레이트플레인스", examples: ["덴버", "캘거리", "오클라호마시티"], meta: "⛰️ 로키 비그늘 · 🌪️ 토네이도", desc: "로키 산맥 동쪽의 광활한 대평원. 기업적 방목과 관개 농업이 이루어지는 미국의 식량 기지." },
+                    { name: "서부 팜파스", examples: ["멘도사", "코르도바", "산루이스"], meta: "🥩 기업적 목축 · 🌾 건조 밀 농사", desc: "습윤한 동부 팜파스와 달리 강수량이 적은 서쪽 지역. 소 방목과 밀 농사가 대규모로 이루어짐." },
+                    { name: "아나톨리아 고원", examples: ["앙카라", "코니아", "카파도키아"], meta: "🐑 앙고라 염소 · 🧶 양탄자", desc: "튀르키예 내륙의 고원 지대. 여름은 덥고 건조하며 겨울은 추워 목축과 밀 농사가 발달." }
                 ]
             }
         ]
@@ -2055,7 +2124,7 @@ const climateData = {
         theme: "#d63031",
         iconSVG: `<path d="M100,20 Q150,100 100,180 Q50,100 100,20" fill="currentColor" opacity="0.3"/><path d="M100,20 L100,180" stroke="currentColor" stroke-width="5" opacity="0.5"/>`,
         guides: {
-            group2: [{char:"f", text:"연중 습윤"}, {char:"m", text:"계절풍"}, {char:"w", text:"동계 건조"}],
+            group2: [{char:"f", text:"연중 습윤"}, {char:"m", text:"계절풍"}, {char:"w", text:"겨울 건조"}],
             group3: []
         },
         criteria: {
@@ -2082,24 +2151,27 @@ const climateData = {
             {
                 code: "Af", name: "열대우림 기후", desc: "연중 건기 없음", graph: "images/Af.webp",
                 items: [
-                    { name: "동남아시아 도서", examples: ["싱가포르", "쿠알라룸푸르", "반다르스리브가완", "자야푸라"], desc: "세계에서 가장 광범위한 해양성 열대우림" },
-                    { name: "아마존 분지", examples: ["마나우스", "이키토스", "레티시아", "벨렘"], desc: "지구의 허파로 불리는 세계 최대의 열대우림" },
-                    { name: "콩고 분지", examples: ["킨샤사", "브라자빌", "키상가니", "음반다카"], desc: "아프리카 중앙부를 뒤덮은 거대한 밀림" }
+                    { name: "동남아시아 도서", examples: ["싱가포르", "쿠알라룸푸르", "보르네오", "자야푸라"], meta: "🏝️ 해양성 열대우림 · 🌴 팜유 플랜테이션", desc: "세계에서 가장 광범위한 해양성 열대우림" },
+                    { name: "아마존 분지", examples: ["마나우스", "이키토스", "레티시아", "벨렘"], meta: "🌳 지구의 허파 · 🌧️ 스콜", desc: "지구의 허파로 불리는 세계 최대의 열대우림" },
+                    { name: "콩고 분지", examples: ["킨샤사", "브라자빌", "키상가니", "음반다카"], meta: "🦍 내륙 열대우림 · 🌍 아프리카의 심장", desc: "아프리카 중앙부를 뒤덮은 거대한 밀림" }
                 ]
             },
             {
                 code: "Am", name: "열대 몬순 기후", desc: "짧은 건기와 폭발적 우기", graph: "images/Am.webp",
                 items: [
-                    { name: "아시아 몬순 해안", examples: ["뭄바이", "양곤", "다낭", "치타공", "코치"], desc: "계절풍의 영향을 가장 직접적으로 받는 지역" },
-                    { name: "대서양 몬순 지대", examples: ["마이애미", "코나크리", "몬로비아", "카이엔"], desc: "아프리카와 아메리카 대륙의 몬순 지역" }
+                    { name: "아시아 몬순 해안", examples: ["뭄바이", "양곤", "다낭", "치타공"], meta: "🌬️ 계절풍 · 🍚 벼농사", desc: "계절풍의 영향을 가장 직접적으로 받는 지역" },
+                    { name: "기니만 연안 (아프리카)", examples: ["코나크리", "몬로비아", "프리타운"], meta: "🌊 대서양 몬순 · 🍫 카카오", desc: "대서양 몬순 영향권의 서아프리카 해안." },
+                    { name: "아마존 하구 및 카리브", examples: ["마이애미", "카이엔", "벨렘"], meta: "🌀 무역풍 · 🌪️ 허리케인", desc: "바다를 건너온 무역풍이 비를 뿌리는 대륙 동안." }
                 ]
             },
             {
                 code: "Aw", name: "사바나 기후", desc: "뚜렷한 건기와 우기", graph: "images/Aw.webp",
                 items: [
-                    { name: "아프리카 사바나", examples: ["나이로비", "라고스", "다르에스살람", "아부자", "루사카"], desc: "'동물의 왕국'으로 상징되는 상징적 초원" },
-                    { name: "남미 사바나", examples: ["브라질리아", "카라카스", "쿠이아바", "고이아니아"], desc: "브라질 고원의 세하두와 베네수엘라의 야노스" },
-                    { name: "아시아-호주 사바나", examples: ["방콕", "호치민", "다윈", "비엔티안", "프놈펜"], desc: "인도차이나 반도와 호주 북부의 열대 초원" }
+                    { name: "아프리카 사바나", examples: ["나이로비", "라고스", "다르에스살람", "아부자"], meta: "🦁 동물의 왕국 · 🌿 소림 장초", desc: "'동물의 왕국' 하면 떠오르는 상징적 초원" },
+                    { name: "야노스 (오리노코강 유역)", examples: ["카라카스", "시우다드볼리바르"], meta: "🤠 야네로(목동) · 🐊 열대 습지", desc: "우기에 습지가 되는 베네수엘라와 콜롬비아에 걸친 열대 초원." },
+                    { name: "세하두 (브라질 고원)", examples: ["브라질리아", "고이아니아", "쿠이아바"], meta: "🚜 대두 생산지 · 🇧🇷 브라질의 빵바구니", desc: "브라질 고원의 광활한 사바나. 토양 개량(석회)을 통해 세계적인 콩과 옥수수 생산지로 변모." },
+                    { name: "인도차이나 내륙", examples: ["방콕", "호치민", "비엔티안", "프놈펜"], meta: "🍚 벼농사(이모작) · 🌧️ 몬순 사바나", desc: "우기에 집중적인 벼농사가 이루어지는 몬순 사바나." },
+                    { name: "호주 북부 (톱 엔드)", examples: ["다윈", "카카두 국립공원", "케언즈"], meta: "🐊 몬순 숲 · 🥩 소 방목", desc: "적도 수렴대의 이동에 따라 여름에만 비가 내리는 호주 최북단의 열대 지역." }
                 ]
             }
         ]
@@ -2198,7 +2270,7 @@ const soilData = {
         ],
         subCards: [
             {
-                title: "라테라이트 (Laterite)", 
+                title: "라테라이트", 
                 desc: "고온다습한 열대 기후에서 용탈되고 남은 붉은 흙",
                 criteria: [
                     { icon: "🌲", label: "식생", text: "열대우림" },
@@ -2212,7 +2284,7 @@ const soilData = {
                 ]
             },
             {
-                title: "적황색토 (Red-Yellow Soil)", 
+                title: "적황색토", 
                 desc: "아열대 기후에서 라테라이트화 작용을 받은 붉은 흙",
                 criteria: [
                     { icon: "🌳", label: "식생", text: "상록 활엽수" },
@@ -2225,7 +2297,7 @@ const soilData = {
                 ]
             },
             {
-                title: "갈색 삼림토 (Brown Forest)", 
+                title: "갈색 삼림토", 
                 desc: "온대 습윤 기후의 낙엽 활엽수가 만든 비옥한 흙",
                 criteria: [
                     { icon: "🍂", label: "식생", text: "활엽수림" },
@@ -2239,7 +2311,7 @@ const soilData = {
                 ]
             },
             {
-                title: "포드졸 (Podzol)", 
+                title: "포드졸", 
                 desc: "냉대 기후 침엽수림의 산성 물질로 표백된 회백색 흙",
                 criteria: [
                     { icon: "🌲", label: "식생", text: "타이가" },
@@ -2266,7 +2338,7 @@ const soilData = {
         ],
         subCards: [
             {
-                title: "흑토 (Chernozem)", 
+                title: "흑토", 
                 desc: "반건조 기후의 긴 풀(장초)이 썩어 만든 세계 최고의 비옥토",
                 criteria: [
                     { icon: "🌾", label: "식생", text: "장초 초원" },
@@ -2279,7 +2351,7 @@ const soilData = {
                 ]
             },
             {
-                title: "밤색토 (Chestnut Soil)", 
+                title: "밤색토", 
                 desc: "흑토 지대보다 조금 더 건조한 곳의 짙은 갈색 흙",
                 criteria: [
                     { icon: "🌿", label: "식생", text: "단초 초원" },
@@ -2292,7 +2364,7 @@ const soilData = {
                 ]
             },
             {
-                title: "사막토 (Desert Soil)", 
+                title: "사막토", 
                 desc: "증발량이 강수량보다 많아 염분이 집적된 흙",
                 criteria: [
                     { icon: "🌵", label: "식생", text: "식생 빈약" },
@@ -2306,7 +2378,7 @@ const soilData = {
                 ]
             },
             {
-                title: "툰드라토 (Tundra Soil)", 
+                title: "툰드라토", 
                 desc: "한대 기후의 영구동토층 위에 발달한 척박한 흙",
                 criteria: [
                     { icon: "❄️", label: "식생", text: "이끼/지의류" },
@@ -2332,7 +2404,7 @@ const soilData = {
         ],
         subCards: [
             {
-                title: "테라로사 (Terra Rossa)", 
+                title: "테라로사", 
                 desc: "석회암이 풍화되어 남은 철분이 산화된 붉은 흙",
                 criteria: [
                     { icon: "🍇", label: "식생", text: "경엽수림" },
@@ -2346,7 +2418,7 @@ const soilData = {
                 ]
             },
             {
-                title: "안도솔 (Andosol)", 
+                title: "안도솔", 
                 desc: "화산재가 쌓여 만들어진 가볍고 검은 흙",
                 criteria: [
                     { icon: "🌸", label: "식생", text: "혼합림" },
@@ -2373,7 +2445,7 @@ const soilData = {
                 ]
             },
             {
-                title: "이탄토 (Peat Soil)", 
+                title: "이탄토", 
                 desc: "배수가 불량한 습지에서 식물이 썩지 못하고 쌓인 흙",
                 criteria: [
                     { icon: "💧", label: "식생", text: "습지 식물" },
@@ -2399,7 +2471,7 @@ const soilData = {
         ],
         subCards: [
             {
-                title: "충적토 (Alluvial Soil)", 
+                title: "충적토", 
                 desc: "하천이 상류에서 운반해 온 영양분이 쌓인 비옥한 흙",
                 criteria: [
                     { icon: "🌱", label: "식생", text: "수변 식생" },
@@ -2413,7 +2485,7 @@ const soilData = {
                 ]
             },
             {
-                title: "뢰스 (Loess)", 
+                title: "뢰스", 
                 desc: "바람에 날려온 미세한 입자가 두껍게 쌓인 황토",
                 criteria: [
                     { icon: "🌾", label: "식생", text: "건조 초원" },
@@ -2426,7 +2498,7 @@ const soilData = {
                 ]
             },
             {
-                title: "염류토 (Saline Soil)", 
+                title: "염류토", 
                 desc: "바닷물의 영향으로 염분이 과다하게 포함된 흙",
                 criteria: [
                     { icon: "🌿", label: "식생", text: "염생 식물" },
@@ -2439,7 +2511,7 @@ const soilData = {
                 ]
             },
             {
-                title: "암설토 (Lithosol)", 
+                title: "암설토", 
                 desc: "경사지에서 굴러떨어진 바위와 자갈이 쌓인 거친 흙",
                 criteria: [
                     { icon: "🪨", label: "식생", text: "이끼류" },
@@ -2458,7 +2530,7 @@ const soilData = {
 const populationData = {
     "population-1": {
         title: "세계 인구의 분포",
-        subtitle: "에쿠메네와 아네쿠메네",
+        subtitle: "사람이 모여드는 곳",
         badge: "I",
         theme: "#3498db",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><circle cx="100" cy="100" r="40" fill="currentColor" opacity="0.3"/>`,
@@ -2688,14 +2760,14 @@ const populationData = {
 // [신규] 농업과 목축업 데이터 (HTML/CSS 통합본)
 const agricultureData = {
     "agri-1": {
-        title: "식량 작물: 문명의 주식",
-        subtitle: "인류의 폭발적 성장을 이끈 세 위대한 곡물",
+        title: "식량 작물",
+        subtitle: "주요 문명의 주식이 된 세 위대한 곡물",
         badge: "I",
         theme: "#4CAF50",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.3"/><path d="M60,60 C80,80 120,80 140,60" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         subCards: [
             {
-                title: "쌀 (Rice)", desc: "몬순 아시아의 거대한 인구를 부양하는 문명의 주춧돌",
+                title: "쌀", desc: "몬순 아시아의 거대한 인구를 부양하는 문명의 주춧돌",
                 criteria: [
                     { icon: "🌱", label: "생육 조건", text: "고온 다습" },
                     { icon: "🗺️", label: "재배지 유형", text: "충적 평야, 삼각주" },
@@ -2709,7 +2781,7 @@ const agricultureData = {
                 ]
             },
             {
-                title: "밀 (Wheat)", desc: "가장 활발히 거래되는 세계인의 주식",
+                title: "밀", desc: "가장 활발히 거래되는 세계인의 주식",
                 criteria: [
                     { icon: "🌱", label: "생육 조건", text: "서늘 건조" },
                     { icon: "🗺️", label: "재배지 유형", text: "온대 초원, 흑토 지대" },
@@ -2723,7 +2795,7 @@ const agricultureData = {
                 ]
             },
             {
-                title: "옥수수 (Corn/Maize)", desc: "아메리카 문명의 근간부터, 사료와 바이오 연료까지",
+                title: "옥수수", desc: "아메리카 문명의 근간부터, 사료와 바이오 연료까지",
                 criteria: [
                     { icon: "🌱", label: "생육 조건", text: "고온 다습 (적응력 넓음)" },
                     { icon: "🗺️", label: "재배지 유형", text: "비옥한 평원" },
@@ -2744,28 +2816,30 @@ const agricultureData = {
                     { icon: "🍚", label: "대표 음식", text: "맥주, 위스키, 호밀빵" }
                 ],
                 items: [
-                    { name: "보리 (Barley)", examples: ["<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇦🇺\">호주</i>", "<i data-flag=\"🇩🇪\">독일</i>", "<i data-flag=\"🇨🇦\">캐나다</i>"], meta: "🍺 맥주와 위스키 · 🌾 강한 적응력", desc: "염분에 강하고 내건성, 내한성이 우수한 최초의 작물." },
-                    { name: "호밀 (Rye)", examples: ["<i data-flag=\"🇩🇪\">독일</i>", "<i data-flag=\"🇵🇱\">폴란드</i>", "<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇧🇾\">벨라루스</i>"], meta: "🍞 흑빵의 원료 · ❄️ 척박지 적응", desc: "빙하가 뒤덮었던 척박한 동부 유럽에서 밀을 대신한 식량." },
-                    { name: "귀리 (Oats)", examples: ["<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇨🇦\">캐나다</i>", "<i data-flag=\"🇬🇧\">영국</i>(스코틀랜드)", "<i data-flag=\"🇫🇮\">핀란드</i>"], meta: "🥣 오트밀(슈퍼푸드) · 🐎 말 사료", desc: "오늘날 건강식으로 각광받는 한랭 습윤 기후의 사료 곡물." }
+                    { name: "보리", examples: ["<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇦🇺\">호주</i>", "<i data-flag=\"🇩🇪\">독일</i>", "<i data-flag=\"🇨🇦\">캐나다</i>"], meta: "🍺 맥주와 위스키 · 🌾 강한 적응력", desc: "염분에 강하고 내건성, 내한성이 우수한 최초의 작물." },
+                    { name: "호밀", examples: ["<i data-flag=\"🇩🇪\">독일</i>", "<i data-flag=\"🇵🇱\">폴란드</i>", "<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇧🇾\">벨라루스</i>"], meta: "🍞 흑빵의 원료 · ❄️ 척박지 적응", desc: "빙하가 뒤덮었던 척박한 동부 유럽에서 밀을 대신한 식량." },
+                    { name: "귀리", examples: ["<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇨🇦\">캐나다</i>", "<i data-flag=\"🇬🇧\">영국</i>(스코틀랜드)", "<i data-flag=\"🇫🇮\">핀란드</i>"], meta: "🥣 오트밀(슈퍼푸드) · 🐎 말 사료", desc: "오늘날 건강식으로 각광받는 한랭 습윤 기후의 사료 곡물." }
                 ]
             },
             {
                 title: "두류", desc: "밭에서 나는 고기. 식용유 및 사료 산업의 핵심.",
                 criteria: [
-                    { icon: "🌱", label: "생육 조건", text: "고온 다습 (옥수수와 비슷)" },
+                    { icon: "🌱", label: "생육 조건", text: "고온 다습≒옥수수" },
                     { icon: "🗺️", label: "재배지 유형", text: "비옥한 평원, 윤작 필수" },
-                    { icon: "📊", label: "특징", text: "식용유, 사료의 압도적 원료" },
-                    { icon: "🍚", label: "대표 음식", text: "두부, 간장, 콩기름" }
+                    { icon: "📊", label: "특징", text: "식용유, 사료 원료" },
+                    { icon: "🍚", label: "대표 음식", text: "두부, 간장" }
                 ],
                 items: [
-                    { name: "대두 (Soybean)", examples: ["<i data-flag=\"🇺🇸\">미국</i> 콘벨트 남부", "<i data-flag=\"🇧🇷\">브라질</i>", "<i data-flag=\"🇦🇷\">아르헨티나</i>", "<i data-flag=\"🇨🇳\">중국</i>"], meta: "🛢️ 식용유 · 🐖 가축 사료", desc: "세계 육류 생산을 지탱하는 사료의 핵심. 미주 대륙에서 대규모로 재배." },
-                    { name: "기타 두류 (Pulses/Lentils)", examples: ["<i data-flag=\"🇮🇳\">인도</i>", "<i data-flag=\"🇹🇷\">튀르키예</i>", "<i data-flag=\"🇪🇸\">스페인</i>", "<i data-flag=\"🇺🇸\">미국</i> 워싱턴"], meta: "🍛 채식 단백질 · 🏜️ 건조지 적응", desc: "렌틸콩, 병아리콩 등 건조 지역의 주요 단백질 공급원." }
+                    { name: "대두", examples: ["<i data-flag=\"🇺🇸\">미국</i> 콘벨트 남부", "<i data-flag=\"🇧🇷\">브라질</i>", "<i data-flag=\"🇦🇷\">아르헨티나</i>", "<i data-flag=\"🇨🇳\">중국</i>"], meta: "🛢️ 식용유 · 🐖 가축 사료", desc: "장류의 원료이자 세계 육류 생산을 지탱하는 사료의 핵심." },
+                    { name: "강낭콩", examples: ["<i data-flag=\"🇧🇷\">브라질</i>", "<i data-flag=\"🇲🇽\">멕시코</i>", "<i data-flag=\"🇹🇿\">탄자니아</i>", "칠리/부리토"], meta: "🌮 중남미의 주식 · 🌽 옥수수와 윤작", desc: "옥수수와 함께 아메리카를 지탱한 작물. 중남미 및 동아프리카의 주식." },
+                    { name: "병아리콩", examples: ["<i data-flag=\"🇮🇳\">인도</i>(최대 생산)", "<i data-flag=\"🇹🇷\">튀르키예</i>", "<i data-flag=\"🇵🇰\">파키스탄</i>", "후무스"], meta: "🍛 인도/중동 주식 · 🏜️ 내건성 작물", desc: "건조 기후에 강해 인도와 중동의 식량 안보를 책임지는 핵심 단백질원." },
+                    { name: "완두콩", examples: ["<i data-flag=\"🇨🇦\">캐나다</i>", "<i data-flag=\"🇷🇺\">러시아</i>", "<i data-flag=\"🇨🇳\">중국</i>", "대체육 원료"], meta: "❄️ 한랭지 적응 · 🥩 미래 식량 자원", desc: "한랭지 적응력 우수. 최근 대두를 대체할 대체육 자원으로 급부상." }
                 ]
             }
         ]
     },
     "agri-2": {
-        title: "구황 작물: 생존의 뿌리",
+        title: "구황 작물",
         subtitle: "척박한 땅에서 인류를 기근에서 구원한 작물들",
         badge: "II",
         theme: "#795548",
@@ -2777,11 +2851,11 @@ const agricultureData = {
                     { icon: "🌱", label: "생육 조건", text: "서늘~고온 (넓은 적응력)" },
                     { icon: "🗺️", label: "재배지 유형", text: "산간 비탈, 구릉지" },
                     { icon: "💪", label: "생존력", text: "척박지 적응력 최상" },
-                    { icon: "🍲", label: "대표 음식", text: "피시 앤 칩스, 군고구마" }
+                    { icon: "🍲", label: "대표 음식", text: "피시 앤 칩스" }
                 ],
                 items: [
-                    { name: "안데스 산맥 (감자의 원산지)", examples: ["페루", "볼리비아", "잉카 문명"], meta: "⛰️ 고산 적응 · 🧬 유전자원의 보고", desc: "잉카 문명의 주식. 품종만 수천에 이르는 유전자원의 보고." },
-                    { name: "유럽 북부 평원 (제2의 빵)", examples: ["독일", "폴란드", "아일랜드"], meta: "🥖 제2의 빵 · 🥔 아일랜드 대기근", desc: "척박한 땅에서 밀을 대신하여 유럽의 인구를 부양한 작물." },
+                    { name: "안데스 산맥", examples: ["페루", "볼리비아", "잉카 문명"], meta: "⛰️ 고산 적응 · 🧬 감자 원산지", desc: "잉카 문명의 주식. 품종만 수천에 이르는 유전자원의 보고." },
+                    { name: "유럽 북부 평원", examples: ["독일", "폴란드", "아일랜드"], meta: "🥖 제2의 빵 · 🥔 아일랜드 대기근", desc: "척박한 땅에서 밀을 대신하여 유럽의 인구를 부양한 작물." },
                     { name: "동아시아 구릉지 (고구마)", examples: ["중국 황토고원", "한국 산간 지역"], meta: "🍠 구황 작물의 대명사 · 🏞️ 척박지 적응", desc: "척박한 산간 지대와 황토 고원에서 인구를 부양한 구황 작물." },
                     { name: "아프리카 고원 (고구마)", examples: ["케냐 고원", "우간다", "르완다"], meta: "🌍 식량 안보 기여 · ☀️ 내건성 작물", desc: "가뭄에 강해 아프리카 식량 안보에 기여하는 핵심 작물" }
                 ]
@@ -2789,9 +2863,9 @@ const agricultureData = {
             {
                 title: "카사바 & 얌", desc: "척박한 열대를 지탱한 강인한 덩이식물",
                 criteria: [
-                    { icon: "🌱", label: "생육 조건", text: "열대 기후 (가뭄에 강함)" },
+                    { icon: "🌱", label: "생육 조건", text: "열대 기후" },
                     { icon: "🗺️", label: "재배지 유형", text: "척박한 열대 토양" },
-                    { icon: "💪", label: "생존력", text: "열대의 주된 녹말 공급원" },
+                    { icon: "💪", label: "생존력", text: "열대의 녹말 공급원" },
                     { icon: "🍲", label: "대표 음식", text: "푸푸, 타피오카 펄" }
                 ],
                 items: [
@@ -2801,25 +2875,25 @@ const agricultureData = {
                 ]
             },
             {
-                title: "수수 (Sorghum)", desc: "가장 고온건조한 땅에서 자라나는 식량",
+                title: "수수", desc: "가장 고온건조한 땅에서 자라나는 식량",
                 criteria: [
                     { icon: "🌱", label: "생육 조건", text: "고온 건조" },
                     { icon: "🌍", label: "기원", text: "아프리카 사헬" },
                     { icon: "💪", label: "특징", text: "내건성 최강" },
-                    { icon: "🍲", label: "용도", text: "주식 / 사료 / 바이오에탄올" }
+                    { icon: "🍲", label: "용도", text: "주식/사료/바이오에탄올" }
                 ],
                 items: [
-                    { name: "아프리카 사헬 지대", examples: ["수단·에티오피아", "인제라·납작빵", "생존의 곡물"], meta: "🌍 아프리카의 주식 · 🏜️ 사막화 저지선", desc: "사하라 수억 인구의 생존을 책임지는 식량 보루" },
-                    { name: "미국 대평원 (사료용)", examples: ["캔자스·텍사스", "가축 사료·에탄올", "기업적 재배"], meta: "🌽 옥수수 대체재 · 🏭 산업용 곡물", desc: "대평원 건조 지역에서 바이오에탄올과 가축 사료로 거듭나는 곡물" }
+                    { name: "아프리카 사헬 지대", examples: ["수단", "에티오피아", "인제라", "납작빵"], meta: "🌍 아프리카 주식 · 🏜️ 사막화 저지선", desc: "사하라 수억 인구의 생존을 책임지는 식량 보루" },
+                    { name: "미국 대평원", examples: ["캔자스", "텍사스", "가축 사료", "에탄올", "기업적 재배"], meta: "🌽 옥수수 대체재 · 🏭 산업용 곡물", desc: "대평원 건조 지역에서 바이오에탄올과 가축 사료로 거듭나는 곡물" }
                 ]
             },
             {
-                title: "기장 & 조 (Millet)", desc: "척박한 황토와 고원 지대에 뿌리내린 고대 중국과 인도의 곡식",
+                title: "기장 & 조", desc: "척박한 황토와 고원 지대에 뿌리내린 고대 중국과 인도의 곡식",
                 criteria: [
                     { icon: "🌱", label: "생육 조건", text: "냉량 건조" },
                     { icon: "🌍", label: "기원", text: "중앙아시아 / 황허" },
                     { icon: "💪", label: "특징", text: "짧은 생육 기간" },
-                    { icon: "🍲", label: "용도", text: "잡곡밥 / 술 / 새 모이" }
+                    { icon: "🍲", label: "용도", text: "잡곡밥 / 술" }
                 ],
                 items: [
                     { name: "인도 데칸 고원", examples: ["인도(최대 생산국)", "로티·도사", "다양성의 보고"], meta: "🇮🇳 잡곡의 천국 · 🌾 다양한 품종", desc: "몬순의 변덕이 심한 데칸 고원의 가뭄을 대비하던 작물" },
@@ -2835,15 +2909,15 @@ const agricultureData = {
                     { icon: "🍲", label: "용도", text: "슈퍼푸드 / 막국수" }
                 ],
                 items: [
-                    { name: "퀴노아 (안데스의 황금)", examples: ["페루·볼리비아", "잉카의 주식", "슈퍼푸드"], meta: "⛰️ 고산 적응 작물 · 🍚 완벽한 영양", desc: "척박한 안데스 고산지의 잉카 문명을 지탱한 어머니 곡물" },
-                    { name: "메밀 (한랭지의 구원투수)", examples: ["러시아·히말라야·한국", "소바·막국수·카샤", "척박지 작물"], meta: "❄️ 짧은 생육 기간 · 🍜 면 요리의 별미", desc: "다른 작물이 실패한 한랭지에서도 수확이 가능한 구황 작물." }
+                    { name: "퀴노아", examples: ["페루", "볼리비아", "잉카의 주식", "슈퍼푸드"], meta: "⛰️ 고산 적응 작물 · 🍚 완벽한 영양", desc: "척박한 안데스 고산지의 잉카 문명을 지탱한 어머니 곡물" },
+                    { name: "메밀", examples: ["러시아", "히말라야", "한국", "소바", "막국수", "카샤", "척박지 작물"], meta: "❄️ 짧은 생육 기간 · 🍜 면 요리", desc: "다른 작물이 실패한 한랭지에서도 수확이 가능한 구황 작물." }
                 ]
             }
         ]
     },
     // [수정] agri-3: "기호 작물"로 재탄생
         "agri-3": {
-            title: "기호 작물: 오감과 중독",
+            title: "기호 작물",
             subtitle: "세계를 깨우고 움직이는 감각의 지배자",
             badge: "III",
             theme: "#6F4E37", // 새로운 테마 색상 (커피색)
@@ -2914,7 +2988,7 @@ const agricultureData = {
         },
         // [신규] "agri-industrial" 카드: "상품 작물"
         "agri-industrial": {
-            title: "상품 작물: 제국의 부",
+            title: "상품 작물",
             subtitle: "자본과 권력의 원천이 된 욕망의 작물들",
             badge: "III+", // 순서 유지를 위해 + 기호 사용
             theme: "#FF9800", // 기존 agri-3의 테마색 계승
@@ -2937,7 +3011,7 @@ const agricultureData = {
                     ]
                 },
                 {
-                    title: "사탕수수 (Sugar Cane)", desc: "근대사를 움직인 하얀 황금",
+                    title: "사탕수수", desc: "근대사를 움직인 하얀 황금",
                     criteria: [
                         { icon: "🌱", label: "생육 조건", text: "고온 다습" },
                         { icon: "🗺️", label: "재배지 유형", text: "열대 평야" },
@@ -2952,7 +3026,7 @@ const agricultureData = {
                     ]
                 },
                 {
-                title: "고무 (Rubber)", desc: "아마존의 눈물에서 자동차의 동맥으로",
+                title: "고무", desc: "아마존의 눈물에서 자동차의 동맥으로",
                 criteria: [
                         { icon: "🌱", label: "생육 조건", text: "열대우림 기후" },
                         { icon: "🗺️", label: "재배지 유형", text: "고온 다습한 저지대" },
@@ -2967,7 +3041,7 @@ const agricultureData = {
                     ]
                 },
                 {
-                title: "팜유 (Palm Oil)", desc: "가장 효율적인, 그러나 가장 논쟁적인 기름",
+                title: "팜유", desc: "가장 효율적인, 그러나 가장 논쟁적인 기름",
                 criteria: [
                         { icon: "🌱", label: "생육 조건", text: "열대우림 기후" },
                         { icon: "🗺️", label: "재배지 유형", text: "고온 다습한 저습지" },
@@ -2983,7 +3057,7 @@ const agricultureData = {
                     ]
                 },
                 {
-                title: "향신료 (Spices)", desc: "고대부터 황금만큼 귀하게 여겨졌으며, 대항해시대를 열게 한 열대의 보물",
+                title: "향신료", desc: "고대부터 황금만큼 귀하게 여겨졌으며, 대항해시대를 열게 한 열대의 보물",
                 criteria: [
                         { icon: "🌱", label: "생육 조건", text: "열대 몬순 / 다습한 해양성" },
                         { icon: "🗺️", label: "재배지 유형", text: "고온 다습한 도서 및 해안" },
@@ -3014,9 +3088,9 @@ const agricultureData = {
             {
                 title: "지중해의 태양: 수목 농업", desc: "여름의 고온 건조함을 견디기 위해 깊은 뿌리와 두꺼운 껍질을 가진 나무를 기르는 지혜.",
                 items: [
-                    { name: "포도와 와인 (신의 물방울)", examples: ["<i data-flag=\"🇫🇷\">프랑스</i> 보르도", "<i data-flag=\"🇨🇱\">칠레</i>(신대륙)", "캘리포니아 나파밸리"], meta: "🍷 테루아의 미학 · 🌍 구대륙 vs 신대륙", desc: "로마군과 수도원이 퍼뜨린 포도나무, 대항해시대를 거쳐 신대륙의 명품으로 거듭나다." },
-                    { name: "올리브 (액체 황금)", examples: ["<i data-flag=\"🇪🇸\">스페인</i> 안달루시아", "<i data-flag=\"🇮🇹\">이탈리아</i> 토스카나", "<i data-flag=\"🇬🇷\">그리스</i>"], meta: "🫒 지중해 식단의 핵심 · 🌿 평화와 풍요", desc: "척박한 석회암 토양과 여름 가뭄을 견디며 지중해 문명을 살찌운 기름." },
-                    { name: "감귤류와 코르크 (태양의 선물)", examples: ["<i data-flag=\"🇪🇸\">스페인</i> 발렌시아", "플로리다 오렌지", "<i data-flag=\"🇵🇹\">포르투갈</i>(코르크)"], meta: "🍊 비타민 C의 보고 · 🍾 코르크참나무", desc: "대항해시대 괴혈병을 막아준 오렌지와, 와인 병을 지키는 포르투갈의 껍질." }
+                    { name: "포도와 와인: 신의 물방울", examples: ["<i data-flag=\"🇫🇷\">프랑스</i> 보르도", "<i data-flag=\"🇨🇱\">칠레</i>(신대륙)", "캘리포니아 나파밸리"], meta: "🍷 테루아의 미학 · 🌍 구대륙 vs 신대륙", desc: "로마군과 수도원이 퍼뜨린 포도나무, 대항해시대를 거쳐 신대륙의 명품으로 거듭나다." },
+                    { name: "올리브: 액체 황금", examples: ["<i data-flag=\"🇪🇸\">스페인</i> 안달루시아", "<i data-flag=\"🇮🇹\">이탈리아</i> 토스카나", "<i data-flag=\"🇬🇷\">그리스</i>"], meta: "🫒 지중해 식단의 핵심 · 🌿 평화와 풍요", desc: "척박한 석회암 토양과 여름 가뭄을 견디며 지중해 문명을 살찌운 기름." },
+                    { name: "감귤류와 코르크: 태양의 선물", examples: ["<i data-flag=\"🇪🇸\">스페인</i> 발렌시아", "플로리다 오렌지", "<i data-flag=\"🇵🇹\">포르투갈</i>(코르크)"], meta: "🍊 비타민 C의 보고 · 🍾 코르크참나무", desc: "대항해시대 괴혈병을 막아준 오렌지와, 와인 병을 지키는 포르투갈의 껍질." }
                 ]
             },
             {
@@ -3051,7 +3125,7 @@ const agricultureData = {
         ],
         subCards: [
             {
-                title: "바나나 공화국: 다국적 기업의 그늘", desc: "거대 자본이 주도하는 단일 경작 시스템이 초래한 정치적 종속과 생태적 위기.",
+                title: "바나나: 다국적 기업의 그늘", desc: "거대 자본이 주도하는 단일 경작 시스템이 초래한 정치적 종속과 생태적 위기.",
                 items: [
                     { name: "중앙아메리카 지협", examples: ["<i data-flag=\"🇬🇹\">과테말라</i>", "<i data-flag=\"🇭🇳\">온두라스</i>", "유나이티드 프루트", "바나나 전쟁"], meta: "🏢 국가 위의 기업 · 🍌 바나나 공화국의 기원", desc: "거대 자본이 기간 시설을 독점하고 정치까지 좌우한 기형적 경제 구조의 상징." },
                     { name: "남미 안데스 해안", examples: ["<i data-flag=\"🇪🇨\">에콰도르</i>(세계 1위)", "구아야킬", "카르텔 개입"], meta: "🚢 세계 최대 수출항 · 💰 압도적 물량의 자본", desc: "저렴한 노동력으로 시장을 장악했으나 자본의 논리에 따른 환경 파괴와 범죄가 얽힌 현장." },
@@ -3059,19 +3133,19 @@ const agricultureData = {
                 ]
             },
             {
-                title: "슈퍼푸드의 역설: 웰빙의 대가", desc: "선진국의 건강 열풍이 산지에서 부르는 범죄와 가뭄, 그리고 식량 주권의 붕괴.",
+                title: "슈퍼푸드의 역설", desc: "선진국의 건강 열풍이 산지에서 부르는 범죄와 가뭄, 그리고 식량 주권의 붕괴.",
                 items: [
-                    { name: "아보카도: 피의 숲", examples: ["<i data-flag=\"🇲🇽\">멕시코</i> 미초아칸", "초록 황금", "카르텔", "산림 파괴"], meta: "🥑 마약 카르텔의 자금줄 · ⚔️ 산림 무단 개간", desc: "고수익을 노린 카르텔의 개입으로 범죄와 산림 파괴가 얼룩진 현장." },
-                    { name: "아몬드: 목마른 견과", examples: ["<i data-flag=\"🇺🇸\">미국</i> 캘리포니아", "물 발자국", "지하수 침하", "가뭄"], meta: "💧 지하수 과다 소모 · 🏜️ 생태적 불균형", desc: "한 알의 아몬드를 위해 가뭄 속에서도 지하수를 고갈시키는 생태적 모순." },
-                    { name: "퀴노아: 사라진 주식", examples: ["<i data-flag=\"🇧🇴\">볼리비아</i>", "<i data-flag=\"🇵🇪\">페루</i>", "안데스의 선물", "식량 주권"], meta: "🌾 가격 폭등의 역설 · 🚫 현지 식량 위기", desc: "선진국 열풍에 가격이 폭등하여 정작 현지인이 주식을 못 사 먹게 된 역설." }
+                    { name: "핏빛 숲, 아보카도", examples: ["<i data-flag=\"🇲🇽\">멕시코</i> 미초아칸", "초록 황금", "카르텔", "산림 파괴"], meta: "🥑 마약 카르텔의 자금줄 · ⚔️ 산림 무단 개간", desc: "고수익을 노린 카르텔의 개입으로 범죄와 산림 파괴가 얼룩진 현장." },
+                    { name: "목마른 견과, 아몬드", examples: ["<i data-flag=\"🇺🇸\">미국</i> 캘리포니아", "물 발자국", "지하수 침하", "가뭄"], meta: "💧 지하수 과다 소모 · 🏜️ 생태적 불균형", desc: "한 알의 아몬드를 위해 가뭄 속에서도 지하수를 고갈시키는 생태적 모순." },
+                    { name: "빼앗긴 주식, 퀴노아", examples: ["<i data-flag=\"🇧🇴\">볼리비아</i>", "<i data-flag=\"🇵🇪\">페루</i>", "안데스의 선물", "식량 주권"], meta: "🌾 가격 폭등의 역설 · 🚫 현지 식량 위기", desc: "선진국 열풍에 가격이 폭등하여 정작 현지인이 주식을 못 사 먹게 된 역설." }
                 ]
             },
             {
-                title: "음지의 농업: 금지된 욕망", desc: "공권력이 미치지 못하는 험지와 빈곤이 빚어낸 거대 지하 경제.",
+                title: "음지의 농업", desc: "공권력이 미치지 못하는 험지와 빈곤이 빚어낸 거대 지하 경제.",
                 items: [
-                    { name: "양귀비: 황금의 초승달", examples: ["<i data-flag=\"🇦🇫\">아프가니스탄</i>", "<i data-flag=\"🇲🇲\">미얀마</i>", "황금의 삼각지대", "아편"], meta: "💊 분쟁 지역의 생존 작물 · ⚔️ 전쟁 자금줄", desc: "정치적 혼란과 빈곤 속에서 유일한 수익원이 되어버린 지하 경제의 꽃." },
-                    { name: "코카: 안데스의 유산과 족쇄", examples: ["<i data-flag=\"🇨🇴\">콜롬비아</i>", "<i data-flag=\"🇵🇪\">페루</i>", "안데스의 고산 지대", "카르텔"], meta: "🌿 전통 식물에서 마약으로 · 🚫 국가 시스템 위협", desc: "원주민의 고산 적응을 돕던 전통 식물이 거대 자본과 결합해 마약으로 변모한 현장." },
-                    { name: "대마: 리프 산맥의 요새", examples: ["<i data-flag=\"🇲🇦\">모로코</i> 리프 산맥", "지중해 지하 경제", "험준한 산악 지형"], meta: "🏔️ 공권력이 미치지 못하는 산지 · 🏺 유럽의 공급원", desc: "험준한 지형을 요새 삼아 유럽 최대의 지하 시장을 먹여 살리는 대마 재배지." }
+                    { name: "양귀비", examples: ["<i data-flag=\"🇦🇫\">아프가니스탄</i>", "<i data-flag=\"🇲🇲\">미얀마</i>", "황금의 삼각지대", "아편"], meta: "💊 분쟁 지역의 생존 작물 · ⚔️ 전쟁 자금줄", desc: "정치적 혼란과 빈곤 속에서 유일한 수익원이 되어버린 지하 경제의 꽃." },
+                    { name: "코카", examples: ["<i data-flag=\"🇨🇴\">콜롬비아</i>", "<i data-flag=\"🇵🇪\">페루</i>", "안데스의 고산 지대", "카르텔"], meta: "🌿 전통 식물에서 마약으로 · 🚫 국가 시스템 위협", desc: "원주민의 고산 적응을 돕던 전통 식물이 거대 자본과 결합해 마약으로 변모한 현장." },
+                    { name: "대마", examples: ["<i data-flag=\"🇲🇦\">모로코</i> 리프 산맥", "지중해 지하 경제", "험준한 산악 지형"], meta: "🏔️ 공권력이 미치지 못하는 산지 · 🏺 유럽의 공급원", desc: "험준한 지형을 요새 삼아 유럽 최대의 지하 시장을 먹여 살리는 대마 재배지." }
                 ]
             }
         ]
@@ -5268,72 +5342,319 @@ const jumpConnections = {
 // [신규] 지리학의 탐구 섹션 데이터 (HTML 분리 통합본: 관광 + 지정학)
 
 // [신규] 여행과 관광 지리 데이터 (HTML/CSS 통합본)
+// [전면 리뉴얼] 여행과 관광 지리 데이터 (7개 카드 구조)
 const tourismData = {
     "tourism-1": {
-        title: "관광 공간의 탄생",
-        subtitle: "우리는 어디로 여행을 가는가",
+        title: "대자연의 조각품, 자연지리 여행",
+        subtitle: "지구가 빚어낸 경이로운 풍경을 찾아서",
         badge: "I",
-        theme: "#6c5ce7",
+        theme: "#00cec9",
         iconSVG: `<path d="M100,20 Q160,80 100,140 T100,20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="80" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
-            { icon: "🏞️", label: "자연", text: "산, 바다, 극지" },
-            { icon: "🏙️", label: "인문", text: "도시, 유적, 랜드마크" },
-            { icon: "🚶", label: "행태", text: "트레킹, 순례, 축제" },
-            { icon: "📈", label: "흐름", text: "공간의 상품화" }
+            { icon: "🌋", label: "내부 작용", text: "화산, 지열" },
+            { icon: "💧", label: "외부 작용", text: "유수, 빙하, 바람" },
+            { icon: "🏞️", label: "경관", text: "지형의 미학" }
         ],
         subCards: [
             {
-                title: "자연지리 여행", desc: "수려한 자연을 찾아가는 여행",
+                title: "화산과 지열의 땅", desc: "끓어오르는 마그마와 지열이 빚어낸 원시 지구의 풍경",
                 items: [
-                    { name: "산악과 트레킹", examples: ["네팔 히말라야", "스위스 알프스", "칠레 파타고니아", "페루 비니쿤카"], meta: "🏔️ 고산 트레킹 · 🌲 국립공원", desc: "두 발로 느끼는 살아 숨쉬는 대지" },
-                    { name: "하천과 바다", examples: ["그랜드 캐니언", "하롱베이", "아말피 해안", "그레이트 배리어 리프"], meta: "🌊 협곡과 해안 · 🐠 산호초 다이빙", desc: "수권이 엮어낸 역동적인 풍경" },
-                    { name: "화산과 온천", examples: ["아이슬란드", "하코네 온천", "옐로스톤 국립공원", "하와이 화산"], meta: "🌋 불과 얼음 · ♨️ 지열과 온천", desc: "지구의 가장 강대한 에너지" },
-                    { name: "극지와 사막", examples: ["사하라 사막", "우유니 소금사막", "남극 크루즈", "북극 오로라"], meta: "🏜️ 극한 환경 · ✨ 오로라와 별", desc: "세상의 끝에서 나를 발견하는 여행" },
-                    { name: "동굴과 지하 세계", examples: ["선동 동굴", "멕시코 세노테", "와이토모 반딧불 동굴", "포스토이나 동굴"], meta: "🕳️ 카르스트 지형 · 🔦 동굴 탐험", desc: "숨겨진 지구를 탐험하는 여행" }
+                    { name: "아이슬란드", examples: ["간헐천(Geysir)", "빙하 화산", "블루라군"], meta: "🇮🇸 불과 얼음의 땅 · ♨️ 지열 온천", desc: "빙하와 화산이 공존하며 간헐천이 솟구치는 살아있는 지구의 현장." },
+                    { name: "옐로스톤", examples: ["그랜드 프리스매틱", "올드 페이스풀", "칼데라"], meta: "🇺🇸 세계 최초 국립공원 · 🌈 열수구", desc: "거대한 칼데라 위에서 뿜어져 나오는 간헐천과 오색찬란한 열수구." },
+                    { name: "하와이 화산", examples: ["킬라우에아", "용암 대지", "화산 국립공원"], meta: "🌋 순상 화산 · 🌊 바다로 흐르는 용암", desc: "검은 용암 대지와 붉은 마그마가 바다와 만나는 태평양의 뜨거운 심장." }
+                ]
+            },
+            {
+                title: "카르스트와 석회동굴", desc: "빗물과 지하수가 석회암을 녹여 만든 기기묘묘한 봉우리와 지하 세계",
+                items: [
+                    { name: "하롱베이", examples: ["탑 카르스트", "석회암 섬", "크루즈"], meta: "🇻🇳 바다 위의 계림 · ⛰️ 3천 개의 섬", desc: "바다 위로 솟아오른 수천 개의 석회암 봉우리가 만드는 한 폭의 산수화." },
+                    { name: "구이린 (계림)", examples: ["리강 유람", "탑 카르스트", "양숴"], meta: "🇨🇳 천하제일 산수 · 🏞️ 지상 카르스트", desc: "평지 위에 우뚝 솟은 봉우리들이 강물에 비치는 동양적 절경의 대명사." },
+                    { name: "플리트비체", examples: ["석회화 단구", "호수군", "폭포"], meta: "🇭🇷 요정의 숲 · 💧 에메랄드빛 호수", desc: "석회 성분이 침전되어 만든 계단식 호수와 폭포가 어우러진 물의 낙원." },
+                    { name: "세노테 (멕시코)", examples: ["유카탄 반도", "지하 수영장", "마야 성지"], meta: "🇲🇽 천연 싱크홀 · 🕳️ 지하 세계의 입구", desc: "석회암 지반이 무너져 드러난 지하 웅덩이. 마야인들이 신성시했던 맑은 샘." }
+                ]
+            },
+            {
+                title: "건조 지형과 사막", desc: "식생이 제거된 대지에 바람과 물이 남긴 날것 그대로의 텍스처",
+                items: [
+                    { name: "사하라 사막", examples: ["에르그(모래사막)", "바하리야(백사막)", "오아시스"], meta: "🏜️ 세계 최대 사막 · 🐫 낙타 트레킹", desc: "끝없이 펼쳐진 모래 언덕과 기암괴석이 어우러진 황금빛 대지." },
+                    { name: "우유니 소금사막", examples: ["볼리비아", "플라야", "세상의 거울"], meta: "🇧🇴 소금 평원 · 🪞 반영의 미학", desc: "우기에는 하늘을 완벽하게 반사하는 거대한 거울이 되는 소금 호수." },
+                    { name: "그랜드 캐니언", examples: ["콜로라도강", "침식 지형", "지질학 교과서"], meta: "🇺🇸 대협곡 · ⏳ 20억 년의 지층", desc: "콜로라도강이 수억 년간 대지를 깎아내려 만든 지구의 속살." },
+                    { name: "와디 럼", examples: ["요르단", "붉은 사막", "마션 촬영지"], meta: "🇯🇴 붉은 사암 · 🌌 별 관측", desc: "붉은 사암 기둥과 모래가 어우러져 화성을 연상케 하는 웅장한 사막." }
+                ]
+            },
+            {
+                title: "빙하와 피오르", desc: "거대한 얼음덩어리가 대지를 깎아내고 바닷물이 들어와 형성된 협곡",
+                items: [
+                    { name: "노르웨이 피오르", examples: ["송네 피오르", "게이랑게르", "유람선"], meta: "🇳🇴 빙식곡 · 🌊 U자형 협곡", desc: "빙하가 깎아낸 깊은 U자곡에 바닷물이 들어와 형성된 웅장한 해안 절벽." },
+                    { name: "밀포드 사운드", examples: ["뉴질랜드 남섬", "피오르랜드", "폭포"], meta: "🇳🇿 남반구 피오르 · 🌧️ 다우지", desc: "바다에서 솟아오른 듯한 절벽과 수많은 폭포가 쏟아지는 태고의 신비." },
+                    { name: "알프스 빙하", examples: ["알레치 빙하", "융프라우", "체르마트"], meta: "🇨🇭 유럽의 지붕 · ❄️ 만년설", desc: "유럽 대륙의 중심에 위치한 거대한 얼음 강과 만년설 봉우리." },
+                    { name: "파타고니아", examples: ["페리토 모레노 빙하", "토레스 델 파이네", "안데스"], meta: "🇦🇷🇨🇱 남미의 끝 · 🧊 붕괴하는 빙하", desc: "안데스 산맥 끝자락, 거대한 빙벽이 호수로 무너져 내리는 장관." }
                 ]
             }
         ]
     },
     "tourism-2": {
-        title: "오버투어리즘과 도시의 몸살",
-        subtitle: "현대 대중 관광이 맞이한 임계점",
+        title: "문명의 시간 여행, 역사 유적",
+        subtitle: "인류가 남긴 위대한 발자취",
         badge: "II",
-        theme: "#6c5ce7",
-        iconSVG: `<path d="M40,100 H160 M100,40 V160" stroke="currentColor" stroke-width="12" opacity="0.3"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/>`,
+        theme: "#8D6E63",
+        iconSVG: `<path d="M40,160 L40,40 L100,80 L160,40 L160,160" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M40,100 H160" stroke="currentColor" stroke-width="6" opacity="0.2"/>`,
         criteria: [
-            { icon: "📉", label: "현상", text: "오버투어리즘" },
-            { icon: "🏠", label: "피해", text: "주거지 침해" },
-            { icon: "💰", label: "원인", text: "저가항공/SNS" }
+            { icon: "⏳", label: "대상", text: "고대 문명, 왕실" },
+            { icon: "🏛️", label: "유형", text: "유적, 궁전, 가옥" },
+            { icon: "🎨", label: "가치", text: "예술성, 역사성" }
         ],
         subCards: [
             {
-                title: "관광의 역습: 오버투어리즘", desc: "관광객이 원주민의 삶을 밀어내는 현상",
+                title: "역사 유적 여행", desc: "고대 문명의 거대한 건축물과 고고학적 유산을 통해 인류의 과거를 탐험",
                 items: [
-                    { name: "베네치아", examples: ["입장료 부과", "대형 크루즈 금지", "인구 유출"], meta: "🇮🇹 관광세 도입 · 🚫 정주권 위협", desc: "몰려드는 관광객으로 인해 물가가 폭등하고 주민들이 떠나 도시가 테마파크화 되는 대표적 사례." },
-                    { name: "바르셀로나", examples: ["에어비앤비 규제", "관광객 반대 시위", "람블라스 거리"], meta: "🇪🇸 주민 갈등 · 🏠 주거난 심화", desc: "주거지가 관광 숙소로 변하며 임대료가 상승하자 원주민들이 '관광객은 집으로 돌아가라'고 외치는 곳." },
-                    { name: "보라카이 & 마야 베이", examples: ["일시 폐쇄", "환경 정화", "입도 제한"], meta: "🇵🇭🇹🇭 환경 휴식년제 · 🌿 자연 복원", desc: "환경 파괴가 임계점을 넘어 아예 섬을 폐쇄하고 자연이 회복될 시간을 부여한 강력한 조치." }
+                    { name: "이집트 피라미드", examples: ["기자 대피라미드", "스핑크스", "왕가의 계곡"], meta: "🇪🇬 고대 이집트 · 🔺 불가사의", desc: "4,500년 전 사막 위에 세워진 파라오의 영원한 안식처." },
+                    { name: "마추픽추", examples: ["페루 안데스", "잉카 제국", "태양의 신전"], meta: "🇵🇪 공중 도시 · ☀️ 잉카의 비밀", desc: "안데스 산맥 깊은 곳, 구름 속에 숨겨진 잉카 제국의 잃어버린 도시." },
+                    { name: "앙코르와트", examples: ["캄보디아", "크메르 제국", "힌두-불교 사원"], meta: "🇰🇭 석조 사원 · 🌳 정글 속 유적", desc: "정글 속에 잠들어 있던 크메르 제국의 웅장한 종교 건축물." },
+                    { name: "콜로세움", examples: ["로마", "검투사 경기장", "로마 제국"], meta: "🇮🇹 로마의 상징 · 🏟️ 고대 엔터테인먼트", desc: "로마 제국의 영광과 시민들의 환호성이 서린 거대한 원형 경기장." }
+                ]
+            },
+            {
+                title: "고궁 여행", desc: "당대 최고의 권력과 기술이 집약된 왕실의 거처",
+                items: [
+                    { name: "자금성", examples: ["베이징", "명·청 황실", "9999칸"], meta: "🇨🇳 황제의 거처 · 🟥 붉은 성벽", desc: "세계에서 가장 큰 목조 건축물 군이자 중국 황제 권력의 정점." },
+                    { name: "경복궁", examples: ["서울", "조선 왕조", "근정전", "경회루"], meta: "🇰🇷 조선의 법궁 · 🏯 조화와 균형", desc: "북악산을 배경으로 유교적 이상과 자연의 조화를 구현한 조선의 정궁." },
+                    { name: "베르사유 궁전", examples: ["파리 근교", "루이 14세", "거울의 방"], meta: "🇫🇷 절대 왕정 · ✨ 바로크 양식", desc: "태양왕 루이 14세의 절대 권력을 과시하기 위해 지어진 화려함의 극치." },
+                    { name: "히메지 성", examples: ["일본 효고현", "백로성", "천수각"], meta: "🇯🇵 일본의 성 · 🦢 백색의 미학", desc: "흰 벽과 날렵한 지붕 선이 마치 백로가 날아오르는 듯한 일본 성곽 건축의 백미." }
+                ]
+            },
+            {
+                title: "전통 가옥과 구시가지", desc: "박제된 유적이 아니라, 과거의 생활 양식과 건축물이 보존되어 살아 숨 쉬는 공간",
+                items: [
+                    { name: "교토 기온 거리", examples: ["마치야", "게이샤", "전통 목조 가옥"], meta: "🇯🇵 천년 고도 · 👘 전통의 향기", desc: "일본의 전통 목조 가옥과 돌길이 보존되어 옛 정취를 느낄 수 있는 거리." },
+                    { name: "프라하 구시가지", examples: ["틴 성당", "천문 시계", "카를교"], meta: "🇨🇿 중세의 보석 · 🏰 고딕과 바로크", desc: "중세의 도시 구조와 건축물이 완벽하게 보존된 유럽의 야외 박물관." },
+                    { name: "페스 메디나", examples: ["모로코", "미로 골목", "가죽 염색(테너리)"], meta: "🇲🇦 이슬람 구시가 · 🎨 천 년의 미로", desc: "자동차 없는 9,000개의 골목길이 얽혀 있는 세계 최대의 중세 이슬람 도시." },
+                    { name: "안동 하회마을", examples: ["한옥", "양반 문화", "낙동강"], meta: "🇰🇷 씨족 마을 · 🏡 유교적 삶", desc: "강이 감싸 도는 명당에 기와집과 초가집이 어우러진 한국의 대표적 씨족 마을." }
+                ]
+            },
+            {
+                title: "예술 여행", desc: "도시 곳곳에 남겨진 위대한 건축가와 예술가들의 작품을 찾아가는 미적 탐방",
+                items: [
+                    { name: "가우디의 바르셀로나", examples: ["사그라다 파밀리아", "구엘 공원", "카사 바트요"], meta: "🇪🇸 곡선의 미학 · 🏗️ 미완의 걸작", desc: "자연을 모티브로 한 안토니 가우디의 독창적인 건축물이 도시 전체를 수놓은 곳." },
+                    { name: "빈 분리파 건축", examples: ["오스트리아 빈", "클림트", "제체시온"], meta: "🇦🇹 아르누보 · 🎨 세기말 예술", desc: "19세기 말 전통에 반기를 든 예술가들이 남긴 화려하고 장식적인 건축 유산." },
+                    { name: "피렌체 르네상스", examples: ["두오모", "우피치 미술관", "미켈란젤로"], meta: "🇮🇹 르네상스 발상지 · 🏛️ 인본주의 예술", desc: "브루넬레스키의 돔과 미켈란젤로의 조각 등 르네상스 예술이 집약된 도시." },
+                    { name: "빌바오 구겐하임", examples: ["스페인", "프랭크 게리", "티타늄 건축"], meta: "🇪🇸 해체주의 건축 · 🏭 도시 재생", desc: "티타늄으로 만든 파격적인 건축물이 쇠락한 공업 도시를 예술 도시로 바꾼 기적." }
                 ]
             }
         ]
     },
     "tourism-3": {
-        title: "새로운 여행의 지평",
-        subtitle: "여행이 다다른 성찰과 공존의 길",
+        title: "영혼의 지도, 종교와 순례",
+        subtitle: "구원과 성찰을 향한 인간의 이동",
         badge: "III",
         theme: "#6c5ce7",
-        iconSVG: `<path d="M20,100 Q100,20 180,100 T20,100" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.2"/>`,
+        iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
-            { icon: "🤝", label: "가치", text: "공정 여행" },
-            { icon: "🌿", label: "환경", text: "생태 관광" },
-            { icon: "👣", label: "방식", text: "느린 여행" }
+            { icon: "👣", label: "방식", text: "도보, 집단 이동" },
+            { icon: "🙏", label: "목적", text: "신앙, 성찰, 의무" },
+            { icon: "📍", label: "장소", text: "성지, 사원, 강" }
         ],
         subCards: [
             {
-                title: "지속 가능한 여행", desc: "소비하는 여행에서 존중하는 여행으로",
+                title: "산티아고 순례길", desc: "중세부터 이어진 야고보 성인의 무덤으로 향하는 길",
                 items: [
-                    { name: "부탄", examples: ["관광세(SDF)", "행복 지수", "환경 보호"], meta: "🇧🇹 고비용 저밀도 · 🧘 영적 여행", desc: "하루 200달러 이상의 체류비를 부과하여 관광객 수를 조절하고 자연과 전통을 지키는 모델." },
-                    { name: "코스타리카", examples: ["에코 투어리즘", "국립공원", "생물 다양성"], meta: "🇨🇷 생태 관광의 교과서 · 🦜 자연 공존", desc: "국토의 25%를 보호구역으로 지정하고, 자연을 훼손하지 않으면서 경제적 이익을 얻는 생태 관광의 선진국." },
-                    { name: "공정 여행 (Fair Travel)", examples: ["현지 민박 이용", "탄소 상쇄", "동물 쇼 반대"], meta: "⚖️ 윤리적 소비 · 🤝 지역 사회 환원", desc: "현지인의 삶을 존중하고 여행의 이익이 다국적 기업이 아닌 지역 사회로 돌아가게 하는 윤리적 여행." }
+                    { name: "프랑스 길", examples: ["생장피드포르", "피레네 산맥", "알베르게"], meta: "🇪🇸 800km 도보 · 🐚 조개껍데기", desc: "가장 대표적인 순례 코스. 국경을 넘어 스페인 북부를 가로지르는 여정." },
+                    { name: "산티아고 데 콤포스텔라", examples: ["대성당", "향로 미사", "순례자 증서"], meta: "✝️ 야고보의 무덤 · 🏁 여정의 끝", desc: "순례의 종착지. 대성당의 거대한 향로가 지친 순례자들을 맞이하는 곳." }
+                ]
+            },
+            {
+                title: "이슬람의 하지 (Hajj)", desc: "전 세계 무슬림이 평생 한 번은 수행해야 하는 의무",
+                items: [
+                    { name: "메카 대순례", examples: ["카바 신전", "타와프(돌기)", "이흐람(순례복)"], meta: "🇸🇦 이슬람 5대 의무 · 🕋 신앙의 중심", desc: "매년 수백만 명이 동시에 메카로 집결하여 카바 신전을 도는 거대한 종교 의식." },
+                    { name: "아라파트 산", examples: ["기도", "용서", "마지막 설교"], meta: "⛰️ 자비의 산 · 🙏 참회와 기도", desc: "순례의 절정. 무함마드가 마지막 설교를 했던 곳에서 하루 종일 기도하며 죄를 씻는 곳." }
+                ]
+            },
+            {
+                title: "삶과 죽음의 강, 바라나시", desc: "힌두교도에게 가장 성스러운 강이자 영혼의 해방 공간",
+                items: [
+                    { name: "갠지스강 가트", examples: ["목욕 의식", "아르티 푸자(불의 제사)", "순례자"], meta: "🇮🇳 힌두교 성지 · 🌊 정화의 물", desc: "강물에 몸을 씻어 죄를 씻어내고, 매일 밤 신에게 불을 바치는 제사가 열리는 계단." },
+                    { name: "마니카르니카 가트", examples: ["화장터", "윤회", "해탈(목샤)"], meta: "🔥 24시간 화장 · ☠️ 죽음의 일상화", desc: "공개된 장소에서 시신을 화장하여 강에 뿌림으로써 윤회의 고리를 끊고 해탈을 기원하는 곳." }
+                ]
+            },
+            {
+                title: "예루살렘 성지 순례", desc: "반경 1km 내에 3대 유일신교의 성지가 중첩된 곳",
+                items: [
+                    { name: "통곡의 벽 (유대교)", examples: ["헤롯 성전 서쪽 벽", "기도문", "바르 미츠바"], meta: "✡️ 유대교 제1성지 · 🧱 파괴된 성전", desc: "로마에 의해 파괴된 성전의 잔해. 유대인들이 잃어버린 나라와 성전을 그리며 기도하는 곳." },
+                    { name: "성묘 교회 (기독교)", examples: ["골고다 언덕", "예수의 무덤", "부활"], meta: "✝️ 예수의 수난 · ⛪ 기독교 성지", desc: "예수가 십자가에 못 박히고 묻히고 부활했다고 전해지는 장소에 세워진 교회." },
+                    { name: "바위 돔 (이슬람)", examples: ["황금 돔", "승천 바위", "알 아크사 모스크"], meta: "☪️ 이슬람 3대 성지 · 🕌 무함마드 승천", desc: "예언자 무함마드가 승천했다고 믿어지는 바위 위에 세워진 황금빛 돔 사원." }
+                ]
+            }
+        ]
+    },
+    "tourism-4": {
+        title: "도시와 엔터테인먼트",
+        subtitle: "현대 문명이 만든 화려한 놀이터",
+        badge: "IV",
+        theme: "#3c40c6",
+        iconSVG: `<rect x="40" y="80" width="40" height="80" fill="currentColor" opacity="0.3"/><rect x="100" y="40" width="40" height="120" fill="currentColor" opacity="0.5"/><path d="M20,160 H180" stroke="currentColor" stroke-width="4" opacity="0.2"/>`,
+        criteria: [
+            { icon: "🎨", label: "문화", text: "박물관, 미술관" },
+            { icon: "🎡", label: "유희", text: "테마파크, 카지노" },
+            { icon: "🛍️", label: "소비", text: "쇼핑몰, 명품 거리" },
+            { icon: "🏙️", label: "경관", text: "스카이라인, 야경" }
+        ],
+        subCards: [
+            {
+                title: "박물관과 미술관 기행", desc: "도시가 축적해 온 문화적 역량이 집약된 지적 여행",
+                items: [
+                    { name: "루브르 박물관", examples: ["파리", "모나리자", "유리 피라미드"], meta: "🇫🇷 세계 최대 박물관 · 🎨 인류의 보물", desc: "프랑스 왕궁이 세계 최고의 예술품을 소장한 박물관으로 변모한 문화의 성전." },
+                    { name: "대영 박물관", examples: ["런던", "로제타석", "엘긴 마블"], meta: "🇬🇧 인류 문명사 · 🌍 제국주의 수집", desc: "해가지지 않는 제국이 전 세계에서 수집한 유물들을 통해 인류 역사를 조망하는 곳." },
+                    { name: "뉴욕 MoMA", examples: ["맨해튼", "현대 미술", "앤디 워홀"], meta: "🇺🇸 현대 미술의 중심 · 🖼️ 팝아트", desc: "고흐의 '별이 빛나는 밤'부터 현대 팝아트까지, 근현대 미술의 흐름을 주도하는 미술관." }
+                ]
+            },
+            {
+                title: "테마파크와 위락 시설", desc: "철저하게 기획된 자본과 기술로 만들어진 환상의 공간",
+                items: [
+                    { name: "디즈니랜드", examples: ["애너하임", "올랜도", "도쿄", "파리"], meta: "🏰 꿈과 환상의 나라 · 🐭 스토리텔링", desc: "캐릭터와 스토리를 기반으로 현실과 단절된 완벽한 환상의 세계를 구현한 테마파크." },
+                    { name: "라스베이거스", examples: ["스트립", "카지노 호텔", "분수쇼"], meta: "🎰 사막의 불야성 · 🏨 엔터테인먼트", desc: "사막 한가운데 세워진 거대한 카지노와 호텔, 쇼가 어우러진 어른들의 놀이터." },
+                    { name: "유니버설 스튜디오", examples: ["할리우드", "오사카", "해리포터"], meta: "🎬 영화 속 세상 · 🎢 체험형 어트랙션", desc: "블록버스터 영화의 세계관을 현실에 재현하여 주인공이 된 듯한 경험을 제공." }
+                ]
+            },
+            {
+                title: "쇼핑과 소비의 공간", desc: "도시의 랜드마크가 된 거대 쇼핑몰과 명품 거리",
+                items: [
+                    { name: "두바이 몰", examples: ["부르즈 할리파", "수족관", "세계 최대"], meta: "🇦🇪 쇼핑의 천국 · 🛍️ 메가 쇼핑몰", desc: "단순한 쇼핑을 넘어 수족관, 스키장 등 레저가 결합된 세계 최대 규모의 쇼핑몰." },
+                    { name: "파리 샹젤리제", examples: ["개선문", "명품 본점", "가로수길"], meta: "🇫🇷 럭셔리 쇼핑 · 👗 패션의 거리", desc: "세계적인 명품 브랜드의 본점이 늘어선, 화려함과 유행을 선도하는 거리." },
+                    { name: "홍콩 하버시티", examples: ["침사추이", "면세 쇼핑", "오션 터미널"], meta: "🇭🇰 쇼핑 천국 · 🚢 크루즈와 연결", desc: "거대한 항구 터미널과 연결된 쇼핑몰. 아시아 쇼핑 관광의 상징적 장소." }
+                ]
+            },
+            {
+                title: "도시의 얼굴, 랜드마크", desc: "도시의 정체성을 시각화하는 아이콘",
+                items: [
+                    { name: "에펠탑", examples: ["파리", "철제 탑", "만국박람회"], meta: "🗼 파리의 상징 · 🏗️ 산업 시대 유산", desc: "건립 당시의 비난을 딛고 파리는 물론 프랑스 전체를 상징하게 된 철제 탑." },
+                    { name: "자유의 여신상", examples: ["뉴욕", "리버티섬", "이민자 환영"], meta: "🗽 미국의 상징 · 🚢 자유와 희망", desc: "뉴욕항 입구에서 아메리칸 드림을 꿈꾸며 들어오는 이민자들을 맞이했던 횃불." },
+                    { name: "시드니 오페라 하우스", examples: ["호주", "조개 껍데기", "항구"], meta: "🇦🇺 현대 건축 걸작 · 🐚 항구의 꽃", desc: "요트의 닻 혹은 조개껍데기를 형상화한 독창적인 디자인으로 시드니 항을 완성한 건축물." }
+                ]
+            }
+        ]
+    },
+    "tourism-5": {
+        title: "지역화와 축제",
+        subtitle: "공간이 브랜드가 되다: 세계를 유혹하는 지역의 전략",
+        badge: "V",
+        theme: "#e17055",
+        iconSVG: `<path d="M100,20 L130,80 H190 L140,120 L160,180 L100,140 L40,180 L60,120 L10,80 H70 Z" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/><circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.4"/>`,
+        criteria: [
+            { icon: "🏷️", label: "브랜드", text: "지리적 표시제" },
+            { icon: "🍽️", label: "미식", text: "음식 여행" },
+            { icon: "🎉", label: "축제", text: "문화, 생태, 수확" }
+        ],
+        subCards: [
+            {
+                title: "지리적 표시제 (GI)", desc: "기후와 토양이 빚어낸, 그 지역에서만 가능한 고유의 맛과 품질",
+                items: [
+                    { name: "샴페인 (Champagne)", examples: ["프랑스 샹파뉴", "스파클링 와인", "엄격한 규정"], meta: "🍾 축배의 술 · 🇫🇷 원산지 보호", desc: "프랑스 샹파뉴 지역에서 생산된 스파클링 와인에만 붙일 수 있는 이름." },
+                    { name: "파르미지아노 레지아노", examples: ["이탈리아", "파르마", "치즈의 왕"], meta: "🧀 치즈의 왕 · 🇮🇹 전통 제조법", desc: "이탈리아 특정 지역의 우유와 전통 방식으로 만들어진, '파마산'의 원조." },
+                    { name: "다르질링 홍차", examples: ["인도 히말라야", "홍차의 샴페인", "고산 기후"], meta: "🍵 홍차의 샴페인 · 🇮🇳 안개와 고도", desc: "히말라야 고산 지대의 안개와 서늘한 기후가 만들어낸 독특한 향미." }
+                ]
+            },
+            {
+                title: "음식 여행 (Gastronomy)", desc: "그 지역의 고유한 식재료와 조리법으로 만든 음식을 맛보기 위한 여행",
+                items: [
+                    { name: "미슐랭 투어", examples: ["파리", "도쿄", "파인 다이닝", "별점"], meta: "⭐ 미식의 정점 · 🍽️ 셰프의 예술", desc: "최고의 맛과 서비스를 찾아 국경을 넘나드는 미식가들의 순례." },
+                    { name: "오사카 도톤보리", examples: ["타코야키", "오코노미야키", "쿠이다오레(먹다 망함)"], meta: "🇯🇵 천하의 부엌 · 🐙 길거리 음식", desc: "'먹다가 망한다'는 말이 있을 정도로 다양한 길거리 음식이 넘쳐나는 미식 거리." },
+                    { name: "나폴리 피자", examples: ["이탈리아", "마르게리타", "화덕", "유네스코 유산"], meta: "🍕 피자의 본고장 · 🔥 장인 정신", desc: "엄격한 규정에 따라 화덕에서 구워내는, 유네스코 인류무형문화유산으로 등재된 피자." }
+                ]
+            },
+            {
+                title: "문화와 예술 축제", desc: "지역의 전통이나 예술을 테마로 도시 전체를 거대한 무대로 만드는 축제",
+                items: [
+                    { name: "리우 카니발", examples: ["브라질", "삼바 퍼레이드", "삼보드로모"], meta: "🇧🇷 지구촌 최대 축제 · 💃 열정과 해방", desc: "사순절 금욕 전, 억눌린 에너지를 폭발시키며 계급과 인종을 넘어 하나 되는 축제." },
+                    { name: "에든버러 축제", examples: ["스코틀랜드", "프린지 페스티벌", "공연 예술"], meta: "🇬🇧 공연 예술의 성지 · 🎭 거리 공연", desc: "도시 곳곳이 공연장이 되어 전 세계 예술가들이 모여드는 세계 최대의 공연 예술 축제." },
+                    { name: "베네치아 가면 축제", examples: ["이탈리아", "가면 무도회", "산마르코 광장"], meta: "🇮🇹 중세의 낭만 · 🎭 익명성과 일탈", desc: "화려한 가면 뒤에 신분을 숨기고 귀족과 평민이 어우러졌던 중세의 전통을 재현." }
+                ]
+            },
+            {
+                title: "기후와 생태 축제", desc: "지역의 기후적, 지리적 특성을 관광 상품으로 승화시킨 축제",
+                items: [
+                    { name: "삿포로 눈축제", examples: ["일본 홋카이도", "오도리 공원", "거대 설상"], meta: "❄️ 폭설의 자원화 · ☃️ 겨울 왕국", desc: "겨울철 폭설이라는 기후적 제약을 역이용하여 눈과 얼음 조각을 전시하는 축제." },
+                    { name: "보령 머드축제", examples: ["한국 대천해수욕장", "갯벌 체험", "머드탕"], meta: "🇰🇷 갯벌의 가치 · 🏖️ 체험형 축제", desc: "서해안의 질 좋은 진흙(머드)을 활용하여 외국인 관광객에게 가장 인기 있는 한국의 축제." },
+                    { name: "하얼빈 빙등제", examples: ["중국 헤이룽장성", "얼음 조각", "조명"], meta: "🇨🇳 얼음과 빛의 도시 · 🧊 쑹화강 얼음", desc: "영하 30도의 혹한 속에서 쑹화강의 얼음을 깎아 만든 투명한 얼음 건축물의 향연." }
+                ]
+            },
+            {
+                title: "특산물과 수확 축제", desc: "지역의 대표 농산물 수확을 기념하고 소비하며 지역 브랜드를 강화하는 축제",
+                items: [
+                    { name: "옥토버페스트", examples: ["독일 뮌헨", "맥주 텐트", "바이에른 전통"], meta: "🍺 맥주의 강 · 🥨 가을 수확 감사", desc: "10월의 수확을 감사하며 지역 양조장의 맥주를 마시는 세계 최대의 맥주 축제." },
+                    { name: "라 토마티나", examples: ["스페인 부뇰", "토마토 던지기", "붉은 거리"], meta: "🍅 잉여 농산물 · 🔴 광란의 축제", desc: "작은 마을에서 잉여 토마토를 서로에게 던지며 즐기는, 세계적으로 유명한 붉은 축제." },
+                    { name: "보졸레 누보 축제", examples: ["프랑스", "햇와인", "11월 셋째 주 목요일"], meta: "🍷 햇와인 출시 · 🍇 마케팅 승리", desc: "그해 수확한 포도로 만든 햇와인의 출시를 전 세계가 동시에 기념하는 와인 축제." }
+                ]
+            }
+        ]
+    },
+    "tourism-6": {
+        title: "현대 관광의 그늘",
+        subtitle: "관광객이 남기고 간 상처와 갈등",
+        badge: "VI",
+        theme: "#636e72",
+        iconSVG: `<path d="M40,100 H160 M100,40 V160" stroke="currentColor" stroke-width="12" opacity="0.3"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/>`,
+        criteria: [
+            { icon: "🚫", label: "현상", text: "오버투어리즘" },
+            { icon: "💸", label: "경제", text: "관광 누수" },
+            { icon: "🏠", label: "사회", text: "투어리스티피케이션" }
+        ],
+        subCards: [
+            {
+                title: "오버투어리즘 (과잉 관광)", desc: "수용 능력을 초과한 관광객으로 도시가 마비되는 현상",
+                items: [
+                    { name: "베네치아", examples: ["인구 유출", "입장료 부과", "대형 크루즈 금지"], meta: "🇮🇹 주민 없는 도시 · 🚫 정주권 침해", desc: "관광객에 밀려 주민들이 떠나고 도시가 거대한 테마파크로 전락하는 현상." },
+                    { name: "바르셀로나", examples: ["관광객 반대 시위", "소음 공해", "낙서"], meta: "🇪🇸 Tourists Go Home · 🏠 삶의 질 저하", desc: "주거지 깊숙이 침투한 관광객으로 인해 소음과 사생활 침해를 겪는 주민들의 저항." },
+                    { name: "교토", examples: ["기온 거리 촬영 금지", "버스 승차난", "마이코 괴롭힘"], meta: "🇯🇵 문화재의 비명 · 📸 무례한 관광", desc: "정숙해야 할 고도(古都)가 관광객의 소음과 무례함으로 얼룩지며 발생하는 문화적 충돌." }
+                ]
+            },
+            {
+                title: "관광 누수 (Tourism Leakage)", desc: "관광 수입이 현지에 남지 않고 다국적 기업이나 외부로 빠져나가는 현상",
+                items: [
+                    { name: "다국적 리조트", examples: ["몰디브", "발리", "카리브해", "올인클루시브"], meta: "🏨 자본의 유출 · ✈️ 패키지 여행", desc: "항공, 호텔, 식사를 선진국 자본이 독점하여 현지인에게는 낙수 효과가 거의 없는 구조." },
+                    { name: "수입 의존형 관광", examples: ["기념품 수입", "식자재 수입", "네팔 등산 장비"], meta: "📦 수입산 소비 · 📉 지역 경제 소외", desc: "관광지에서 팔리는 기념품과 호텔 식자재가 대부분 수입산이라 지역 경제 순환이 끊긴 상태." }
+                ]
+            },
+            {
+                title: "투어리스티피케이션", desc: "주거지가 관광지화되면서 원주민이 쫓겨나고 근린 시설이 사라지는 현상",
+                items: [
+                    { name: "주거지의 상업화", examples: ["서울 북촌/서촌", "파리 마레 지구", "전주 한옥마을"], meta: "🏘️ 세탁소 대신 카페 · 📈 임대료 폭등", desc: "주민을 위한 세탁소, 철물점이 사라지고 그 자리에 관광객용 카페와 기념품 가게가 들어서는 현상." },
+                    { name: "단기 임대의 역습", examples: ["에어비앤비", "베를린", "런던", "주택 부족"], meta: "🏠 집이 호텔로 · 🔑 월세 상승", desc: "주거용 주택이 수익성 높은 관광객 숙소로 전환되면서 현지인의 주거 공간이 부족해지고 임대료가 폭등." }
+                ]
+            }
+        ]
+    },
+    "tourism-7": {
+        title: "지속 가능한 여행의 미래",
+        subtitle: "소비하는 여행에서 공존하고 성찰하는 여행으로",
+        badge: "VII",
+        theme: "#27ae60",
+        iconSVG: `<path d="M100,20 Q140,60 140,100 Q140,140 100,180 Q60,140 60,100 Q60,60 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><path d="M100,60 V140 M60,100 H140" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
+        criteria: [
+            { icon: "🌿", label: "환경", text: "생태 관광" },
+            { icon: "🤝", label: "경제", text: "공정 여행" },
+            { icon: "🕯️", label: "성찰", text: "다크 투어리즘" }
+        ],
+        subCards: [
+            {
+                title: "생태 관광 (Ecotourism)", desc: "자연을 훼손하지 않고 즐기며, 그 수익으로 환경 보전에 기여하는 여행",
+                items: [
+                    { name: "코스타리카", examples: ["국토의 25% 국립공원", "에코 로지", "생물 다양성"], meta: "🇨🇷 국가 발전 전략 · 🦜 자연 공존", desc: "관광 수입을 환경 보호에 재투자하여 자연 보전과 경제 성장이 선순환하는 국가적 모델." },
+                    { name: "갈라파고스 & 부탄", examples: ["입도 제한", "가이드 의무화", "관광세(SDF)"], meta: "🛡️ 수용력 제한 · 🇧🇹 고부가가치 저밀도", desc: "엄격한 인원 제한과 높은 체류 비용을 통해 환경 수용력을 철저히 지키는 보존 전략." }
+                ]
+            },
+            {
+                title: "공정 여행 (Fair Travel)", desc: "현지인의 삶을 존중하고 정당한 대가를 지불하는 윤리적 여행",
+                items: [
+                    { name: "현지 소비 실천", examples: ["로컬 민박/식당", "현지 가이드", "팁 문화"], meta: "💰 지역 경제 환원 · 🤝 관계 맺기", desc: "다국적 프랜차이즈 대신 현지인이 운영하는 가게를 이용하여 이익이 지역 사회에 직접 돌아가게 하는 여행." },
+                    { name: "동물 윤리와 탄소", examples: ["코끼리 트레킹 반대", "기차 여행", "제로 웨이스트"], meta: "🐘 동물 학대 거부 · 🌿 탄소 발자국", desc: "동물을 학대하는 관광 상품을 거부하고, 탄소 배출을 최소화하는 이동 수단을 선택하는 책임 있는 여행." }
+                ]
+            },
+            {
+                title: "다크 투어리즘 (Dark Tourism)", desc: "비극의 역사 현장을 찾아 교훈을 얻고 성찰하는 여행",
+                items: [
+                    { name: "전쟁과 학살의 현장", examples: ["아우슈비츠", "킬링필드", "히로시마 평화공원"], meta: "🕯️ 추모와 반성 · ☮️ 평화 교육", desc: "인류의 잔혹한 역사를 기억하고 희생자를 추모하며, 다시는 비극이 되풀이되지 않기를 다짐하는 장소." },
+                    { name: "재난과 재해의 기억", examples: ["체르노빌", "그라운드 제로(9.11)", "제주 4.3 평화공원"], meta: "⚠️ 안전과 교훈 · 🎗️ 희생자 위령", desc: "거대한 재난과 사고의 현장에서 안전의 중요성과 생명의 소중함을 되새기는 성찰의 여행." },
+                    { name: "서대문 형무소", examples: ["서울", "독립운동", "민주화 운동"], meta: "🇰🇷 저항의 역사 · ⛓️ 자유의 가치", desc: "식민 지배와 독재에 맞서 싸운 선열들의 고통과 희생이 서린 공간에서 자유와 독립의 가치를 배우는 곳." }
                 ]
             }
         ]
@@ -5614,32 +5935,192 @@ const geopoliticsData = {
 };
 
 // [신규] 갈등과 공존의 세계 데이터 (HTML/CSS 통합본)
+// [전면 리뉴얼] 갈등과 공존의 세계 데이터 (4개 카드 구조)
 const conflictData = {
     "conflict-1": {
-        title: "지구촌의 갈등과 분쟁",
-        subtitle: "영토, 자원, 종교가 얽힌 세계의 화약고",
+        title: "영토와 국경 분쟁",
+        subtitle: "선을 긋기 위한 끝없는 다툼",
         badge: "I",
-        theme: "#57606f",
-        iconSVG: `<path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z" fill="currentColor" opacity="0.3"/>`,
+        theme: "#c0392b",
+        iconSVG: `<path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="4" stroke-dasharray="10 10" opacity="0.4"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/>`,
         criteria: [
-            { icon: "⚔️", label: "유형", text: "영토/자원/종교" },
-            { icon: "🕊️", label: "해결", text: "협정/국제법" },
-            { icon: "🌍", label: "범위", text: "지구촌 전체" }
+            { icon: "⚔️", label: "유형", text: "영유권 / 전략적" },
+            { icon: "🌊", label: "공간", text: "육상 / 해양" },
+            { icon: "📜", label: "원인", text: "역사 / 자원" }
         ],
         subCards: [
             {
-                title: "영토와 국경 분쟁", desc: "선을 긋기 위한 끝없는 다툼",
+                title: "역사적 영유권 분쟁", desc: "제국주의와 전쟁의 유산으로 남은 영토 갈등",
                 items: [
-                    { name: "카슈미르 분쟁", examples: ["인도-파키스탄", "종교 갈등", "핵무기 보유국"], meta: "🇵🇰🇮🇳 아시아의 화약고 · 💥 3차례 전쟁", desc: "힌두교(인도)와 이슬람(파키스탄)의 대립, 그리고 중국까지 얽힌 세계에서 가장 위험한 국경." },
-                    { name: "쿠릴 열도 (북방 영토)", examples: ["러시아-일본", "2차대전 유산", "어업권"], meta: "🇷🇺🇯🇵 샌프란시스코 조약 · ⚓ 전략 요충지", desc: "러시아의 태평양 진출로이자 일본의 고토 회복 의지가 충돌하는 북태평양의 섬들." },
-                    { name: "독도", examples: ["대한민국-일본", "실효 지배", "역사적 고유 영토"], meta: "🇰🇷 대한민국의 아침 · 🌊 동해의 주권", desc: "역사적, 지리적, 국제법적으로 명백한 대한민국의 영토이나 일본이 부당하게 영유권을 주장하는 곳." }
+                    { name: "쿠릴 열도", examples: ["이투루프", "쿠나시르", "시코탄", "하보마이"], meta: "🇷🇺 실효 지배 · 🇯🇵 반환 요구", desc: "2차대전 종전 후 소련이 점령했으나 일본이 반환을 요구하며 평화조약 체결의 걸림돌이 되고 있는 곳." },
+                    { name: "포클랜드 제도", examples: ["스탠리", "동포클랜드", "서포클랜드"], meta: "🇬🇧 실효 지배 · 🇦🇷 영유권 주장", desc: "아르헨티나 앞바다에 있지만 영국이 실효 지배하는 섬. 1982년 전쟁까지 치른 제국주의의 잔재." },
+                    { name: "지브롤터", examples: ["더 록(The Rock)", "지브롤터 공항", "스페인 국경"], meta: "🇬🇧 전략 기지 · 🇪🇸 반환 요구", desc: "스페인 영토 끝자락에 박힌 영국의 전략적 해군 기지. 300년 넘게 이어진 주권 논쟁의 현장." },
+                    { name: "서사하라", examples: ["엘아이운", "모래 장벽", "폴리사리오 전선"], meta: "🇲🇦 모로코 점령 · 🚩 독립 요구", desc: "스페인 철수 후 모로코가 점령했으나 원주민들이 독립을 요구하며 무장 투쟁을 벌이는 사막." },
+                    { name: "북아일랜드", examples: ["벨파스트", "데리", "평화의 벽"], meta: "🇬🇧 영국 잔류 · 🇮🇪 아일랜드 통합", desc: "종교와 민족 정체성이 얽혀 유혈 사태까지 빚어졌던 영국의 아픈 손가락." },
+                    { name: "아비에이 지역", examples: ["수단-남수단 국경", "무그라드 분지"], meta: "🛢️ 유전 지대 · 🚧 미확정 국경", desc: "풍부한 석유 매장량으로 인해 수단과 남수단 양측이 서로 영유권을 주장하는 뜨거운 감자." }
                 ]
             },
             {
-                title: "자원과 에너지 전쟁", desc: "생존과 번영을 위한 쟁탈전",
+                title: "전략적 요충지 분쟁", desc: "군사적, 경제적 가치가 높아 반드시 차지해야 하는 급소",
                 items: [
-                    { name: "나일강 수자원 분쟁", examples: ["에티오피아(상류)", "이집트(하류)", "르네상스 댐"], meta: "💧 물 전쟁 · ⚡ 댐 건설 갈등", desc: "나일강 상류의 댐 건설로 인해 수량이 줄어들 것을 우려하는 하류 국가와의 생존권 다툼." },
-                    { name: "북극해 자원 경쟁", examples: ["러시아 vs 서방", "북극 항로", "석유/가스 매장"], meta: "❄️ 녹는 얼음 · 🛢️ 최후의 자원 보고", desc: "빙하가 녹으며 드러난 막대한 자원과 새로운 항로를 선점하기 위한 연안국들의 소리 없는 전쟁." }
+                    { name: "카슈미르", examples: ["스리나가르", "잠무", "라다크", "시아첸 빙하"], meta: "🇮🇳🇵🇰🇨🇳 3국 대치 · 💥 화약고", desc: "힌두교와 이슬람교의 충돌, 중국의 개입까지 얽혀 세계에서 가장 위험한 국경선이 된 고원." },
+                    { name: "골란 고원", examples: ["헤르몬 산", "갈릴래아 호수", "이스라엘 정착촌"], meta: "🇮🇱 군사 점령 · 🇸🇾 반환 요구", desc: "이스라엘이 시리아로부터 점령한 전략적 고지. 수자원 통제권과 군사적 우위를 동시에 확보." },
+                    { name: "크림 반도", examples: ["세바스토폴", "심페로폴", "얄타"], meta: "🇷🇺 강제 병합 · ⚓ 흑해 함대", desc: "부동항 확보와 흑해 제해권 장악을 위해 러시아가 무력으로 병합한 우크라이나의 요충지." },
+                    { name: "나고르노카라바흐", examples: ["스테파나케르트", "슈샤", "라친 회랑"], meta: "🇦🇿 영토 내 · 🇦🇲 민족 거주", desc: "아제르바이잔 영토 내에 아르메니아인이 거주하는 위요지. 캅카스의 대표적인 민족 분쟁." },
+                    { name: "트란스니스트리아", examples: ["티라스폴", "드네스트르강 동안"], meta: "🇲🇩 몰도바 내 · 🇷🇺 친러 미승인국", desc: "몰도바 동부의 친러시아 지역이 독립을 선언하고 러시아군이 주둔하는 '얼어붙은 분쟁' 지역." }
+                ]
+            },
+            {
+                title: "해양 영토 분쟁", desc: "자원과 항로를 확보하기 위한 바다 위의 영토 확장 경쟁",
+                items: [
+                    { name: "남중국해", examples: ["스프래틀리 군도", "파라셀 군도", "스카버러 암초"], meta: "🇨🇳 구단선 · 🇻🇳🇵🇭 영유권 갈등", desc: "중국이 주장하는 역사적 권리와 주변국의 배타적 경제수역(EEZ)이 충돌하는 바다." },
+                    { name: "센카쿠 열도", examples: ["우오쓰리섬", "구바섬", "다이쇼섬"], meta: "🇯🇵 실효 지배 · 🇨🇳 영유권 주장", desc: "동중국해의 자원과 해상 주도권을 두고 중일 양국이 첨예하게 대립하는 무인도." },
+                    { name: "북극해", examples: ["로모노소프 해령", "북극점", "북서 항로"], meta: "❄️ 자원 선점 · 🚢 항로 확보", desc: "빙하가 녹으며 드러난 자원과 항로를 선점하기 위해 연안국들이 대륙붕 영유권을 주장." },
+                    { name: "에게해", examples: ["레스보스", "히오스", "로도스"], meta: "🇬🇷 그리스 섬 · 🇹🇷 튀르키예 인접", desc: "수천 개의 섬이 흩어진 바다에서 영해와 영공 범위를 두고 NATO 동맹국끼리 대립." }
+                ]
+            }
+        ]
+    },
+    "conflict-2": {
+        title: "민족과 종교의 충돌",
+        subtitle: "\"우리는 누구인가\"라는 질문이 피를 부르는 현장",
+        badge: "II",
+        theme: "#8e44ad",
+        iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
+        criteria: [
+            { icon: "🛐", label: "종교", text: "신념의 차이" },
+            { icon: "🚩", label: "민족", text: "분리 독립" },
+            { icon: "🗣️", label: "언어", text: "정체성 갈등" }
+        ],
+        subCards: [
+            {
+                title: "종교 분쟁의 화약고", desc: "서로 다른 신념이 충돌하여 피비린내 나는 싸움이 벌어지는 곳",
+                items: [
+                    { name: "이스라엘과 팔레스타인", examples: ["가자 지구", "서안 지구", "예루살렘"], meta: "✡️ 유대교 · ☪️ 이슬람교", desc: "한 땅을 두고 벌이는 종교적 신념과 민족주의가 결합된 현대사 최장기 분쟁." },
+                    { name: "발칸 반도", examples: ["보스니아", "코소보", "세르비아"], meta: "✝️ 가톨릭/정교회 · ☪️ 이슬람", desc: "세 종교가 교차하는 지점에서 민족주의가 폭발하여 '인종 청소'의 비극을 낳은 곳." },
+                    { name: "북아일랜드", examples: ["벨파스트", "런던데리"], meta: "⛪ 신교(영국) · ✝️ 구교(아일랜드)", desc: "같은 기독교 내에서 교파와 정치적 지향점이 갈려 테러와 유혈 사태로 얼룩졌던 역사." },
+                    { name: "필리핀 민다나오", examples: ["마라위", "코타바토", "술루 제도"], meta: "✝️ 가톨릭 국가 · ☪️ 이슬람 반군", desc: "가톨릭 국가인 필리핀 남부에서 무슬림들이 분리 독립을 요구하며 벌이는 무장 투쟁." },
+                    { name: "스리랑카", examples: ["자프나", "콜롬보", "트링코말리"], meta: "☸️ 불교(싱할라) · 🕉️ 힌두교(타밀)", desc: "다수파인 불교도와 소수파인 힌두교도 간의 차별과 갈등이 낳은 참혹한 내전." }
+                ]
+            },
+            {
+                title: "민족 분리주의 운동", desc: "고유한 정체성을 지키기 위해 독립을 요구하는 국가 없는 민족들",
+                items: [
+                    { name: "쿠르드족", examples: ["디야르바키르(튀르키예)", "아르빌(이라크)", "카미슐리(시리아)"], meta: "🚩 국가 없는 민족 · ⛰️ 산악 지대", desc: "3천만 명의 인구가 4개국에 흩어져 살며 독립을 꿈꾸지만 강대국에 의해 좌절되는 민족." },
+                    { name: "카탈루냐", examples: ["바르셀로나", "지로나", "타라고나"], meta: "🇪🇸 스페인 내 · 💰 경제적 부유", desc: "독자적인 언어와 문화를 가지고 있으며, 경제력을 바탕으로 스페인으로부터 독립을 요구." },
+                    { name: "바스크", examples: ["빌바오", "산세바스티안", "비토리아"], meta: "🗣️ 고립어 사용 · 💣 과거 무장투쟁", desc: "유럽에서 가장 오래된 독자적 언어를 사용하며, 과거 무장 투쟁을 통해 자치권을 획득." },
+                    { name: "티베트", examples: ["라싸", "시가체", "다람살라(망명정부)"], meta: "☸️ 불교 문화 · 🇨🇳 중국 통치", desc: "중국의 강압적인 통치에 맞서 불교문화와 민족 정체성을 지키기 위한 비폭력 저항." },
+                    { name: "신장 위구르", examples: ["우루무치", "카슈가르", "호탄"], meta: "☪️ 튀르크계 · 👁️ 감시와 통제", desc: "이슬람 문화를 가진 위구르족이 중국의 강력한 동화 정책과 감시 속에서 신음하는 곳." }
+                ]
+            },
+            {
+                title: "언어 갈등", desc: "언어의 차이가 정치적, 경제적 갈등의 핵심이 된 지역",
+                items: [
+                    { name: "벨기에", examples: ["플랑드르(북부)", "왈로니아(남부)", "브뤼셀"], meta: "🇳🇱 네덜란드어 · 🇫🇷 프랑스어", desc: "언어를 경계로 정당, 방송, 교육이 철저히 분리되어 연방제로 유지되는 국가." },
+                    { name: "퀘벡", examples: ["몬트리올", "퀘벡 시티"], meta: "🇫🇷 프랑스어 · 🇨🇦 캐나다 내", desc: "영미권 바다 속에 고립된 프랑스어 섬. 언어를 지키기 위해 강력한 보호 정책을 시행." },
+                    { name: "우크라이나", examples: ["돈바스", "크림반도", "키이우"], meta: "🇺🇦 우크라이나어 · 🇷🇺 러시아어", desc: "러시아어 사용 인구가 많은 동부와 우크라이나어 중심의 서부 간의 정체성 갈등." }
+                ]
+            },
+            {
+                title: "부족 갈등과 내전", desc: "식민 지배가 남긴 인위적 국경선 안에서 벌어지는 권력 투쟁",
+                items: [
+                    { name: "수단 내전", examples: ["다르푸르", "하르툼", "블루나일"], meta: "🕌 아랍계 · 🏿 아프리카계", desc: "인종과 종교가 다른 집단이 강제로 통합되었다가 분리 독립과 내전으로 이어진 비극." },
+                    { name: "르완다", examples: ["키갈리", "무라비 기술학교"], meta: "⚔️ 후투족 vs 투치족 · 🩸 제노사이드", desc: "식민 통치가 심어놓은 종족 차별의 씨앗이 폭발하여 단기간에 대량 학살이 발생." },
+                    { name: "미얀마", examples: ["라카인주", "양곤", "네피도"], meta: "☸️ 불교도 · ☪️ 로힝야족 탄압", desc: "로힝야족을 불법 이민자로 규정하고 탄압하여 발생한 대규모 난민 사태." },
+                    { name: "예멘", examples: ["사나", "아덴", "호데이다"], meta: "⚔️ 후티 반군 · 🇸🇦🇮🇷 대리전", desc: "부족 갈등에 종파 갈등, 주변 강대국의 대리전까지 겹쳐 최악의 인도주의적 위기 발생." }
+                ]
+            }
+        ]
+    },
+    "conflict-3": {
+        title: "자원 전쟁",
+        subtitle: "생존과 번영을 위한 쟁탈전",
+        badge: "III",
+        theme: "#f1c40f",
+        iconSVG: `<path d="M100,20 L160,180 L20,80 H180 L40,180 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.4"/>`,
+        criteria: [
+            { icon: "💧", label: "물", text: "생존권" },
+            { icon: "🛢️", label: "에너지", text: "패권" },
+            { icon: "🔋", label: "광물", text: "미래 기술" }
+        ],
+        subCards: [
+            {
+                title: "물의 전쟁", desc: "기후 위기로 귀해진 물을 차지하기 위한 상류국과 하류국의 투쟁",
+                items: [
+                    { name: "나일강", examples: ["에티오피아", "이집트", "수단", "르네상스 댐"], meta: "🇪🇹 상류 댐 건설 · 🇪🇬 하류 물 부족", desc: "에티오피아의 댐 건설로 나일강 수량이 줄어들 것을 우려하는 이집트와의 군사적 긴장." },
+                    { name: "메콩강", examples: ["중국(란창강)", "베트남", "캄보디아", "태국"], meta: "🇨🇳 상류 댐 통제 · 📉 하류 가뭄", desc: "중국이 상류에 건설한 댐들이 하류 국가들의 농업과 생태계를 위협하며 갈등 유발." },
+                    { name: "갠지스강", examples: ["인도 파라카 댐", "방글라데시", "갠지스 델타"], meta: "🇮🇳 상류 취수 · 🇧🇩 염해 피해", desc: "인도가 상류에서 물길을 돌리면서 하류 방글라데시가 겪는 물 부족과 농업 피해." },
+                    { name: "요르단강", examples: ["이스라엘", "시리아", "요르단", "갈릴래아 호수"], meta: "💧 절대적 물 부족 · ⚔️ 중동 전쟁", desc: "수자원이 절대적으로 부족한 건조 지역에서 물을 확보하기 위한 처절한 싸움." },
+                    { name: "티그리스-유프라테스강", examples: ["튀르키예", "이라크", "시리아", "아타튀르크 댐"], meta: "🇹🇷 거대 댐 프로젝트 · 🏜️ 하류 사막화", desc: "상류국 튀르키예의 댐 건설로 인해 하류의 이라크와 시리아가 겪는 물 부족 위기." }
+                ]
+            },
+            {
+                title: "에너지 패권 경쟁", desc: "석유와 가스의 생산 및 수송로를 장악하기 위한 각축전",
+                items: [
+                    { name: "남중국해", examples: ["스프래틀리 군도", "파라셀 군도", "중국", "베트남"], meta: "🛢️ 해저 자원 · 🚢 수송로 통제", desc: "막대한 해저 자원과 해상 수송로를 독점하려는 중국과 이를 저지하려는 주변국의 충돌." },
+                    { name: "동지중해", examples: ["튀르키예", "그리스", "사이프러스", "리비아"], meta: "⚡ 거대 가스전 · ⚓ EEZ 갈등", desc: "최근 발견된 거대 가스전을 둘러싸고 앙숙인 튀르키예와 그리스가 대립하는 신흥 분쟁지." },
+                    { name: "카스피해", examples: ["아제르바이잔", "러시아", "이란", "투르크메니스탄"], meta: "🌊 바다 vs 호수 · 🛢️ 유전 분할", desc: "바다냐 호수냐를 둔 법적 논쟁 뒤에 숨겨진, 막대한 석유와 가스를 차지하기 위한 셈법." },
+                    { name: "남수단", examples: ["남수단 유전", "수단 송유관", "포트수단"], meta: "🛢️ 생산지(남) · 🚢 수출항(북)", desc: "석유 때문에 갈라섰지만, 석유를 팔기 위해서는 서로가 필요한 남북 수단의 갈등." }
+                ]
+            },
+            {
+                title: "미래 자원 쟁탈전", desc: "4차 산업혁명의 필수 소재인 희귀 광물을 확보하기 위한 갈등",
+                items: [
+                    { name: "콩고 코발트", examples: ["카탕가 주", "다국적 기업", "무장 반군"], meta: "🔋 배터리 원료 · 🩸 아동 노동", desc: "전 세계 코발트의 70%가 생산되지만, 이익은 반군에게 돌아가고 주민은 착취당하는 비극." },
+                    { name: "볼리비아 리튬", examples: ["우유니 소금사막", "포토시", "국영 기업"], meta: "🚗 전기차 시대 · ⛰️ 자원 민족주의", desc: "전기차 시대의 핵심 자원인 리튬을 두고 벌어지는 강대국의 러브콜과 자원 민족주의." },
+                    { name: "북극해", examples: ["로모노소프 해령", "야말 반도", "그린란드"], meta: "❄️ 미개발 자원 · 🚢 쇄빙선 경쟁", desc: "빙하가 녹으며 드러난 미개발 자원의 보고를 선점하기 위해 연안국들이 벌이는 경쟁." },
+                    { name: "아프가니스탄 희토류", examples: ["헬만드 주", "중국 투자", "탈레반"], meta: "📱 첨단 산업 필수 · 💰 1조 달러 가치", desc: "막대한 희토류와 리튬이 매장되어 있어, 혼란 속에서도 강대국들이 눈독을 들이는 곳." }
+                ]
+            }
+        ]
+    },
+    "conflict-4": {
+        title: "평화와 공존을 위한 노력",
+        subtitle: "갈등을 넘어 공존으로 향하는 인류의 지혜",
+        badge: "IV",
+        theme: "#3498db",
+        iconSVG: `<path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99z" fill="currentColor" opacity="0.3"/>`,
+        criteria: [
+            { icon: "🇺🇳", label: "기구", text: "UN, NGO" },
+            { icon: "🤝", label: "협력", text: "EU, ASEAN" },
+            { icon: "🌿", label: "환경", text: "기후 협약" }
+        ],
+        subCards: [
+            {
+                title: "국제기구와 협력", desc: "국가 간의 분쟁을 조정하고 평화를 유지하기 위한 초국가적 노력",
+                items: [
+                    { name: "국제연합", examples: ["뉴욕 본부", "안전보장이사회", "평화유지군"], meta: "🇺🇳 세계 평화 기구 · 🕊️ 분쟁 중재", desc: "2차대전 이후 설립된 세계 최대 국제기구. 평화유지군 파견 등을 통해 분쟁을 억제." },
+                    { name: "국제사법재판소", examples: ["헤이그", "평화궁", "영토 분쟁 판결"], meta: "⚖️ 세계의 법정 · 📜 국제법 적용", desc: "국가 간의 법적 분쟁을 국제법에 따라 평화적으로 해결하는 사법 기관." },
+                    { name: "비정부기구", examples: ["국경없는의사회", "앰네스티", "그린피스"], meta: "🤝 시민 사회 연대 · 🚑 인도적 지원", desc: "정부의 손이 닿지 않는 분쟁 지역과 재난 현장에서 구호 및 인권 감시 활동 수행." }
+                ]
+            },
+            {
+                title: "평화 조약과 완충지대", desc: "무력 충돌을 멈추고 평화를 유지하기 위해 설정된 공간과 약속",
+                items: [
+                    { name: "남극 조약", examples: ["남극점", "과학 기지", "비무장"], meta: "🇦🇶 인류 공동 유산 · 🚫 군사 활동 금지", desc: "지구상 유일하게 영토 주권이 유예되고 군사 활동이 금지된 평화와 과학의 대륙." },
+                    { name: "비무장지대", examples: ["판문점", "38선", "임진강"], meta: "🇰🇷🇰🇵 냉전의 유산 · 🌿 생태 평화 공원", desc: "중무장한 군대가 대치하지만 역설적으로 생태계가 보전된 평화의 잠재적 공간." },
+                    { name: "사이프러스 그린 라인", examples: ["니코시아", "완충 지대", "UN군"], meta: "🇺🇳 UN 통제 구역 · 🚧 분단의 상처", desc: "그리스계 남부와 튀르키예계 북부의 충돌을 막기 위해 UN이 관리하는 완충 지대." },
+                    { name: "스발바르 조약", examples: ["롱위에아르뷔엔", "국제 종자 저장고"], meta: "🌍 열린 국경 · ⛏️ 경제 활동 자유", desc: "노르웨이의 주권을 인정하되 가입국 국민 누구나 자유롭게 거주하고 활동할 수 있는 곳." }
+                ]
+            },
+            {
+                title: "초국경적 협력", desc: "국경을 넘어 경제와 안보를 공유하며 공존을 모색하는 지역 협력체",
+                items: [
+                    { name: "유럽 연합", examples: ["브뤼셀", "솅겐 조약", "유로화"], meta: "🇪🇺 초국가적 연합 · 🔓 국경 없는 유럽", desc: "경제 통합을 통해 전쟁을 방지하고 평화를 정착시킨 가장 성공적인 지역 통합 모델." },
+                    { name: "아세안", examples: ["자카르타", "동남아 10개국", "경제 공동체"], meta: "🌏 동남아 협력 · 🤝 경제/안보 공조", desc: "다양한 체제를 가진 동남아 국가들이 경제 성장과 지역 안정을 위해 결성한 협력체." },
+                    { name: "나프타 (USMCA)", examples: ["미국", "캐나다", "멕시코"], meta: "🌎 북미 경제 블록 · 🏭 공급망 통합", desc: "북미 3국 간의 관세 장벽을 없애고 거대한 단일 시장을 형성한 경제 협력체." },
+                    { name: "메르코수르", examples: ["브라질", "아르헨티나", "우루과이", "파라과이"], meta: "🇧🇷🇦🇷 남미 공동시장 · 🚢 관세 동맹", desc: "남미 국가들 간의 무역 장벽을 낮추고 경제 협력을 강화하기 위해 결성된 공동시장." },
+                    { name: "아프리카 연합", examples: ["아디스아바바", "55개국", "평화 유지군"], meta: "🌍 아프리카 통합 · 🛡️ 분쟁 해결", desc: "아프리카 대륙의 정치적, 경제적 통합과 분쟁 해결을 주도하는 기구." }
+                ]
+            },
+            {
+                title: "지구를 위한 약속", desc: "국경을 초월한 기후 위기와 환경 문제에 대응하기 위한 인류의 공동 노력",
+                items: [
+                    { name: "파리 기후 협정", examples: ["파리", "온실가스 감축", "탄소 중립"], meta: "🌡️ 기후 위기 대응 · 🌍 전 지구적 합의", desc: "지구 평균 온도 상승폭을 1.5도 이내로 제한하기 위해 전 세계가 동참한 역사적 합의." },
+                    { name: "람사르 협약", examples: ["람사르", "습지 보전", "철새 도래지"], meta: "🦆 습지 보호 · 💧 생물 다양성", desc: "물새 서식지로서 국제적으로 중요한 습지를 보호하기 위해 체결된 최초의 환경 협약." },
+                    { name: "몬트리올 의정서", examples: ["몬트리올", "프레온 가스 금지", "오존층"], meta: "🛡️ 오존층 복원 · ✅ 성공적 협약", desc: "오존층 파괴 물질을 규제하여 실제로 오존층 회복 성과를 거둔 가장 성공적인 협약." },
+                    { name: "생물다양성 협약", examples: ["리우데자네이루", "유전자원", "나고야 의정서"], meta: "🦜 생태계 보전 · 🧬 이익 공유", desc: "지구상의 생물종과 생태계를 보전하고 생물 자원의 이익을 공정하게 나누기 위한 약속." },
+                    { name: "바젤 협약", examples: ["바젤", "유해 폐기물", "쓰레기 수출"], meta: "☠️ 폐기물 관리 · 🚫 환경 정의", desc: "선진국의 유해 폐기물이 개발도상국으로 무분별하게 투기되는 것을 막기 위한 협약." }
                 ]
             }
         ]
