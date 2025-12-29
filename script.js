@@ -1747,3 +1747,138 @@ function renderFronts(containerId, data) {
         container.appendChild(card);
     });
 }
+
+/* [신규] 홈 화면 랜덤 탐험 데이터 */
+const discoveryData = [
+    { text: "🤠 카우보이와 서부극의 무대", section: "geo", card: "7" },
+    { text: "🧛 드라큘라의 성, 루마니아", section: "religion", card: "religion-2" },
+    { text: "☕ 커피의 고향, 에티오피아", section: "agriculture", card: "agri-3" },
+    { text: "🌋 불의 고리, 환태평양 조산대", section: "terrain", card: "terrain-1" },
+    { text: "🕋 이슬람의 성지, 메카", section: "religion", card: "religion-3" },
+    { text: "🐧 펭귄이 사는 사막?", section: "special", card: "special-3" },
+    { text: "🏰 해가 지지 않는 나라", section: "geopolitics", card: "geopol-2" },
+    { text: "📱 아이폰은 어디서 만들어질까?", section: "industry", card: "industry-2" },
+    { text: "🌪️ 토네이도의 고향", section: "climate", card: "climate-b" },
+    { text: "💎 피의 다이아몬드", section: "resources", card: "resources-3" },
+    { text: "🍜 쌀국수의 나라", section: "geo", card: "2" },
+    { text: "💃 정열의 탱고와 아르헨티나", section: "geo", card: "8" },
+    { text: "🧊 얼음으로 뒤덮인 땅, 툰드라", section: "climate", card: "climate-e" },
+    { text: "🏭 산업혁명의 발상지", section: "industry", card: "industry-1" },
+    { text: "🏙️ 세계의 수도, 뉴욕", section: "city", card: "city-1" },
+    { text: "🌊 아마존강의 거대한 숨결", section: "freshwater", card: "hydro-2" },
+    { text: "🕌 타지마할의 나라", section: "geo", card: "3" },
+    { text: "🥖 바게트와 예술의 도시", section: "city", card: "city-5" },
+    { text: "🍣 스시와 장인 정신", section: "geo", card: "1" },
+    { text: "🦁 사파리의 왕국", section: "geo", card: "5" },
+    // [자연지리]
+    { text: "🌋 폼페이를 삼킨 화산", section: "special", card: "special-5" }, // 화산 지형
+    { text: "💧 지구가 빚은 물방울 다이아몬드", section: "special", card: "special-4" }, // 카르스트 (석회동굴)
+    { text: "🌊 바다가 갈라지는 기적", section: "special", card: "special-6" }, // 해안 지형 (육계도)
+    { text: "❄️ 겨울왕국의 실제 무대", section: "special", card: "special-2" }, // 빙하 지형 (피오르)
+    { text: "🏜️ 소금으로 된 하얀 사막", section: "special", card: "special-3" }, // 건조 지형 (우유니)
+
+    // [인문지리 - 도시/문화]
+    { text: "🎭 가면 뒤에 숨은 도시", section: "city", card: "city-5" }, // 베네치아 (축제)
+    { text: "🎰 사막 위의 라스베이거스", section: "city", card: "city-2" }, // 포디즘 도시 (교외화/위락)
+    { text: "🏰 해리포터가 탄생한 거리", section: "city", card: "city-1" }, // 런던 (문화)
+    { text: "🎨 가우디가 짓다 만 성당", section: "tourism", card: "tourism-2" }, // 역사 유적 (바르셀로나)
+    { text: "💀 죽은 자들의 날 축제", section: "tourism", card: "tourism-5" }, // 축제 (멕시코)
+
+    // [경제/산업]
+    { text: "🍫 초콜릿의 씁쓸한 비밀", section: "agriculture", card: "agri-3" }, // 카카오
+    { text: "🚗 자동차 왕국 디트로이트", section: "industry", card: "industry-1" }, // 자동차 산업
+    { text: "🚀 우주로 가는 항구", section: "industry", card: "industry-5" }, // 항공우주
+    { text: "🔋 전기차의 심장, 리튬", section: "resources", card: "resources-4" }, // 전략 광물
+    { text: "👗 패스트 패션의 공장", section: "industry", card: "industry-2" }, // 섬유/의류
+
+    // [지정학/분쟁]
+    { text: "⚔️ 유럽의 화약고", section: "conflict", card: "conflict-2" }, // 발칸 반도
+    { text: "🚧 38선과 DMZ", section: "geopolitics", card: "geopol-3" }, // 경계 (전횡적 경계)
+    { text: "🏴‍☠️ 소말리아 해적의 바다", section: "ocean", card: "hydro-7" }, // 아라비아해/홍해
+    { text: "🛢️ 석유가 흐르는 좁은 길목", section: "geopolitics", card: "geopol-4" }, // 조임목 (호르무즈)
+    { text: "🧊 녹아내리는 북극의 자원", section: "conflict", card: "conflict-3" }, // 자원 전쟁
+
+    // [역사/종교]
+    { text: "✡️ 통곡의 벽 앞에서", section: "religion", card: "religion-1" }, // 유대교
+    { text: "☸️ 달라이 라마의 고향", section: "religion", card: "religion-5" }, // 불교 (티베트)
+    { text: "📜 공자의 가르침", section: "religion", card: "religion-6" }, // 유교
+    { text: "⛪ 바티칸의 비밀", section: "geopolitics", card: "geopol-4" }, // 위요지 (바티칸)
+    { text: "🕉️ 갠지스강의 목욕 의식", section: "religion", card: "religion-4" }, // 힌두교
+
+    // [기후/환경]
+    { text: "🌧️ 매일 오후 2시의 소나기", section: "climate", card: "climate-a" }, // 열대우림 (스콜)
+    { text: "🌫️ 안개 속에 숨은 사막", section: "climate", card: "climate-b" }, // 한류성 사막 (나미브)
+    { text: "🍇 와인을 만드는 태양", section: "climate", card: "climate-c" }, // 지중해성 기후
+    { text: "🌲 끝없는 침엽수림 타이가", section: "climate", card: "climate-d" }, // 냉대 기후
+    { text: "🌬️ 편서풍이 부는 곳", section: "earth-system", card: "none" } // 대기 대순환 (카드 없음, 섹션만 이동)
+];
+
+/* [수정] 랜덤 탐험 로직 (자동 롤링 추가) */
+let currentDiscovery = null;
+let discoveryInterval = null; // 타이머 변수
+
+function setRandomDiscovery() {
+    if (!discoveryData || discoveryData.length === 0) return;
+    
+    const randomIndex = Math.floor(Math.random() * discoveryData.length);
+    currentDiscovery = discoveryData[randomIndex];
+    
+    const textEl = document.getElementById('discovery-text');
+    if (textEl) {
+        // 페이드 아웃 -> 텍스트 변경 -> 페이드 인 효과
+        textEl.style.opacity = 0;
+        
+        setTimeout(() => {
+            textEl.innerText = currentDiscovery.text;
+            textEl.style.opacity = 1;
+            // 애니메이션 재실행
+            textEl.style.animation = 'none';
+            textEl.offsetHeight; /* trigger reflow */
+            textEl.style.animation = 'textFadeIn 0.5s ease-out';
+        }, 300); // 0.3초 뒤 텍스트 변경
+    }
+}
+
+function randomJump() {
+    if (currentDiscovery) {
+        executeJump(currentDiscovery.section, currentDiscovery.card);
+    }
+}
+
+// 타이머 시작 함수
+function startDiscoveryRolling() {
+    if (discoveryInterval) clearInterval(discoveryInterval);
+    setRandomDiscovery(); // 즉시 한 번 실행
+    discoveryInterval = setInterval(setRandomDiscovery, 10000); // 10초마다 실행
+}
+
+// 타이머 정지 함수
+function stopDiscoveryRolling() {
+    if (discoveryInterval) {
+        clearInterval(discoveryInterval);
+        discoveryInterval = null;
+    }
+}
+
+// 초기화 및 섹션 전환 감지
+document.addEventListener('DOMContentLoaded', () => {
+    // 초기 실행 (홈 화면일 경우)
+    const homeSection = document.getElementById('section-home');
+    if (homeSection && homeSection.classList.contains('active')) {
+        startDiscoveryRolling();
+    }
+    
+    const logoBtn = document.querySelector('.logo-btn');
+    if (logoBtn) {
+        logoBtn.addEventListener('click', () => {
+            // 홈으로 돌아올 때 롤링 재시작
+            setTimeout(() => {
+                const isHome = document.getElementById('section-home').classList.contains('active');
+                if (isHome) startDiscoveryRolling();
+            }, 100);
+        });
+    }
+});
+
+// [중요] switchSection 함수 내부에 타이머 제어 로직 추가 필요
+// 기존 switchSection 함수 안에서 홈 화면을 벗어날 때 stopDiscoveryRolling()을 호출해야 합니다.

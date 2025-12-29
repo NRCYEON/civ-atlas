@@ -5337,7 +5337,128 @@ const jumpConnections = {
     '8': [ // 라틴아메리카
         { section: 'religion', card: 'religion-2', label: '가톨릭' },
         { section: 'resources', card: 'resources-2', label: '안데스 광물' }
-    ]
+    ],
+    // =====================================================
+    // 9. [토양] 대지의 피부
+    // =====================================================
+    'soil-1': [ // 수목 성대 토양 (라테라이트 등)
+        { section: 'climate', card: 'climate-a', label: '열대 기후' },
+        { section: 'agriculture', card: 'agri-3', label: '플랜테이션' }
+    ],
+    'soil-2': [ // 무수목 성대 토양 (흑토 등)
+        { section: 'agriculture', card: 'agri-1', label: '밀 농사' },
+        { section: 'climate', card: 'climate-b', label: '스텝 기후' }
+    ],
+    'soil-3': [ // 간대 토양 (테라로사 등)
+        { section: 'special', card: 'special-4', label: '카르스트' },
+        { section: 'agriculture', card: 'agri-8', label: '지중해 농업' },
+        { section: 'special', card: 'special-5', label: '화산 지형' }
+    ],
+    'soil-4': [ // 미성숙토 (충적토 등)
+        { section: 'freshwater', card: 'hydro-1', label: '범람원' },
+        { section: 'population', card: 'population-1', label: '인구 밀집' }
+    ],
+
+    // =====================================================
+    // 10. [관광] 떠나는 즐거움
+    // =====================================================
+    'tourism-1': [ // 자연지리 여행
+        { section: 'special', card: 'special-1', label: '지형 탐구' },
+        { section: 'terrain', card: 'terrain-1', label: '조산대' }
+    ],
+    'tourism-2': [ // 역사 유적
+        { section: 'geo', card: '4', label: '이집트 문명' },
+        { section: 'geo', card: '8', label: '잉카 문명' }
+    ],
+    'tourism-3': [ // 종교 순례
+        { section: 'religion', card: 'religion-2', label: '산티아고' },
+        { section: 'religion', card: 'religion-3', label: '메카 순례' },
+        { section: 'religion', card: 'religion-4', label: '바라나시' }
+    ],
+    'tourism-4': [ // 도시 엔터테인먼트
+        { section: 'city', card: 'city-1', label: '세계 도시' },
+        { section: 'city', card: 'city-3', label: '젠트리피케이션' }
+    ],
+    'tourism-5': [ // 축제
+        { section: 'agriculture', card: 'agri-8', label: '와인 산지' },
+        { section: 'cultural', card: 'cultural-3', label: '장소 마케팅' }
+    ],
+    'tourism-6': [ // 관광의 그늘
+        { section: 'city', card: 'city-3', label: '도시 문제' },
+        { section: 'geopolitics', card: 'geopol-5', label: '불균등 발전' }
+    ],
+    'tourism-7': [ // 지속 가능 여행
+        { section: 'climate', card: 'climate-a', label: '생태 보전' },
+        { section: 'conflict', card: 'conflict-4', label: '평화 공존' }
+    ],
+
+    // =====================================================
+    // 11. [촌락] 삶의 터전
+    // =====================================================
+    'rural-1': [ // 촌락 형태
+        { section: 'agriculture', card: 'agri-1', label: '벼농사 (집촌)' },
+        { section: 'geo', card: '7', label: '신대륙 (산촌)' }
+    ],
+    'rural-2': [ // 촌락 입지
+        { section: 'special', card: 'special-1', label: '선상지' },
+        { section: 'freshwater', card: 'hydro-5', label: '오아시스' }
+    ],
+    'rural-3': [ // 튀넨 이론
+        { section: 'economic', card: 'econ-1', label: '입지론 기초' },
+        { section: 'agriculture', card: 'agri-8', label: '근교 농업' }
+    ],
+    'rural-4': [ // 휘틀지 농업 구분
+        { section: 'climate', card: 'climate-a', label: '화전 농업' },
+        { section: 'livestock', card: 'agri-4', label: '기업적 목축' }
+    ],
+    'rural-5': [ // 농업 구조 변동
+        { section: 'industry', card: 'industry-2', label: '식품 가공' },
+        { section: 'city', card: 'city-5', label: '도시 농업' }
+    ],
+    // =====================================================
+    // 12. [도시] 문명의 그릇
+    // =====================================================
+    'urban-1': [ // 전산업 도시
+        { section: 'religion', card: 'religion-2', label: '대성당 중심' },
+        { section: 'geo', card: '6', label: '중세 유럽' }
+    ],
+    'urban-2': [ // 포디즘 도시
+        { section: 'industry', card: 'industry-1', label: '자동차 산업' },
+        { section: 'city', card: 'city-2', label: '교외화' }
+    ],
+    'urban-3': [ // 포스트포디즘 도시
+        { section: 'industry', card: 'industry-4', label: '첨단 산업' },
+        { section: 'city', card: 'city-5', label: '스마트 시티' }
+    ],
+    'urban-4': [ // 도시 이론
+        { section: 'economic', card: 'econ-2', label: '중심지 이론' },
+        { section: 'city', card: 'city-3', label: '도시 구조' }
+    ],
+
+    // =====================================================
+    // 13. [지도] 세상을 보는 눈
+    // =====================================================
+    'map-1': [ // 고지도
+        { section: 'religion', card: 'religion-2', label: 'T-O 지도' },
+        { section: 'geo', card: '1', label: '혼일강리도' }
+    ],
+    'map-2': [ // 지도 요소
+        { section: 'special', card: 'special-1', label: '지형도 읽기' },
+        { section: 'city', card: 'city-2', label: '도시 지도' }
+    ],
+    'map-3': [ // 투영법
+        { section: 'ocean', card: 'hydro-7', label: '항해 지도' },
+        { section: 'geopolitics', card: 'geopol-5', label: '페터스 도법' }
+    ],
+    'map-4': [ // 주제도
+        { section: 'population', card: 'population-1', label: '인구 지도' },
+        { section: 'climate', card: 'climate-c', label: '기후도' }
+    ],
+    'map-5': [ // GIS
+        { section: 'city', card: 'city-5', label: '스마트 시티' },
+        { section: 'industry', card: 'industry-4', label: '위치 기반 서비스' }
+    ],
+    
 };
 // [신규] 지리학의 탐구 섹션 데이터 (HTML 분리 통합본: 관광 + 지정학)
 
