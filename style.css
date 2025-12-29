@@ -3826,13 +3826,12 @@ body {
 /* 엘니뇨/라니냐 오버레이 (태평양 적도) */
 .enso-overlay {
     position: absolute;
-    /* [수정] top 45% -> 50%, left 50% -> 40% (좌측으로 이동하여 태평양 중앙에 맞춤) */
-    top: 50%; left: 40%;
+    top: 41%; left: 35%;
     transform: translate(-50%, -50%);
     width: 60%; height: 20%;
     pointer-events: none;
     transition: all 0.5s ease;
-    opacity: 0; 
+    opacity: 1; /* [수정] 항상 보이게 변경 (글자 표시용) */
 }
 
 /* 웜 풀 (수온 상승 구역) */
@@ -3842,23 +3841,55 @@ body {
     background: radial-gradient(ellipse at center, rgba(255, 50, 50, 0.6), transparent 70%);
     border-radius: 50%;
     transition: all 0.5s ease;
+    opacity: 0; /* [수정] 평상시에는 붉은 원만 숨김 */
 }
 
 /* 상태별 스타일 */
 /* 엘니뇨: 동태평양(오른쪽) 수온 상승 */
-.earth-system-ocean-view.elnino .enso-overlay { opacity: 1; }
 .earth-system-ocean-view.elnino .warm-pool {
-    left: 50%; width: 40%; /* 동쪽으로 이동 */
+    left: 50%; width: 40%;
+    opacity: 1; /* [수정] 엘니뇨 때 붉은 원 등장 */
 }
 .earth-system-ocean-view.elnino .enso-label::after { content: "무역풍 약화, 동태평양 수온 상승"; }
 
 /* 라니냐: 서태평양(왼쪽) 수온 과열 */
-.earth-system-ocean-view.lanina .enso-overlay { opacity: 1; }
 .earth-system-ocean-view.lanina .warm-pool {
-    left: 10%; width: 40%; /* 서쪽으로 이동 */
-    background: radial-gradient(ellipse at center, rgba(200, 0, 0, 0.8), transparent 70%); /* 더 진하게 */
+    left: 10%; width: 40%;
+    background: radial-gradient(ellipse at center, rgba(200, 0, 0, 0.8), transparent 70%);
+    opacity: 1; /* [수정] 라니냐 때 붉은 원 등장 */
 }
 .earth-system-ocean-view.lanina .enso-label::after { content: "무역풍 강화, 서태평양 수온 과열"; }
+
+/* [신규] 기본 상태(평상시) 텍스트 설정 */
+.enso-label::after {
+    content: "평상시";
+}
+
+/* [신규] 웜 풀 내부 텍스트 (무역풍 상태 표시) */
+/* 공통 스타일: 중앙 정렬 및 폰트 설정 */
+.earth-system-ocean-view.elnino .warm-pool::after,
+.earth-system-ocean-view.lanina .warm-pool::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 부모(.warm-pool)의 정중앙에 위치 */
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.8); /* 가독성을 위한 그림자 */
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* 엘니뇨일 때 텍스트 */
+.earth-system-ocean-view.elnino .warm-pool::after {
+    content: "약한 무역풍";
+}
+
+/* 라니냐일 때 텍스트 */
+.earth-system-ocean-view.lanina .warm-pool::after {
+    content: "강한 무역풍";
+}
 
 /* 라벨 */
 .enso-label {
@@ -3918,9 +3949,23 @@ body {
 .ocean-card h3 { 
     margin: 0 0 5px 0; 
     font-size: 1rem; 
-    color: #ffd700; 
-    /* [수정] 제목 가운데 맞춤 */
+    /* color: #ffd700;  <-- 삭제됨 (개별 클래스로 제어) */
     text-align: center; 
+}
+
+/* 난류: 붉은색 */
+.kuroshio h3, .gulf-stream h3, .north-atlantic h3, .equatorial-counter h3 { /* .equatorial-counter 추가 */
+    color: #ff6b6b; 
+}
+
+/* 한류: 파란색 (남극 순환류 포함) */
+.california h3, .peru-current h3, .benguela h3, .antarctic h3, .eastwind h3 {
+    color: #91c8ff; 
+}
+
+/* 계절풍: 노란색 */
+.somali h3 {
+    color: #ffd700;
 }
 .ocean-card p { 
     margin: 0; 
@@ -3942,15 +3987,24 @@ body {
 
 /* 4. 멕시코 만류 (북대서양 - 우측 상단) */
 /* [수정] 좌상단으로 미세 이동 (20%->18%, 60%->58%) */
-.gulf-stream { top: 18%; left: 58%; }
+.gulf-stream { top: 20%; left: 50%; }
 
 /* 5. 남극 순환류 (남극해 - 하단 중앙) [신규] */
-.antarctic { top: 80%; left: 50%; transform: translateX(-50%); }
+.antarctic { top: 80%; left: 40%; transform: translateX(-50%); }
 /* 6. 소말리아 해류 (아프리카의 뿔 - 우측 상단) */
 .somali { top: 35%; left: 80%; }
 
 /* 7. 벵겔라 해류 (아프리카 남서안 - 우측 하단) */
 .benguela { top: 58%; left: 70%; }
+
+/* 8. 북대서양 해류 (유럽 서안 - 우측 상단) */
+.north-atlantic { top: 10%; left: 64%; }
+
+/* 9. 적도 반류 (태평양 중앙 - 캘리포니아 좌하단) */
+.equatorial-counter { top: 40%; left: 25%; }
+
+/* 10. 남극 연안류 (남극해 - 하단 중앙) [신규] */
+.eastwind { top: 85%; left: 68%; }
 
 /* [해류별 호버 이동 효과 - 강도 3배 확대] */
 
@@ -3972,3 +4026,41 @@ body {
 /* 6. 벵겔라 (북서쪽 ↖) */
 .benguela:hover { transform: scale(1.01) translate(-6px, -36px); }
 
+/* 8. 북대서양 해류 (북동쪽 ↗) */
+.north-atlantic:hover { transform: scale(1.01) translate(15px, -32px); }
+
+/* 9. 적도 반류 (동쪽 ➡) */
+.equatorial-counter:hover { transform: scale(1.01) translate(60px, 0); }
+
+/* 9. 남극 연안류 (동쪽 ➡) */
+.eastwind:hover { transform: scale(1.01) translate(-60px, 0); }
+
+/* [신규] 하늘 섹션 소제목 스타일 */
+.sky-section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    margin: 60px 0 20px 20px; /* 위쪽 여백을 넉넉히 주어 구분감 확보 */
+    padding-left: 15px;
+    border-left: 5px solid rgba(255, 255, 255, 0.8); /* 좌측 강조선 */
+    display: flex;
+    align-items: center;
+    max-width: 1400px; /* 그리드 너비와 맞춤 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 첫 번째 제목(구름)은 제트기류 바로 아래라 여백을 좀 줄임 */
+.sky-section-title:first-of-type {
+    margin-top: 30px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 1024px) {
+    .sky-section-title {
+        font-size: 1.5rem;
+        margin: 40px 20px 15px 20px;
+    }
+}

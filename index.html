@@ -84,14 +84,14 @@
                     <button class="group-btn"><span class="menu-icon">🏔️</span>세계의 자연지리▼</button>
                     <div class="sub-menu">
                         <button class="sub-tab-btn" onclick="switchSection('terrain')">
-                            <span class="menu-icon">⛰️</span>
+                            <span class="menu-icon">🗻</span>
                             <span class="text-group">
                                 <span class="menu-title">세계의 대지형</span>
                                 <span class="menu-desc">문명이 뿌리내린 터전</span>
                             </span>
                         </button>
                         <button class="sub-tab-btn" onclick="switchSection('special')">
-                            <span class="menu-icon">🏜️</span>
+                            <span class="menu-icon">🌋</span>
                             <span class="text-group">
                                 <span class="menu-title">다양한 특수 지형</span>
                                 <span class="menu-desc">자연이 조각한 천연의 예술품</span>
@@ -122,19 +122,19 @@
                             <span class="menu-icon">🌡️</span>
                             <span class="text-group">
                                 <span class="menu-title">세계의 기후</span>
-                                <span class="menu-desc">문명의 색채를 그린 지구 시스템</span>
+                                <span class="menu-desc">문명의 색채를 그린 기온과 강수의 띠</span>
                             </span>
                         </button>
                         <!-- [신규] 강수와 구름 버튼 -->
                         <button class="sub-tab-btn" onclick="switchSection('cloud')">
                             <span class="menu-icon">☁️</span>
                             <span class="text-group">
-                                <span class="menu-title">강수와 구름의 유형</span>
+                                <span class="menu-title">기단과 전선</span>
                                 <span class="menu-desc">대기의 역동적인 파노라마</span>
                             </span>
                         </button>
                         <button class="sub-tab-btn" onclick="switchSection('soil')">
-                            <span class="menu-icon">🟫</span>
+                            <span class="menu-icon">🌱</span>
                             <span class="text-group">
                                 <span class="menu-title">세계의 토양</span>
                                 <span class="menu-desc">생명을 품은 대지의 피부</span>
@@ -625,7 +625,7 @@
         <div id="enso-overlay" class="enso-overlay">
             <div class="warm-pool"></div> <!-- 수온 상승 구역 -->
             <div class="wind-arrow"></div> <!-- 바람 방향 -->
-            <div class="enso-label">평상시</div>
+            <div class="enso-label"></div>
         </div>
 
         <!-- 3. 컨트롤 패널 -->
@@ -639,64 +639,92 @@
         <div class="ocean-cards-container">
             <!-- 멕시코 만류 -->
             <div class="ocean-card gulf-stream">
-                <h3>멕시코 만류 (난류)</h3>
-                <p>서안해양성기후의 근원</p>
+                <h3>➚멕시코 만류➚</h3>
+                <p>세계에서 가장 강력한 난류.<br>열대 에너지를 고위도로 수송하는<br>거대한 컨베이어 벨트.</p>
+            </div>
+            <!-- 북대서양 해류 (신규 추가) -->
+            <div class="ocean-card north-atlantic">
+                <h3>➚북대서양 해류➚</h3>
+                <p>서안 해양성 기후와<br>러시아 부동항의 근원</p>
+            </div>
+            <!-- 적도 반류 (신규 추가) -->
+            <div class="ocean-card equatorial-counter">
+                <h3>⇒적도 반류⇒</h3>
+                <p>무역풍에 서쪽에 모인 물이<br>동쪽으로 흘러내리는 보상류</p>
             </div>
             <!-- 페루 해류 -->
             <div class="ocean-card peru-current">
-                <h3>페루 해류 (한류)</h3>
-                <p>용승 작용으로 황금 어장 형성<br>사막 기후 유발</p>
+                <h3>➚훔볼트 해류➚</h3>
+                <p>가장 건조한 아타카마 사막과<br>황금어장을 만든 용승 해류</p>
             </div>
             <!-- 쿠로시오 해류 -->
             <div class="ocean-card kuroshio">
-                <h3>쿠로시오 해류 (난류)</h3>
+                <h3>➚쿠로시오 해류➚</h3>
                 <p>동아시아의 기후와 어업에<br>영향을 주는 검은 조류</p>
             </div>
             <!-- 캘리포니아 해류 -->
             <div class="ocean-card california">
-                <h3>캘리포니아 해류 (한류)</h3>
+                <h3>➘캘리포니아 해류➘</h3>
                 <p>북미 서안에 서늘한 여름과<br>안개를 가져옴</p>
             </div>
             <!-- 남극 순환류 (신규 추가) -->
             <div class="ocean-card antarctic">
-                <h3>남극 순환류 (한류)</h3>
+                <h3>⇒남극 순환류⇒</h3>
                 <p>지구를 한 바퀴 도는<br>가장 거대한 해류</p>
             </div>
             <!-- 소말리아 해류 (인도양) -->
             <div class="ocean-card somali">
-                <h3>소말리아 해류 (계절풍)</h3>
+                <h3>➚소말리아 해류↙</h3>
                 <p>계절풍에 따라 방향이 바뀌는<br>몬순 해류</p>
             </div>
             <!-- 벵겔라 해류 (남대서양) -->
             <div class="ocean-card benguela">
-                <h3>벵겔라 해류 (한류)</h3>
+                <h3>↖벵겔라 해류↖</h3>
                 <p>안개가 자욱한 해안 사막<br>나미브를 만든 한류</p>
+            </div>
+            <!-- 벵겔라 해류 (남대서양) -->
+            <div class="ocean-card eastwind">
+                <h3>⇐남극 연안류⇐</h3>
+                <p>극동풍에 의해 서쪽으로 흐르는<br>남극 연안 해류</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- [신규] 1.9 강수와 구름 섹션 -->
+<!-- [수정] 1.9 기단과 전선 섹션 -->
 <section id="section-cloud" class="content-section">
-    <!-- 하늘 배경과 구름들이 배치될 특수 컨테이너 -->
     <div class="sky-container-wrapper">
-        <!-- 제트기류 (최상단) -->
+        
+        <!-- 1. 제트기류 (기존 유지) -->
         <div id="jet-stream-layer">
             <div class="jet-text-track">
                 <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
-                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
-                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
-                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+                <!-- ... (반복) ... -->
             </div>
-        </div>
+        </div>        
         
-        <!-- 구름 그리드 -->
+        <!-- [신규] 소제목: 구름 -->
+        <h3 class="sky-section-title">☁️ 구름의 운형</h3>
         <main class="sky-grid-container" id="cloud-grid">
-            <!-- 자바스크립트가 구름과 기상 현상을 배치합니다 -->
+            <!-- 구름 카드 -->
         </main>
-        <!-- [신규] 강수 유형 패널 (하단 추가) -->
+
+        <!-- [신규] 소제목: 기단 -->
+        <h3 class="sky-section-title">🌬️ 등질한 공기 덩어리, 기단</h3>
+        <div id="air-mass-panel" class="precip-container">
+            <!-- 기단 카드 -->
+        </div>
+
+        <!-- [신규] 소제목: 전선 -->
+        <h3 class="sky-section-title">⚔️ 기단이 만나는 전선면</h3>
+        <div id="front-panel" class="precip-container">
+            <!-- 전선 카드 -->
+        </div>
+
+        <!-- [신규] 소제목: 강수 -->
+        <h3 class="sky-section-title">☔ 강수의 유형</h3>
         <div id="precip-panel" class="precip-container">
-            <!-- 자바스크립트가 강수 카드를 채웁니다 -->
+            <!-- 강수 카드 -->
         </div>
     </div>
 </section>

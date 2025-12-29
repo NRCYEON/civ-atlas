@@ -1487,6 +1487,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // [중요] 구름 섹션 렌더링 호출
     if (typeof cloudData !== 'undefined') renderCloudGrid('cloud-grid', cloudData);
     if (typeof precipData !== 'undefined') renderPrecipitation('precip-panel', precipData);
+    // [추가] 기단과 전선 렌더링 호출
+    if (typeof airMassData !== 'undefined') renderAirMass('air-mass-panel', airMassData);
+    if (typeof frontData !== 'undefined') renderFronts('front-panel', frontData);
 
 
     // 2. 모바일 메뉴 기능 초기화
@@ -1693,4 +1696,54 @@ function setEnso(state) {
         if (state === 'lanina') return btn.innerText === '라니냐';
     });
     if (targetBtn) targetBtn.classList.add('active');
+}
+
+/* [신규] 기단 렌더링 함수 */
+function renderAirMass(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'precip-card'; // 기존 스타일 재사용
+        
+        card.innerHTML = `
+            <div class="precip-header">
+                <h3 class="precip-title">${item.title}</h3>
+                <span class="precip-meta">${item.meta}</span>
+            </div>
+            <p class="precip-desc">${item.desc}</p>
+            <div class="precip-related">
+                <span class="related-label">발원지:</span> ${item.origin}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+/* [신규] 전선 렌더링 함수 */
+function renderFronts(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'precip-card'; // 기존 스타일 재사용
+        
+        card.innerHTML = `
+            <div class="precip-header">
+                <h3 class="precip-title">${item.title} <span style="float:right;">${item.symbol}</span></h3>
+                <span class="precip-meta">${item.meta}</span>
+            </div>
+            <p class="precip-desc">${item.desc}</p>
+            <div class="precip-related">
+                <span class="related-label">동반 구름:</span> ${item.cloud}
+            </div>
+        `;
+        container.appendChild(card);
+    });
 }
