@@ -3519,7 +3519,7 @@ body {
     position: absolute;
     width: 200%;
     height: 100%;
-    background: url('images/world-map-clear.webp'); /* 기존 지도 재활용 */
+    background: url('images/satellite-map.webp'); 
     background-size: cover;
     opacity: 0.6;
     animation: earth-rotate 60s linear infinite; /* 자전 효과 */
@@ -3826,7 +3826,7 @@ body {
 /* 엘니뇨/라니냐 오버레이 (태평양 적도) */
 .enso-overlay {
     position: absolute;
-    top: 41%; left: 35%;
+    top: 43%; left: 63%;
     transform: translate(-50%, -50%);
     width: 60%; height: 20%;
     pointer-events: none;
@@ -3929,16 +3929,19 @@ body {
 }
 
 /* 정보 카드 (Glassmorphism) - 시인성 개선 */
+/* 정보 카드 (Glassmorphism) - 크기 20% 축소 적용 */
 .ocean-card {
     position: absolute;
-    /* [수정] 배경 투명도 0.6 -> 0.3 (조금 더 투명하게) */
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 15px;
-    border-radius: 10px;
+    
+    /* [수정] 크기 관련 속성 20% 축소 */
+    padding: 12px;       /* 15px -> 12px */
+    border-radius: 8px;  /* 10px -> 8px */
+    width: 175px;        /* 175px -> 150px */
+    
     color: #fff;
-    width: 175px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     cursor: pointer;
     transition: transform 0.2s;
@@ -3947,9 +3950,21 @@ body {
 .ocean-card:hover { transform: scale(1.05); background: rgba(0,0,0,0.6); }
 
 .ocean-card h3 { 
-    margin: 0 0 5px 0; 
-    font-size: 1rem; 
-    /* color: #ffd700;  <-- 삭제됨 (개별 클래스로 제어) */
+    margin: 0 0 4px 0;   /* 5px -> 4px */
+    
+    /* [수정] 폰트 크기 축소 */
+    font-size: 0.8rem;   /* 1rem -> 0.8rem */
+    
+    text-align: center; 
+}
+
+.ocean-card p { 
+    margin: 0; 
+    
+    /* [수정] 폰트 크기 축소 */
+    font-size: 0.6rem;   /* 0.85rem -> 0.6rem */
+    
+    line-height: 1.4; 
     text-align: center; 
 }
 
@@ -3977,31 +3992,31 @@ body {
 /* 카드 위치 (지도 좌표에 맞춰 정밀 조정) */
 
 /* 1. 쿠로시오 (일본 근해 - 좌측 상단) */
-.kuroshio { top: 25%; left: 12%; } 
+.kuroshio { top: 25%; left: 44%; } 
 
 /* 2. 캘리포니아 (북미 서안 - 중앙 상단) */
-.california { top: 18%; left: 30%; }
+.california { top: 18%; left: 58%; }
 
 /* 3. 페루 (남미 서안 - 중앙 하단) */
-.peru-current { top: 60%; left: 42%; }
+.peru-current { top: 60%; left: 80%; }
 
 /* 4. 멕시코 만류 (북대서양 - 우측 상단) */
 /* [수정] 좌상단으로 미세 이동 (20%->18%, 60%->58%) */
-.gulf-stream { top: 20%; left: 50%; }
+.gulf-stream { top: 35%; left: 80%; }
 
 /* 5. 남극 순환류 (남극해 - 하단 중앙) [신규] */
 .antarctic { top: 80%; left: 40%; transform: translateX(-50%); }
 /* 6. 소말리아 해류 (아프리카의 뿔 - 우측 상단) */
-.somali { top: 35%; left: 80%; }
+.somali { top: 40%; left: 20%; }
 
 /* 7. 벵겔라 해류 (아프리카 남서안 - 우측 하단) */
-.benguela { top: 58%; left: 70%; }
+.benguela { top: 57%; left: 7%; }
 
 /* 8. 북대서양 해류 (유럽 서안 - 우측 상단) */
-.north-atlantic { top: 10%; left: 64%; }
+.north-atlantic { top: 10%; left: 82%; }
 
 /* 9. 적도 반류 (태평양 중앙 - 캘리포니아 좌하단) */
-.equatorial-counter { top: 40%; left: 25%; }
+.equatorial-counter { top: 40%; left: 55%; }
 
 /* 10. 남극 연안류 (남극해 - 하단 중앙) [신규] */
 .eastwind { top: 85%; left: 68%; }

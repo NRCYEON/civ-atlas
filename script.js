@@ -309,7 +309,7 @@ function switchSection(sectionId) {
     const bgMap = { 
         'home': "url('images/world-map-main.webp')", 
         'maps': "url('images/maps-bg.webp')",
-        'ocean': "url('images_ocean/ocean-bg.webp')", 
+        'ocean': "url('images_ocean/ocean-rainbow.webp')", 
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
         'soil': "url('images/soil-bg.webp')", 
@@ -834,7 +834,7 @@ function closeAllPanels(event) {
     const bgMapForReset = { 
         'home': "url('images/world-map-main.webp')", 
         'maps': "url('images/maps-bg.webp')",
-        'ocean': "url('images_ocean/ocean-bg.webp')", 
+        'ocean': "url('images_ocean/ocean-rainbow.webp')", 
         'terrain': "url('images/world-physical-map.webp')", 
         'climate': "url('images/world-climate.webp')", 
         'special': "url('images/special.webp')", 
