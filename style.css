@@ -394,7 +394,7 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
         backdrop-filter: blur(3px); /* 블러는 유지하여 글자 가독성 확보 */
         
         /* 형태 유지 */
-        height: 130px; 
+        height: 120px; 
         border-radius: 12px;
         
         /* 테두리도 약간 더 투명하게 */
@@ -536,7 +536,7 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .region-card.active .expand-icon { transform: rotate(180deg); background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
     .detail-panel { grid-column: 1 / -1; background: var(--active-surface); border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); border-top: none; box-shadow: 0 30px 60px rgba(0,0,0,0.1); display: none; max-height: 0; opacity: 0; overflow: hidden; margin-top: -2px; padding: 0 50px; z-index: 10; position: relative; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-out, padding 0.3s ease-out; }
     #detail-content-area { position: relative; z-index: 5; }
-    .detail-panel.open { display: block; max-height: 2500px; opacity: 1; padding: 50px; }
+    .detail-panel.open { display: block; max-height: 2500px; opacity: 1; padding: 30px; }
     .panel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;}
     .hidden-data { display: none; }
     .sub-region-card { background: #fff; border-radius: 10px; padding: 25px; border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s; }
@@ -565,8 +565,8 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .detail-item {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
-    padding: 15px 15px 15px 20px;
+    margin-bottom: 11px;
+    padding: 11px 15px 11px 20px;
     border-left: 3px solid var(--panel-theme, #dfe6e9);
     border-bottom: none; /* 기존 점선 제거 */
     border-radius: 4px; /* 둥근 모서리 추가 */
@@ -616,8 +616,8 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     }
     /* 이 줄은 지우거나 아래처럼 바꾸세요 */
     .meta-info::before { content: none; }    
-	.detail-desc { font-size: 0.85rem; color: #7f8c8d; margin-top: 4px; line-height: 1.4; word-break: keep-all; }
-    .full-list-container { display: none; text-align: right; font-size: 0.8rem; color: #636e72; margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(0,0,0,0.05); line-height: 1.6; animation: fadeIn 0.3s ease-out; word-break: keep-all; }
+	.detail-desc { font-size: 0.85rem; color: #7f8c8d; margin-top: 2px; line-height: 1.4; word-break: keep-all; }
+    .full-list-container { display: none; text-align: right; font-size: 0.8rem; color: #636e72; margin-top: 4px; padding-top: 4px; border-top: 1px dashed rgba(0,0,0,0.05); line-height: 1.6; animation: fadeIn 0.3s ease-out; word-break: keep-all; }
     .sub-region-card:hover .full-list-container, .climate-sub-card:hover .full-list-container { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
     i {
@@ -819,10 +819,10 @@ i.term:hover {
         display: flex;
         flex-direction: column;
         gap: 15px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         border-top: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
         border-bottom: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
-        padding: 25px 0;
+        padding: 15px 0;
     }
     .criteria-item {
         display: flex;
@@ -1200,47 +1200,65 @@ i.term:hover {
 /* [수정] 지형 뱃지 스타일 (사이즈 축소) */
     .geo-badge {
         display: inline-block;
-        font-size: 0.6rem; /* 0.8 -> 0.6rem 축소 */
+        font-size: 0.5rem; /* 0.8 -> 0.5rem 축소 */
         font-weight: 700;
         color: #fff;
         background-color: var(--theme);
-        padding: 1px 6px; /* 2px 8px -> 1px 6px 축소 */
+        padding: 1px 4px; /* 2px 8px -> 1px 4px 축소 */
         border-radius: 4px;
-        margin-right: 6px; /* 8px -> 6px 축소 */
+        margin-right: 5px; /* 8px -> 5px 축소 */
         vertical-align: middle;
         transform: translateY(-2px);
         letter-spacing: -0.02em;
         text-align: center;
     }
-/* [신규] 설명문 소문자 박스 디자인 */
-    .guide-char {
-        display: inline-block;
-        background-color: var(--theme); /* 카드의 테마 색 배경 */
-        color: #fff;                    /* 글자는 흰색 */
-        font-family: 'Inter', sans-serif;
-        font-weight: 700;
-        font-size: 0.85rem;
-        padding: 1px 6px;               /* 박스 크기 조절 */
-        border-radius: 4px;             /* 살짝 둥글게 */
-        margin-right: 4px;              /* 글자와 설명 사이 간격 */
-        line-height: 1.2;
-        min-width: 14px;
-        text-align: center;
-    }
-/* [긴급 교정] 가이드 텍스트 줄바꿈 및 정렬 해결 */
-    .climate-sub-group-2 {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* 여기가 핵심! 오른쪽(end)에서 왼쪽(start)으로 변경 */
-        justify-content: center;
-        gap: 4px; 
-        padding-right: 10px; /* 세로선과 너무 딱 붙지 않게 살짝 띄움 */
-    }
-    .climate-sub-group-3 {
-        align-items: flex-start; /* 왼쪽 정렬 및 늘어남 방지 */
-        justify-content: center;
-        gap: 4px; /* 줄 간격 */
-    }
+/* [신규] 설명문 소문자 박스 디자인 (사이즈 축소) */
+.guide-char {
+    display: inline-block;
+    background-color: var(--theme); /* 기존 유지 */
+    color: #fff;                    /* 기존 유지 */
+    font-family: 'Inter', sans-serif; /* 기존 유지 */
+    font-weight: 700;               /* 기존 유지 */
+    
+    /* [수정] 크기 관련 속성만 축소 */
+    font-size: 0.7rem;             /* 0.85rem -> 0.75rem */
+    padding: 0px 5px;               /* 1px 6px -> 0px 5px */
+    min-width: 12px;                /* 14px -> 12px */
+    
+    border-radius: 4px;             /* 기존 유지 */
+    margin-right: 4px;              /* 기존 유지 */
+    line-height: 1.2;               /* 기존 유지 */
+    text-align: center;             /* 기존 유지 */
+}
+
+/* [긴급 교정] 가이드 텍스트 줄바꿈 및 정렬 해결 (간격 축소) */
+.climate-sub-group-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;        /* 기존 유지 */
+    justify-content: center;
+    
+    /* [수정] 줄 간격 축소 */
+    gap: 2px;                       /* 4px -> 2px */
+    
+    padding-right: 10px;            /* 기존 유지 */
+    
+    /* [추가] 그룹 전체 폰트 사이즈 축소 (상속) */
+    font-size: 0.8rem; 
+}
+
+.climate-sub-group-3 {
+    display: flex;                  /* flex 명시 (안전장치) */
+    flex-direction: column;         /* 세로 정렬 명시 */
+    align-items: flex-start;        /* 기존 유지 */
+    justify-content: center;
+    
+    /* [수정] 줄 간격 축소 */
+    gap: 2px;                       /* 4px -> 2px */
+    
+    /* [추가] 그룹 전체 폰트 사이즈 축소 (상속) */
+    font-size: 0.8rem;
+}
     /* 한 줄씩 묶어주는 래퍼 */
     .guide-row {
         display: flex;
@@ -2390,21 +2408,24 @@ body:has(#section-home.active) header {
 
 
 /* [재조정] 극고압대 추가 및 북반구 순서에 맞춰 띠 위치 재조정 */
-.polar-high       { top: 0;   height: 10%; background: rgba(116, 185, 255, 0.25); } /* 신규 */
-.polar-easterlies { top: 10%; height: 10%; background: rgba(116, 185, 255, 0.15); }
-.polar-front      { top: 20%; height: 10%; background: rgba(9, 132, 227, 0.2); }
-.westerlies       { top: 30%; height: 28%; background: rgba(0, 184, 148, 0.15); }
-.subtropical-high { top: 58%; height: 12%; background: rgba(253, 203, 110, 0.2); }
-.trade-winds      { top: 70%; height: 20%; background: rgba(230, 126, 34, 0.15); }
-.itcz             { top: 90%; height: 10%; background: rgba(214, 48, 49, 0.2); }
+.polar-high       { top: 0;   height: 8%; background: rgba(116, 185, 255, 0.25); } /* 신규 */
+.polar-easterlies { top: 8%; height: 8%; background: rgba(116, 185, 255, 0.15); }
+.polar-front      { top: 16%; height: 8%; background: rgba(9, 132, 227, 0.2); }
+.westerlies       { top: 24%; height: 20%; background: rgba(0, 184, 148, 0.15); }
+.subtropical-high { top: 44%; height: 9%; background: rgba(253, 203, 110, 0.2); }
+.trade-winds      { top: 53%; height: 12%; background: rgba(230, 126, 34, 0.15); }
+.itcz             { top: 65%; height: 8%; background: rgba(214, 48, 49, 0.2); }
+.trade-winds2      { top: 73%; height: 12%; background: rgba(230, 126, 34, 0.15); }
 
 /* 화살표 패턴 (바람 띠에만 적용) */
+/* 1. 북반구 (우상향 빗금) */
 .polar-easterlies, .trade-winds {
     background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 12px);
 }
-.westerlies {
-    /* [수정] 편서풍 방향 수정 (남서풍) */
-    background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 12px);
+
+/* 2. 남반구 (좌상향 빗금 - 11시~5시 방향) */
+.trade-winds2 {
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 12px);
 }
 
 /* JS가 body에 .show-climate-bands 클래스를 추가하면 띠가 나타남 */
@@ -2573,15 +2594,11 @@ body.bg-geopolitics {
     background: #000;
     transform: translateY(-2px);
 }
-/* ===================================================== */
-/* [진짜 최종] 카드 테마 색상 정의 (모든 ID 적용)         */
-/* ===================================================== */
-
 /* 1. 세계의 권역 (geo) */
 #card-1 { --theme: #2d3436; }
 #card-2 { --theme: #0984e3; }
 #card-3 { --theme: #e17055; }
-#card-4 { --theme: #fdcb6e; }
+#card-4 { --theme: #c08d2d; }
 #card-5 { --theme: #636e72; }
 #card-6 { --theme: #6c5ce7; }
 #card-7 { --theme: #00cec9; }
@@ -2596,7 +2613,7 @@ body.bg-geopolitics {
 /* 3. 특수 지형 (special) */
 #card-special-1 { --theme: #00a8ff; }
 #card-special-2 { --theme: #74b9ff; }
-#card-special-3 { --theme: #fdcb6e; }
+#card-special-3 { --theme: #c08b28; }
 #card-special-4 { --theme: #a29bfe; }
 #card-special-5 { --theme: #e17055; }
 #card-special-6 { --theme: #00cec9; }
@@ -2618,10 +2635,16 @@ body.bg-geopolitics {
 #card-climate-e { --theme: #74b9ff; }
 #card-climate-d { --theme: #0984e3; }
 #card-climate-c { --theme: #00b894; }
-#card-climate-b { --theme: #fdcb6e; }
+#card-climate-b { --theme: #c2881d; }
 #card-climate-a { --theme: #d63031; }
 #card-climate-s { --theme: #9c88ff; }
 #card-climate-x { --theme: #8e82a2; }
+
+/* [신규] 기후 변화와 인류세 (change) */
+#card-change-1 { --theme: #2d3436; } /* 지질 시대 */
+#card-change-2 { --theme: #e17055; } /* 온난화 원인 */
+#card-change-3 { --theme: #d63031; } /* 파장 */
+#card-change-4 { --theme: #27ae60; } /* 대응 */
 
 /* 7. 인구 (population) */
 #card-population-1 { --theme: #3498db; }
@@ -2633,10 +2656,11 @@ body.bg-geopolitics {
 /* 8. 농업 (agriculture) */
 #card-agri-1 { --theme: #4CAF50; }
 #card-agri-2 { --theme: #795548; }
-#card-agri-3 { --theme: #FF9800; }
+#card-agri-3 { --theme: #6F4E37; } /* 기호 작물 (커피색) */
+#card-agri-industrial { --theme: #FF9800; } /* [신규] 상품 작물 */
 #card-agri-4 { --theme: #8e44ad; }
 #card-agri-5 { --theme: #e84393; }
-#card-agri-6 { --theme: #f1c40f; }
+#card-agri-6 { --theme: #bb9a18; }
 #card-agri-7 { --theme: #636e72; }
 #card-agri-8 { --theme: #8e44ad; }
 #card-agri-9 { --theme: #2d3436; }
@@ -2644,7 +2668,7 @@ body.bg-geopolitics {
 /* 9. 자원 (resources) */
 #card-resources-1 { --theme: #D35400; }
 #card-resources-2 { --theme: #8D6E63; }
-#card-resources-3 { --theme: #FFD700; }
+#card-resources-3 { --theme: #c5ab18; }
 #card-resources-4 { --theme: #00B894; }
 #card-resources-5 { --theme: #95a5a6; }
 
@@ -2685,28 +2709,54 @@ body.bg-geopolitics {
 #card-religion-5 { --theme: #B8860B; }
 #card-religion-6 { --theme: #43AA8B; }
 
-/* 15. 지리학의 탐구 (Exploration) */
-#card-tourism-1, #card-tourism-2, #card-tourism-3 { --theme: #6c5ce7; }
+/* 15. 문화 (cultural) */
+#card-cultural-1 { --theme: #e17055; }
+#card-cultural-2 { --theme: #e17055; }
+#card-cultural-3 { --theme: #e17055; }
+#card-cultural-4 { --theme: #e17055; }
+#card-cultural-5 { --theme: #e17055; }
+#card-cultural-6 { --theme: #e17055; }
+#card-cultural-7 { --theme: #27ae60; } /* [신규] 문화 경관 */
+#card-cultural-8 { --theme: #7f8c8d; } /* [신규] 장소성 */
+#card-cultural-9 { --theme: #2c3e50; } /* [신규] 공간의 정치 */
+
+/* 16. 지리학의 탐구 (Exploration) */
+#card-tourism-1, #card-tourism-2, #card-tourism-3,
+#card-tourism-4, #card-tourism-5, #card-tourism-6, #card-tourism-7 { --theme: #6c5ce7; }
+
 #card-geopol-1 { --theme: #c0392b; }
 #card-geopol-2 { --theme: #2980b9; }
 #card-geopol-3 { --theme: #8e44ad; }
 #card-geopol-4 { --theme: #e67e22; }
 #card-geopol-5 { --theme: #636e72; }
-#card-geopol-6 { --theme: #f1c40f; }
+#card-geopol-6 { --theme: #b89715; }
+
+#card-conflict-1 { --theme: #c0392b; }
+#card-conflict-2 { --theme: #8e44ad; }
+#card-conflict-3 { --theme: #c09e15; }
+#card-conflict-4 { --theme: #3498db; }
+
 #card-econ-1 { --theme: #0984e3; }
 #card-econ-2 { --theme: #6c5ce7; }
 #card-econ-3 { --theme: #e84393; }
+
 #card-rural-1 { --theme: #6ab04c; }
 #card-rural-2 { --theme: #f0932b; }
 #card-rural-3 { --theme: #be2edd; }
 #card-rural-4 { --theme: #4834d4; }
 #card-rural-5 { --theme: #636e72; }
-#card-urban-1 { --theme: #fdcb6e; }
+
+#card-urban-1 { --theme: #cc9b3f; }
 #card-urban-2 { --theme: #b2bec3; }
 #card-urban-3 { --theme: #a29bfe; }
 #card-urban-4 { --theme: #636e72; }
-#card-cultural-1, #card-cultural-2, #card-cultural-3 { --theme: #e17055; }
-#card-conflict-1 { --theme: #57606f; }
+
+/* 17. 지도 (maps) */
+#card-map-1 { --theme: #2c3e50; }
+#card-map-2 { --theme: #8e44ad; }
+#card-map-3 { --theme: #2980b9; }
+#card-map-4 { --theme: #c0392b; }
+#card-map-5 { --theme: #d35400; }
 
 /* ----------------------------------------------------- */
 /* [통합] 카드 좌측 띠지 및 내부 색상 자동 적용          */
@@ -2723,7 +2773,7 @@ body.bg-geopolitics {
 }
 /* [긴급 수정] 기후 카드 높이 정상화 */
 [id^="card-climate-"] {
-    height: 120px; /* 카드 자체의 높이를 160px -> 120px로 줄임 */
+    height: 100px; /* 카드 자체의 높이를 160px -> 100px로 줄임 */
 }
 
 /* 기후 카드 헤더 내부 정렬 방식 변경 */
@@ -2753,12 +2803,6 @@ body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
 }
-/* [신규] 지도 섹션 전용 테마 색상 정의 */
-#card-map-1 { --theme: #2c3e50; } /* 고지도 (네이비) */
-#card-map-2 { --theme: #8e44ad; } /* 구성요소 (보라) */
-#card-map-3 { --theme: #2980b9; } /* 투영법 (파랑) */
-#card-map-4 { --theme: #c0392b; } /* 주제도 (빨강) */
-#card-map-5 { --theme: #d35400; } /* 디지털 (주황) */
 
 /* ===================================================== */
 /* [최종 수정] 인라인 히어로 갤러리 스타일               */
@@ -4180,3 +4224,48 @@ body {
     display: inline-block;
     animation: textFadeIn 0.5s ease-out;
 }
+
+/* [신규] 메타데이터 알약 태그 스타일 */
+.meta-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    
+    /* 테마 색상을 배경으로 사용하되, 연하게(10%) 처리하여 가독성 확보 */
+    background-color: color-mix(in srgb, var(--panel-theme, #2d3436) 10%, transparent);
+    color: var(--panel-theme, #2d3436); /* 글자색은 테마색 그대로 */
+    
+    padding: 3px 8px;
+    border-radius: 6px; /* 둥근 사각형 알약 */
+    margin-right: 6px;
+    margin-bottom: 4px;    
+}
+
+/* [수정] 세부 항목(Detail Item) 호버 효과 */
+.detail-item {
+    transition: all 0.2s ease;
+    
+    /* [중요] 기존 왼쪽 띠지(border-left)는 건드리지 않고, 나머지 3면만 투명 테두리 추가 */
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    /* border-left는 기존 스타일(3px solid 테마색)이 유지됨 */
+    
+    border-radius: 4px; /* 기존 둥근 모서리 유지 */
+    /* padding은 기존 값 유지하되 필요시 조정 */
+}
+
+.detail-item:hover {
+    background-color: #fff;
+    /* 호버 시 4면 모두 테마색 테두리 적용 (왼쪽 띠지는 더 두꺼워짐) */
+    border-color: var(--panel-theme, #2d3436);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+/* [핵심 수정] 마지막 항목도 호버 시에는 아래쪽 테두리를 강제로 표시 */
+.detail-item:last-child:hover {
+    border-bottom: 1px solid var(--panel-theme, #2d3436) !important;
+}
+

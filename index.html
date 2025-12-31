@@ -340,12 +340,15 @@
     <!-- [1] 대기 대순환 띠 (삭제 금지: 정적 요소) -->
     <div id="atmospheric-bands-container">
         <div class="pressure-band polar-high"><span>극 고압대</span></div>
-        <div class="wind-band polar-easterlies"><span>↙↙↙극동풍대↙↙↙</span></div>
+        <div class="wind-band polar-easterlies"><span>⬋⬋⬋극동풍대⬋⬋⬋</span></div>
         <div class="pressure-band polar-front"><span>고위도 저압대 (한대 전선)</span></div>
-        <div class="wind-band westerlies"><span>↗↗↗편서풍대↗↗↗</span></div>
+        <div class="wind-band westerlies"><span>⬈⬈⬈편서풍대⬈⬈⬈</span></div>
         <div class="pressure-band subtropical-high"><span>아열대 고압대</span></div>
-        <div class="wind-band trade-winds"><span>↙↙↙무역풍대↙↙↙</span></div>
+        <div class="wind-band trade-winds"><span>⬋⬋⬋북동무역풍⬋⬋⬋</span></div> <!-- 기존 trade-winds는 북반구니까 북동무역풍으로 수정 -->
         <div class="pressure-band itcz"><span>열대 수렴대 (ITCZ)</span></div>
+        <!-- [신규] 남반구 무역풍 추가 -->
+        <div class="wind-band trade-winds2"><span>⬉⬉⬉남동무역풍⬉⬉⬉</span></div> 
+    </div>
     </div>
 
     <!-- [2] 메인 그리드 (여기는 비워둡니다. JS가 카드를 채웁니다) -->
@@ -552,7 +555,7 @@
 
                     <!-- 2. 극동풍대 -->
                     <div class="wind-band polar-easterlies">
-                        <span>↙↙ 극동풍 ↙↙</span>
+                        <span>⬋⬋ 극동풍 ⬋⬋</span>
                     </div>
 
                     <!-- 3. 한대전선대 (Polar Front) -->
@@ -560,7 +563,7 @@
 
                     <!-- 4. 편서풍대 -->
                     <div class="wind-band westerlies">
-                        <span>↗↗ 편서풍 ↗↗</span>
+                        <span>⬈⬈ 편서풍 ⬈⬈</span>
                     </div>
 
                     <!-- 5. 아열대고압대 (Subtropical High) -->
@@ -568,7 +571,7 @@
 
                     <!-- 6. 무역풍대 -->
                     <div class="wind-band trade-winds">
-                        <span>↙↙ 무역풍 ↙↙</span>
+                        <span>⬋⬋ 무역풍 ⬋⬋</span>
                     </div>
 
                     <!-- 7. 열대수렴대 (ITCZ) -->

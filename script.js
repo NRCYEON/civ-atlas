@@ -277,7 +277,12 @@ window.generatePanelContent = function(data, cardId) {
                 card.items.forEach((item, itemIndex) => {
                     const linkedName = createSearchLink(item.name);
                     const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
-                    const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
+                    // [수정] 메타데이터를 '·' 기준으로 쪼개서 알약 태그로 변환
+                    let metaInfo = '';
+                    if (item.meta) {
+                        const tags = item.meta.split('·').map(tag => `<span class="meta-tag">${tag.trim()}</span>`).join('');
+                        metaInfo = `<div class="meta-info">${tags}</div>`;
+                    }
                     
                     // [수정] 세부 항목 딥다이브 버튼 (자동 생성된 itemImages 사용)
                     let itemDeepDiveBtn = '';
@@ -455,7 +460,6 @@ function renderCards(containerId, dataObj) {
         article.className = 'region-card';
         article.id = cardId;
         article.onclick = (event) => activateCard(key, event);
-        article.style.setProperty('--theme', data.theme);
 
         let svgContent = '';
         if (data.iconSVG) {
@@ -616,7 +620,6 @@ function renderCards(containerId, dataObj) {
         article.onclick = (event) => activateCard(key, event);
         
         // 테마 색상 적용
-        article.style.setProperty('--theme', data.theme);
 
         // SVG 아이콘 처리
         let svgContent = '';
@@ -1255,7 +1258,11 @@ function renderClimateCards(containerId, dataObj) {
         article.className = 'region-card';
         article.id = cardId;
         article.onclick = (event) => activateCard(key, event);
-        article.style.setProperty('--theme', data.theme);
+        
+        // [수정] 데이터에 테마 색상이 있을 때만 인라인 스타일 적용 (없으면 CSS 파일 따름)
+        if (data.theme) {
+            article.style.setProperty('--theme', data.theme);
+        }
 
         // 2. 배경 아이콘
         const svgContent = `<svg class="card-bg-icon" viewBox="0 0 200 200">${data.iconSVG}</svg>`;
@@ -1322,10 +1329,14 @@ function renderClimateCards(containerId, dataObj) {
             data.features.forEach(feat => {
                 let itemsHTML = `<ul class="detail-list" style="border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 20px; margin-top: 20px;">`;
                 feat.items.forEach(item => {
+                    // [수정] 메타데이터를 알약 태그로 변환
+                    const metaTags = item.meta.split('·').map(m => `<span class="meta-tag">${m.trim()}</span>`).join('');
+                    
                     itemsHTML += `
                         <li class="detail-item">
                             <span class="detail-name">${item.name}</span>
-                            <div class="meta-info" style="justify-content: flex-start; gap: 20px;">${item.meta.split('·').map(m => `<span>${m.trim()}</span>`).join('')}</div>
+                            <!-- [수정] 알약 태그 적용 및 스타일 조정 -->
+                            <div class="meta-info" style="justify-content: flex-start; gap: 5px; flex-wrap: wrap;">${metaTags}</div>
                             <span class="detail-desc">${item.desc}</span>
                         </li>`;
                 });
@@ -1355,7 +1366,12 @@ function renderClimateCards(containerId, dataObj) {
                 const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
                 
                 // [추가] 메타데이터가 있으면 HTML 생성, 없으면 빈 문자열
-                const metaInfo = item.meta ? `<div class="meta-info">${item.meta}</div>` : '';
+                // [수정] 기후 섹션 메타데이터도 알약 태그로 변환
+                let metaInfo = '';
+                if (item.meta) {
+                    const tags = item.meta.split('·').map(tag => `<span class="meta-tag">${tag.trim()}</span>`).join('');
+                    metaInfo = `<div class="meta-info">${tags}</div>`;
+                }
                 
                 itemsHTML += `
                     <li class="detail-item">
