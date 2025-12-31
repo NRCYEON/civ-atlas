@@ -9,7 +9,6 @@ const mapsData = {
     "map-1": {
         title: "고지도와 세계 인식",
         subtitle: "인류가 세상을 이해하고 그려온 발자취",
-        badge: "I",
         theme: "#2c3e50",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.5"/>`,
         criteria: [
@@ -87,7 +86,6 @@ const mapsData = {
     "map-2": {
         title: "지도의 구성 요소",
         subtitle: "지도를 읽기 위한 약속과 언어",
-        badge: "II",
         theme: "#8e44ad",
         iconSVG: `<rect x="40" y="40" width="120" height="120" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M140,140 L160,160" stroke="currentColor" stroke-width="8" opacity="0.5"/>`,
         criteria: [
@@ -143,7 +141,6 @@ const mapsData = {
     "map-3": {
         title: "지도 투영법",
         subtitle: "둥근 지구를 평면에 담는 수학적 딜레마",
-        badge: "III",
         theme: "#2980b9",
         iconSVG: `<path d="M20,100 Q100,20 180,100 T20,100" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/><path d="M100,20 V180" stroke="currentColor" stroke-width="2" opacity="0.5"/>`,
         criteria: [
@@ -249,7 +246,6 @@ const mapsData = {
     "map-4": {
         title: "주제도와 통계 지도",
         subtitle: "보이지 않는 정보를 시각화하는 공간의 언어",
-        badge: "IV",
         theme: "#c0392b",
         iconSVG: `<circle cx="60" cy="60" r="10" fill="currentColor" opacity="0.5"/><circle cx="140" cy="100" r="20" fill="currentColor" opacity="0.5"/><circle cx="80" cy="140" r="15" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -384,7 +380,6 @@ const mapsData = {
     "map-5": {
         title: "디지털 지구와 GIS",
         subtitle: "살아있는 지도, 데이터로 분석하는 세상",
-        badge: "V",
         theme: "#d35400",
         iconSVG: `<path d="M20,140 L100,180 L180,140 M20,100 L100,140 L180,100 M20,60 L100,100 L180,60" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -462,7 +457,6 @@ const geoData = {
     "1": {
         title: "동아시아",
         subtitle: "산맥과 사막으로 둘러싸인 정주민과 유목민의 각축장",
-        badge: "I",
         theme: "#2d3436",
         iconSVG: `<path d="M0,150 Q50,100 100,150 T200,150 V200 H0 Z" fill="currentColor" opacity="0.6"/><path d="M20,200 Q70,120 120,200 T220,200" fill="currentColor" opacity="0.4"/><path d="M-20,200 Q40,80 100,200" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -524,7 +518,6 @@ const geoData = {
     "2": {
         title: "동남아시아 및 오세아니아",
         subtitle: "문명을 잇고 바다를 개척하다.",
-        badge: "II",
         theme: "#0984e3",
         iconSVG: `<path d="M0,100 Q25,80 50,100 T100,100 T150,100 T200,100 V200 H0 Z" fill="currentColor" opacity="0.6"/><path d="M0,140 Q25,120 50,140 T100,140 T150,140 T200,140 V200 H0 Z" fill="currentColor" opacity="0.4"/><path d="M0,180 Q25,160 50,180 T100,180 T150,180 T200,180 V200 H0 Z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -584,7 +577,6 @@ const geoData = {
     "3": {
         title: "남부 아시아",
         subtitle: "히말라야로 감싸인 종교의 용광로",
-        badge: "III",
         theme: "#e17055",
         iconSVG: `<path d="M60,100 A40,40 0 0,1 140,100 V160 H60 Z" fill="currentColor" opacity="0.6"/><rect x="95" y="40" width="10" height="60" fill="currentColor" opacity="0.6"/><circle cx="100" cy="40" r="10" fill="currentColor" opacity="0.6"/><path d="M30,120 V200 H170 V120" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/>`,
         criteria: [
@@ -642,7 +634,6 @@ const geoData = {
     "4": {
         title: "건조 아시아와 북아프리카",
         subtitle: "이슬람 민족과 사막의 세계",
-        badge: "IV",
         theme: "#fdcb6e",
         iconSVG: `<path d="M50,120 A50,50 0 0,1 150,120 V200 H50 Z" fill="currentColor" opacity="0.6"/><circle cx="100" cy="50" r="10" fill="currentColor" opacity="0.6"/><path d="M95,60 V120 H105 V60 Z" fill="currentColor" opacity="0.6"/><path d="M140,40 A30,30 0 1,1 140,80 A25,25 0 1,0 140,40 Z" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -700,7 +691,6 @@ const geoData = {
     "5": {
         title: "사하라 이남 아프리카",
         subtitle: "역동적인 자연과 부족 공동체의 모자이크",
-        badge: "V",
         theme: "#636e72",
         iconSVG: `<path d="M95,200 V120 H105 V200" fill="currentColor" opacity="0.8"/><path d="M40,100 Q100,50 160,100 Q100,80 40,100" fill="currentColor" opacity="0.6"/><path d="M60,110 Q100,90 140,110" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -776,7 +766,6 @@ const geoData = {
     "6": {
         title: "유럽",
         subtitle: "지중해부터 대서양까지, 세계의 중심이 된 서구의 본산",
-        badge: "VI",
         theme: "#6c5ce7",
         iconSVG: `<path d="M80,200 V100 L100,50 L120,100 V200 H80 Z" fill="currentColor" opacity="0.6"/><path d="M40,200 V120 L50,100 L60,120 V200 H40 Z" fill="currentColor" opacity="0.4"/><path d="M140,200 V120 L150,100 L160,120 V200 H140 Z" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -859,7 +848,6 @@ const geoData = {
     "7": {
         title: "앵글로아메리카",
         subtitle: "대서양에서 태평양까지 뻗어나간 서구 프론티어",
-        badge: "VII",
         theme: "#00cec9",
         iconSVG: `<rect x="0" y="20" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="60" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="100" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="140" width="200" height="20" fill="currentColor" opacity="0.3"/><rect x="0" y="180" width="200" height="20" fill="currentColor" opacity="0.3"/><path d="M20,10 L30,35 L10,20 L30,20 L10,35 Z" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -940,7 +928,6 @@ const geoData = {
     "8": {
         title: "라틴아메리카",
         subtitle: "원주민과 이베리아, 그리고 혼혈 대륙",
-        badge: "VIII",
         theme: "#00b894",
         iconSVG: `<path d="M0,200 L100,80 L200,200 Z" fill="currentColor" opacity="0.6"/><path d="M85,80 V40 H115 V80 Z" fill="currentColor" opacity="0.8"/><path d="M60,50 H140 V70 H60 Z" fill="currentColor" opacity="0.8"/>`,
         criteria: [
@@ -1022,7 +1009,6 @@ const geoData = {
     "9": {
         title: "문명의 파쇄대",
         subtitle: "거대 문명이 정면충돌하는 화약고",
-        badge: "IX",
         theme: "#d63031",
         iconSVG: `<path d="M0,200 L50,100 L100,200 L150,50 L200,200 Z" fill="currentColor" opacity="0.6"/><path d="M20,200 L60,140 L100,200" fill="currentColor" opacity="0.4"/><path d="M120,200 L160,120 L200,200" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -1072,7 +1058,6 @@ const terrainData = {
     "terrain-1": {
         title: "<span class=\"geo-badge\">신생대</span>신기 조산대",
         subtitle: "지금도 솟아오르는 젊고 험준한 산맥들",
-        badge: "I",
         theme: "#8D6E63",
         iconSVG: `<path d="M20,180 L60,100 L100,140 L140,80 L180,180 Z" stroke="currentColor" stroke-width="10" fill="none" opacity="0.6"/><path d="M0,180 L40,120 L80,160 L120,100 L160,180" stroke="currentColor" stroke-width="10" fill="none" opacity="0.4"/>`,
         criteria: [
@@ -1095,10 +1080,11 @@ const terrainData = {
                     { icon: "🛢️", label: "주요 자원", text: "석유/천연가스" }
                 ],
                 items: [
-                    { name: "남유럽 산지와 고원", examples: ["알프스산맥", "이베리아 메세타 고원", "아펜니노산맥", "피레네산맥"], meta: "🗻 알프스 (4,809m) · 🚩 남유럽", desc: "게르만, 라틴 문명의 터전을 나누는 유럽의 지붕" },
+                    { name: "피레네와 메세타 고원", examples: ["피레네산맥", "메세타고원", "에스파냐", "바스크"], meta: "🗻 아네토 (3,404m) · 🚩 이베리아", desc: "유럽과 아프리카 경계 레콩키스타의 격전지" },
+                    { name: "알프스와 남유럽 산지", examples: ["알프스산맥", "아펜니노산맥", "스위스", "오스트리아"], meta: "🗻 알프스 (4,809m) · 🚩 남유럽", desc: "게르만, 라틴 문명의 터전을 나누는 유럽의 지붕" },
                     { name: "발칸 & 카르파티아 산맥", examples: ["카르파티아산맥", "디나르알프스산맥", "발칸산맥"], meta: "🗻 게를라흐 (2,655m) · 🚩 동유럽", desc: "유럽의 화약고를 품은, 민족과 종교가 뒤섞인 복잡한 산악 지대" },
-                    { name: "서아시아 고원지대", examples: ["아나톨리아 고원", "캅카스산맥", "자그로스산맥", "이란 고원"], meta: "🗻 아라라트 (5,137m) · 🚩 서아시아", desc: "건조 세계의 심장부를 지키는 거대한 산악 요새이자 문명의 교차로" },
-                    { name: "범히말라야 & 파미르", examples: ["히말라야산맥", "티베트고원", "파미르 매듭", "K2"], meta: "🗻 에베레스트 (8,848m) · 🚩 남아시아/중앙아시아", desc: "인도와 아시아가 만나 빚어낸 행성의 정수리이자 '세계의 지붕'" }
+                    { name: "캅카스 및 서아시아 연속체", examples: ["아나톨리아 고원", "캅카스산맥", "자그로스산맥", "이란 고원"], meta: "🗻 아라라트 (5,137m) · 🚩 서남아시아", desc: "건조 세계의 심장부를 지키는 거대한 산악 요새이자 문명의 교차로" },
+                    { name: "범히말라야 & 파미르", examples: ["히말라야산맥", "티베트고원", "파미르 매듭", "힌두쿠시산맥", "카라코람산맥"], meta: "🗻 에베레스트 (8,848m) · 🚩 문명의 파쇄대", desc: "인도와 아시아가 만나 빚어낸 행성의 정수리이자 '세계의 지붕'" }
                 ]
             },
             {
@@ -1116,7 +1102,8 @@ const terrainData = {
                 ],
                 items: [
                     { name: "안데스산맥", examples: ["아콩카과", "마추픽추", "티티카카호", "칠레"], meta: "🗻 아콩카과 (6,961m) · 🚩 남미 서부", desc: "남미 대륙의 척추이자 잉카 문명의 무대" },
-                    { name: "북미 코르디예라와 멕시코 고원", examples: ["로키산맥", "시에라네바다", "멕시코 고원", "데날리"], meta: "🗻 데날리 (6,190m) · 🚩 북미 서부", desc: "북미 대륙을 관통하는 거대한 산맥과 아즈텍 문명을 품은 화산 고원" },
+                    { name: "중아메리카 지협과 멕시코고원", examples: ["멕시코 고원", "과테말라", "파나마", "아즈텍/마야 문명"], meta: "🗻 오리사바 (5,636m) · 🚩 메소아메리카", desc: "두 아메리카를 잇는 협소하고 험준한 열대의 통로" },
+                    { name: "북미 코르디예라", examples: ["로키산맥", "시에라네바다산맥", "캐스케이드산맥", "데날리"], meta: "🗻 데날리 (6,190m) · 🚩 북미 서부", desc: "북미 대륙을 여러 갈래로 관통하는 산악과 대분지" },
                     { name: "북태평양 화산 고리", examples: ["쿠릴 열도", "캄차카 반도", "알류샨 열도"], meta: "🗻 클류쳅스카야 (4,750m) · 🚩 북태평양", desc: "열강들의 전략적 요충지가 된 아한대의 화산 징검다리" },
                     { name: "동아시아 호상열도", examples: ["일본 열도", "필리핀", "류큐 열도", "후지산", "피나투보 화산"], meta: "🗻 후지산 (3,776m) · 🚩 동아시아", desc: "대륙과 대양 사이에서 태풍과 지진을 막아서는 동아시아의 방파제" },
                     { name: "오세아니아 화산대", examples: ["순다 열도", "뉴질랜드 남알프스", "뉴기니섬"], meta: "🗻 푼착자야 (4,884m) · 🚩 오세아니아", desc: "월리스 선 이남 신세계에 위치한 남반구 불의 고리" }
@@ -1145,7 +1132,6 @@ const terrainData = {
     "terrain-2": {
         title: "<span class=\"geo-badge\">고생대<br>선캄브리아대</span>고기 조산대와 안정 육괴",
         subtitle: "시간이 깎아낸 대륙의 뿌리, 자원의 보고",
-        badge: "II",
         theme: "#546E7A",
         iconSVG: `<path d="M20,180 Q100,100 180,180" stroke="currentColor" stroke-width="10" fill="none" opacity="0.6"/><path d="M0,180 Q100,120 200,180" stroke="currentColor" stroke-width="10" fill="none" opacity="0.4"/><rect x="40" y="175" width="120" height="25" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -1199,7 +1185,6 @@ const terrainData = {
     "terrain-3": {
         title: "<span class=\"geo-badge\">확장<br>보존</span>열곡대와 판의 균열",
         subtitle: "대륙이 찢어지고 판이 충돌하는 역동의 현장",
-        badge: "III",
         theme: "#fa8231",
         iconSVG: `<path d="M80,20 L60,180 M120,20 L140,180" stroke="currentColor" stroke-width="12" stroke-dasharray="20 10" opacity="0.4"/><path d="M100,20 V180" stroke="currentColor" stroke-width="4" opacity="0.2"/>`,
         criteria: [
@@ -1209,26 +1194,31 @@ const terrainData = {
         ],
         subCards: [
             {
-                title: "동아프리카 지구대", desc: "인류의 요람이자 미래의 대양",
+                title: "지구대와 발산 경계", desc: "인류의 요람이자 미래의 대양",
                 criteria: [
-                    { icon: "↔️", label: "판의 경계", text: "아라비아-아프리카판 발산" },
-                    { icon: "💧", label: "주요 특징", text: "담수호" }
+                    { icon: "↔️", label: "판의 경계", text: "발산형" },
+                    { icon: "💧", label: "주요 특징", text: "담수호, 화산" }
                 ],
                 items: [
                     { name: "에티오피아고원", examples: ["아파르 저지대", "다나킬 사막", "에르타알레 화산", "홍해"], meta: "🌋 에르타 알레 (613m) · 🚩 아프리카의 뿔", desc: "세 개의 판이 만나 대륙이 갈라지기 시작한 곳" },
-                    { name: "대호수 지역", examples: ["빅토리아호", "탕가니카호", "말라위호", "리프트 밸리"], meta: "🗻 킬리만자로 (5,895m) · 🚩 동아프리카", desc: "땅이 갈라진 틈으로 물이 고여 만들어진 깊은 호수들" },
-                    { name: "화산과 사바나", examples: ["킬리만자로산", "케냐산", "세렝게티", "마사이마라"], meta: "🗻 케냐산 (5,199m) · 🚩 동아프리카", desc: "열곡 활동이 빚어낸 화산과 야생동물의 낙원" }
+                    { name: "동아프리카 대호수 내륙", examples: ["빅토리아호", "탕가니카호", "말라위호", "리프트 밸리"], meta: "🗻 킬리만자로 (5,895m) · 🚩 동아프리카", desc: "땅이 갈라진 틈으로 물이 고여 만들어진 깊은 호수들" },
+                    { name: "킬리만자로와 사바나", examples: ["킬리만자로산", "케냐산", "세렝게티", "마사이마라"], meta: "🗻 케냐산 (5,199m) · 🚩 동아프리카", desc: "열곡 활동이 빚어낸 화산과 야생동물의 낙원" },
+                    { name: "아이슬란드", examples: ["대서양 중앙 해령", "싱벨리어", "화산과 간헐천"], meta: "🗻 흐반나달스흐누퀴르 (2,110m) · 🚩 북대서양", desc: "바다 속 해령이 육지 위로 드러난 불과 얼음의 땅" },            
                 ]
             },
             {
-                title: "기타 판의 경계", desc: "새로운 땅이 솟거나 서로 스쳐 지나는 곳",
+                title: "보존형 경계", desc: "두 판이 미끄러지며 생성, 소멸 없이 지나가는 경계",
                 criteria: [
-                    { icon: "↔️", label: "판의 경계", text: "발산형/보존형" },
-                    { icon: "♨️", label: "주요 자원", text: "지열 에너지" }
+                    { icon: "↔️", label: "판의 경계", text: "수렴형" },
+                    { icon: "♨️", label: "주요 자원", text: "지열" }
                 ],
                 items: [
-                    { name: "아이슬란드 (발산형)", examples: ["대서양 중앙 해령", "싱벨리어", "화산과 간헐천"], meta: "🗻 흐반나달스흐누퀴르 (2,110m) · 🚩 북대서양", desc: "바다 속 해령이 육지 위로 드러난 불과 얼음의 땅" },
-                    { name: "미 서부 단층 (보존형)", examples: ["산안드레아스", "데스밸리", "베이슨 앤 레인지"], meta: "🗻 휘트니 (4,421m) · 🚩 미국 서부", desc: "두 개의 판이 어긋나며 미끄러지는 거대한 흉터" }
+                    { name: "산안드레아스 단층", examples: ["샌프란시스코", "로스앤젤레스", "데스밸리", "그레이트베이슨"], meta: "🗻 휘트니 (4,421m) · 🚩 미 서부", desc: "북미판과 태평양판이 어긋나며 캘리포니아 지역에 잦은 지진을 유발하는 거대 단층." },
+                    { name: "사가잉 단층", examples: ["미얀마", "인도-버마 산맥", "네피도", "양곤"], meta: "🗻 카카보라지 (5,881m) · 🚩 미얀마", desc: "미얀마를 종단하는 인도판과 유라시아판의 경계" },
+                    { name: "북아나톨리아 단층", examples: ["이스탄불", "아나톨리아반도", "흑해 남안"], meta: "🗻 아라라트산 (5,137m) · 🚩 튀르키예", desc: "유라시아판과 아나톨리아판 사이에 형성된 인구밀집지역의 단층" },
+                    { name: "알파인 단층", examples: ["뉴질랜드 남섬", "서던알프스", "피오르랜드"], meta: "🗻 쿡산 (3,724m) · 🚩 뉴질랜드", desc: "남알프스산맥을 형성한 인도-호주판과 태평양판의 경계" },
+                    { name: "사해 단층", examples: ["요르단", "이스라엘", "레바논", "사해"], meta: "🗻 헤르몬산 (2,814m) · 🚩 레반트 지역", desc: "아프리카판과 아라비아판의 경계에서 가장 낮은 내해인 사해를 형성" },
+               
                 ]
             },
             {
@@ -1244,7 +1234,7 @@ const terrainData = {
                 ]
             }
         ]
-    }
+    },
 };
 
 // [신규] 세계의 특수 지형 데이터 (HTML/CSS 통합본)
@@ -1252,7 +1242,6 @@ const specialData = {
     "special-1": {
         title: "<span class=\"geo-badge\">유수</span>유수와 하천 지형",
         subtitle: "흐르는 물이 깎고 쌓아 만든 대지의 혈관",
-        badge: "I",
         theme: "#00a8ff",
         iconSVG: `<path d="M0,100 Q50,50 100,100 T200,100" fill="none" stroke="currentColor" stroke-width="15" opacity="0.4"/><path d="M0,140 Q50,90 100,140 T200,140" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/>`,
         criteria: [
@@ -1298,7 +1287,6 @@ const specialData = {
     "special-2": {
         title: "<span class=\"geo-badge\">빙하</span>빙하와 주빙하 지형",
         subtitle: "거대한 얼음과 극한의 추위가 조각한 땅",
-        badge: "II",
         theme: "#74b9ff",
         iconSVG: `<path d="M20,180 L60,80 L100,140 L140,60 L180,180" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><path d="M20,180 L180,180" stroke="currentColor" stroke-width="20" opacity="0.2"/>`,
         criteria: [
@@ -1337,7 +1325,6 @@ const specialData = {
     "special-3": {
         title: "<span class=\"geo-badge\">건조</span>건조 지형",
         subtitle: "바람과 모래의 바다, 물리적 풍화의 대지",
-        badge: "III",
         theme: "#fdcb6e",
         iconSVG: `<path d="M20,180 Q60,100 100,180 T180,180" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><circle cx="150" cy="50" r="20" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -1377,7 +1364,6 @@ const specialData = {
     "special-4": {
         title: "<span class=\"geo-badge\">카르스트</span>카르스트 지형",
         subtitle: "빗물과 지하수가 석회암을 용식시켜 빚은 신비",
-        badge: "IV",
         theme: "#a29bfe",
         iconSVG: `<path d="M40,180 L60,100 L80,160 L100,80 L120,160 L140,100 L160,180" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><path d="M100,100 L100,180" stroke="currentColor" stroke-width="15" opacity="0.2"/>`,
         criteria: [
@@ -1416,7 +1402,6 @@ const specialData = {
     "special-5": {
         title: "<span class=\"geo-badge\">화산</span>불의 숨결, 화산 지형",
         subtitle: "마그마가 뚫고 나와 빚어낸 뜨거운 대지",
-        badge: "V",
         theme: "#e17055",
         iconSVG: `<path d="M100,20 L180,180 H20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><path d="M100,20 L100,80" stroke="currentColor" stroke-width="8" stroke-dasharray="10 5" opacity="0.6"/>`,
         criteria: [
@@ -1456,7 +1441,6 @@ const specialData = {
     "special-6": {
         title: "<span class=\"geo-badge\">해안</span>파도와 바람, 해안 지형",
         subtitle: "바다와 육지가 만나 깎고 쌓은 경계선",
-        badge: "VI",
         theme: "#00cec9",
         iconSVG: `<path d="M20,100 Q60,60 100,100 T180,100" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><path d="M20,140 Q60,100 100,140 T180,140" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/>`,
         criteria: [
@@ -1513,7 +1497,6 @@ const freshwaterData = {
     "hydro-1": {
         title: "흐름과 경계: 하천의 지정학",
         subtitle: "문명을 낳은 젖줄이자 국가를 가르는 정치적 물길",
-        badge: "I",
         theme: "#1e3799",
         iconSVG: `<path d="M-20,100 Q40,40 100,100 T220,100" fill="none" stroke="currentColor" stroke-width="20" opacity="0.3"/><path d="M100,20 V180" stroke="currentColor" stroke-width="2" stroke-dasharray="10 5" opacity="0.5"/>`,
         criteria: [
@@ -1545,7 +1528,6 @@ const freshwaterData = {
     "hydro-2": {
         title: "대자연의 동맥: 야생의 강",
         subtitle: "열대우림과 대협곡을 흐르는 압도적인 물의 힘",
-        badge: "II",
         theme: "#009432",
         iconSVG: `<path d="M40,160 C80,120 120,180 160,140" fill="none" stroke="currentColor" stroke-width="12" opacity="0.4" stroke-linecap="round"/><path d="M20,40 C60,80 140,20 180,60" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3" stroke-linecap="round"/>`,
         criteria: [
@@ -1583,7 +1565,6 @@ const freshwaterData = {
     "hydro-3": {
         title: "하천과 대도시",
         subtitle: "강이 낳고 키운 거대 도시들의 입지적 특성",
-        badge: "III",
         theme: "#6a89cc",
         iconSVG: `<rect x="40" y="40" width="30" height="30" fill="currentColor" opacity="0.4"/><rect x="130" y="120" width="30" height="30" fill="currentColor" opacity="0.4"/><path d="M0,100 Q50,50 100,100 T200,100" fill="none" stroke="currentColor" stroke-width="15" opacity="0.5"/>`,
         criteria: [
@@ -1625,7 +1606,6 @@ const freshwaterData = {
     "hydro-5": {
         title: "숨겨진 바다, 호수와 지하수",
         subtitle: "대륙 깊은 곳에 고립된 물과 사라지는 호수",
-        badge: "V",
         theme: "#82ccdd",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="currentColor" opacity="0.2"/><circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/>`,
         criteria: [
@@ -1666,7 +1646,6 @@ const freshwaterData = {
     "hydro-8": {
         title: "하천과 인간 생활",
         subtitle: "문명을 낳고, 예술이 되며, 삶의 터전이 된 물줄기",
-        badge: "VIII",
         theme: "#a55eea",
         iconSVG: `<path d="M100,20 L100,180 M20,100 H180" stroke="currentColor" stroke-width="8" opacity="0.2"/><circle cx="100" cy="100" r="30" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/>`,
         criteria: [
@@ -1721,7 +1700,6 @@ const oceanData = {
     "hydro-6": {
         title: "해상 요충지와 운하",
         subtitle: "세계를 잇는 좁은 물길, 패권의 급소",
-        badge: "VI",
         theme: "#0c2461",
         iconSVG: `<path d="M0,0 L80,0 L80,200 L0,200 Z" fill="currentColor" opacity="0.1"/><path d="M120,0 L200,0 L200,200 L120,200 Z" fill="currentColor" opacity="0.1"/><path d="M80,100 H120" stroke="currentColor" stroke-width="10" stroke-dasharray="5 5" opacity="0.5"/>`,
         criteria: [
@@ -1761,7 +1739,6 @@ const oceanData = {
     "hydro-7": {
         title: "문명을 가르고 이은 바다",
         subtitle: "대륙의 경계이자 문명 교류의 고속도로",
-        badge: "VII",
         theme: "#3498db",
         iconSVG: `<path d="M-20,100 Q40,40 100,100 T220,100" fill="none" stroke="currentColor" stroke-width="20" opacity="0.3"/><path d="M-20,140 Q40,80 100,140 T220,140" fill="none" stroke="currentColor" stroke-width="15" opacity="0.2"/><path d="M-20,180 Q40,120 100,180 T220,180" fill="none" stroke="currentColor" stroke-width="10" opacity="0.1"/>`,
         criteria: [
@@ -1812,7 +1789,6 @@ const oceanData = {
     "ocean-3": {
         title: "자연 어업: 잡는 어업의 세계",
         subtitle: "자연이 내어주는 선물을 거두는, 한류와 난류 어장의 보고",
-        badge: "III",
         theme: "#3498db",
         iconSVG: `<path d="M50,100 C80,50 120,50 150,100 S180,150 150,150 S80,150 50,100" fill="currentColor" opacity="0.3"/><path d="M60,120 C90,70 130,70 160,120 S190,170 160,170 S90,170 60,120" fill="currentColor" opacity="0.2"/>`,
         criteria: [
@@ -1822,7 +1798,7 @@ const oceanData = {
         ],
         subCards: [
             {
-                title: "한류성 어장: 차가운 바다의 선물", desc: "플랑크톤이 풍부하여 세계 최대 어획량을 자랑하는 차가운 바다.",
+                title: "한류성 어장", desc: "플랑크톤이 풍부하여 세계 최대 어획량을 자랑하는 차가운 바다.",
                 items: [
                     { name: "북서태평양 어장", examples: ["동해", "오호츠크해", "명태", "꽁치", "오징어", "세계 최대 어획량"], meta: "🌊 <a href=\"https://www.google.com/search?q=조경수역\" target=\"_blank\"><i class=\"term\">조경수역</i></a> · 🐟 한·난류 교차", desc: "쿠릴 한류와 쿠로시오 난류가 만나 세계 최대의 어획량을 자랑하는, 명태와 오징어의 본산." },
                     { name: "북동대서양 어장", examples: ["북해", "노르웨이해", "대구", "청어", "고등어", "유럽의 부엌"], meta: "🌊 북대서양 난류 · 🐟 피시 앤 칩스", desc: "북대서양 해류가 운반하는 영양분으로 대구와 청어가 풍부한 유럽의 전통적인 수산물 공급 기지." },
@@ -1830,7 +1806,7 @@ const oceanData = {
                 ]
             },
             {
-                title: "난류성 어장: 따뜻한 바다의 다양성", desc: "다양한 어종이 서식하는 따뜻한 바다와 갯벌. 다품종 소량 생산.",
+                title: "난류성 어장", desc: "다양한 어종이 서식하는 따뜻한 바다와 갯벌. 다품종 소량 생산.",
                 items: [
                     { name: "새우 & 게 (갑각류)", examples: ["멕시코만", "동남아시아", "블랙타이거 새우", "킹크랩", "맹그로브 생태계"], meta: "🦐 열대 연안 생태계", desc: "영양이 풍부한 열대 연안에서 서식하며, 양식업으로도 중요한 대표 갑각류." },
                     { name: "오징어 & 문어 (두족류)", examples: ["동해", "지중해", "포클랜드 제도", "대왕오징어", "피문어", "전 세계 식문화"], meta: "🦑 글로벌 식재료", desc: "암초나 모래 지대에 서식하며 야간 조업으로 잡는, 세계인의 사랑을 받는 두족류." },
@@ -1849,7 +1825,6 @@ const oceanData = {
     "ocean-4": {
         title: "양식업과 바다의 규칙",
         subtitle: "자원 고갈에 맞서 바다를 관리하고 경작하는 인간의 노력",
-        badge: "IV",
         theme: "#27ae60",
         iconSVG: `<rect x="20" y="20" width="160" height="160" rx="10" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><path d="M50,80 H150 M50,120 H150" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -2260,7 +2235,6 @@ const soilData = {
     "soil-1": {
         title: "수목 성대 토양",
         subtitle: "나무가 자라는 습윤한 기후대에서 발달한 성숙토",
-        badge: "I",
         theme: "#27ae60",
         iconSVG: `<path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99z" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -2328,7 +2302,6 @@ const soilData = {
     "soil-2": {
         title: "무수목 성대 토양",
         subtitle: "건조하거나 추워서 나무가 자라지 못하는 환경의 성숙토",
-        badge: "II",
         theme: "#e67e22",
         iconSVG: `<circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><path d="M100,20 V60 M100,140 V180 M20,100 H60 M140,100 H180" stroke="currentColor" stroke-width="6" opacity="0.6"/>`,
         criteria: [
@@ -2394,7 +2367,6 @@ const soilData = {
     "soil-3": {
         title: "간대 토양",
         subtitle: "기후보다는 암석(모재)의 특성이 지배적으로 나타나는 국지적 토양",
-        badge: "II",
         theme: "#c0392b",
         iconSVG: `<path d="M100,20 L160,180 H40 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.4"/><circle cx="100" cy="120" r="30" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -2461,7 +2433,6 @@ const soilData = {
     "soil-4": {
         title: "미성숙토",
         subtitle: "바람이나 물에 의해 운반되어 쌓인, 층위가 없는 젊은 흙",
-        badge: "III",
         theme: "#f1c40f",
         iconSVG: `<path d="M20,140 Q60,100 100,140 T180,140" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><circle cx="60" cy="60" r="6" fill="currentColor"/><circle cx="90" cy="80" r="6" fill="currentColor"/><circle cx="120" cy="50" r="6" fill="currentColor"/>`,
         criteria: [
@@ -2530,8 +2501,7 @@ const soilData = {
 const populationData = {
     "population-1": {
         title: "세계 인구의 분포",
-        subtitle: "사람이 모여드는 곳",
-        badge: "I",
+        subtitle: "정주민을 불러모으는 흡인요인의 분포",
         theme: "#3498db",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><circle cx="100" cy="100" r="40" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -2563,7 +2533,7 @@ const populationData = {
                 title: "척박지 속의 인간 거주지", desc: "주변의 극한 환경 때문에 상대적으로 인구가 집중된 특수한 지역들.",
                 items: [
                     { name: "사막의 해안선과 오아시스", examples: ["마그레브", "페루 해안 사막", "사마르칸트", "둔황", "카이로"], meta: "💧 물을 향한 집중 · 🏜️ 점과 선의 거주", desc: "물을 찾아 모여든 사람들이 형성한 점과 선 형태의 거주지." },
-                    { name: "고원의 안식처", examples: ["보고타", "키토", "멕시코시티", "아디스아바바"], meta: "🌿 상춘 기후 · ⛰️ 저위도 고산", desc: "찌는 듯한 열대 저지대 대신 쾌적한 고산 분지에 형성된 인구 밀집지." },
+                    { name: "고산 기후대", examples: ["보고타", "키토", "멕시코시티", "아디스아바바"], meta: "🌿 상춘 기후 · ⛰️ 저위도 고산", desc: "찌는 듯한 열대 저지대 대신 쾌적한 고산 분지에 형성된 인구 밀집지." },
                     { name: "동토의 부동항과 자원 도시", examples: ["무르만스크", "노릴스크", "옐로나이프", "트롬쇠"], meta: "⚓ 전략적 입지 · ❄️ 혹한 속 도시", desc: "부동항과 지하자원을 찾아 형성된 혹한에 고립된 인간 거주지." },
                     { name: "밀림 속의 강변 도시", examples: ["마나우스", "이키토스", "포트하커트", "킨샤사"], meta: "🚢 강이 곧 길 · 🌳 밀림 속 교통로", desc: "유일한 교통로이자 교역로인 강을 따라 발달한 밀림 속의 도시." }
                 ]
@@ -2573,7 +2543,6 @@ const populationData = {
     "population-2": {
         title: "세계의 인구 이동",
         subtitle: "각자의 뜻을 품에 안고 경계를 넘는 사람들",
-        badge: "II",
         theme: "#2ecc71",
         iconSVG: `<path d="M20,100 H180 M140,60 L180,100 L140,140" stroke="currentColor" stroke-width="10" stroke-linecap="round" opacity="0.4"/>`,
         criteria: [
@@ -2587,8 +2556,8 @@ const populationData = {
                 items: [
                     { name: "미국-멕시코 국경", examples: ["리오그란데강", "국경 장벽", "마킬라도라"], meta: "🌎 남 ➔ 북 이동 · 🚧 물리적/제도적 장벽", desc: "세계에서 가장 큰 소득 격차를 사이에 둔, 희망과 절망이 교차하는 거대한 장벽." },
                     { name: "걸프만과 남아시아", examples: ["UAE 두바이", "카타르 도하", "사우디 리야드"], meta: "✈️ 임시 노동 이주 · 💰 오일머니와 송금 경제", desc: "오일머니가 세운 사막의 마천루를 짓기 위해 남아시아에서 유입된 거대한 노동력." },
-                    { name: "동남아와 동아시아", examples: ["한국·일본", "싱가포르·대만"], meta: "📉 저출산·고령화 · 🏭 산업 연수생", desc: "고령화로 노동력이 부족해진 동아시아의 공장과 농촌으로 향하는 산업의 사다리." },
-                    { name: "두뇌 유출 (Brain Drain)", examples: ["인도/중국 ➔ 실리콘밸리", "아프리카 의료인력 ➔ 유럽"], meta: "🧠 고급 인력 유출 · 🎓 선진국으로의 집중", desc: "개발도상국의 핵심 인재가 더 나은 기회를 찾아 선진국으로 떠나는 현상." }
+                    { name: "동남아와 동아시아", examples: ["대한민국", "일본", "싱가포르", "대만"], meta: "📉 저출산·고령화 · 🏭 산업 연수생", desc: "고령화로 노동력이 부족해진 동아시아의 공장과 농촌으로 향하는 산업의 사다리." },
+                    { name: "두뇌 유출 (Brain Drain)", examples: ["마르세유", "라이프치히", "캘리포니아", "시애틀"], meta: "🧠 인도/중국➔실리콘밸리 · 🎓 아프리카 의료➔유럽", desc: "개발도상국의 핵심 인재가 더 나은 기회를 찾아 선진국으로 떠나는 현상." }
                 ]
             },
             {
@@ -2607,7 +2576,7 @@ const populationData = {
                 items: [
                     { name: "가라앉는 섬들", examples: ["투발루", "몰디브", "키리바시"], meta: "🌊 해수면 상승 · 🏝️ 기후 정의", desc: "해수면 상승으로 국토 전체가 물에 잠길 위기에 처한 작은 섬나라들의 절규." },
                     { name: "사라지는 바다와 숲", examples: ["아랄해", "차드호", "사헬 지대"], meta: "🏜️ 사막화 · 💧 수자원 고갈", desc: "인간의 탐욕과 기후 변화로 호수가 사막으로 변하고 삶의 터전을 잃은 사람들." },
-                    { name: "미래를 위한 이주", examples: ["인도네시아 수도 이전", "자카르타 지반 침하"], meta: " sinking sinking city · 🏗️ 계획적 이전", desc: "지반 침하와 해수면 상승으로 가라앉는 수도를 포기하고 새로운 터전을 찾는 국가적 결단." },
+                    { name: "수도 이전", examples: ["인도네시아", "자카르타", "누산타라", "자바", "칼리만탄"], meta: "⛏️ 지하수 고갈 · 🏗️ 계획적 이전", desc: "가라앉는 자카르타를 떠나 태평양을 바라보는 누산타라로." },
                     { name: "나우루의 비극", examples: ["인광석 채굴", "황폐화된 국토"], meta: "⛏️ 자원 고갈 · 📉 국가 파탄", desc: "과도한 자원 채굴로 국토가 황폐해지고 국가 경제가 파탄 나 이주를 고려하게 된 섬나라." }
                 ]
             }
@@ -2619,9 +2588,9 @@ const populationData = {
         badge: "III",
         theme: "#9b59b6",
         iconSVG: `<path d="M20,180 L60,100 L100,140 L140,60 L180,180" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="140" cy="60" r="15" fill="currentColor" opacity="0.4"/>`,
-        // [특수 구조] 이미지와 4열 그리드 설명이 포함된 criteria
+        // [특수 구조] 이미지와 4열 그리드 설명이 포함된 criteria (상단 유지)
         criteria: {
-            isSpecial: true, // 렌더링 시 특수 처리 신호
+            isSpecial: true, 
             buttonText: "📊 인구변천모형 보기",
             image: "images_human/population_transition.webp",
             items: [
@@ -2633,7 +2602,26 @@ const populationData = {
         },
         subCards: [
             {
-                title: "2-3단계: 인구 폭발과 인구 배당금", desc: "의료 발전으로 사망률은 급감했으나 출생률은 여전히 높아 인구가 폭발적으로 증가하는 시기.",
+                title: "1단계: 전통·전근대 사회", desc: "의료와 기술의 혜택이 미치지 않아 출생률과 사망률이 모두 높은 다산다사(多産多死)의 시대.",
+                // [신규] 1단계 메타데이터
+                criteria: [
+                    { icon: "⚰️", label: "사망 요인", text: "높은 영아사망률" },
+                    { icon: "⏳", label: "생애 주기", text: "낮은 기대수명" }
+                ],
+                items: [
+                    { name: "아마존 고립 부족", examples: ["브라질 야노마미족", "페루 마슈코 피로족", "접촉 비접촉 부족"], meta: "🏹 수렵 채집 · 🦠 질병 취약성", desc: "현대 문명과 단절된 채 전통 방식을 고수하며, 외부 질병에 대한 면역이 없어 사망률이 높은 집단." },
+                    { name: "파푸아뉴기니 고지대", examples: ["다니족", "후리족", "원시 농경"], meta: "⛰️ 고립된 지형 · 🌽 자급자족", desc: "험준한 산악 지형으로 외부와 격리되어 전통적인 부족 단위의 사회 구조와 높은 인구 변동성을 유지." },
+                    { name: "센티넬족", examples: ["인도 안다만 제도", "북센티넬섬", "외부인 접근 금지"], meta: "🚫 완전 고립 · 🏹 신석기 시대", desc: "외부 세계와의 접촉을 거부하고 신석기 시대의 생활 방식을 유지하는 지구상 최후의 고립 부족." },
+                    { name: "사헬 유목민 (일부)", examples: ["투아레그족", "풀라니족", "의료 사각지대"], meta: "🐫 이동 생활 · 🏥 높은 영아 사망률", desc: "광활한 사막을 이동하는 생활 방식으로 인해 현대 의료 시스템의 혜택을 받기 어려워 다산다사의 특성을 보임." }
+                ]
+            },
+            {
+                title: "2-3단계: 인구 폭발", desc: "의료 발전으로 사망률은 급감했으나 출생률은 여전히 높아 인구가 폭발적으로 증가하는 시기.",
+                // [신규] 2-3단계 메타데이터
+                criteria: [
+                    { icon: "💉", label: "전환 원인", text: "의료 및 위생 개선" },
+                    { icon: "📈", label: "사회 현상", text: "맬서스 트랩 (인구 폭발)" }
+                ],
                 items: [
                     { name: "폭발적 성장 단계 (2단계)", examples: ["나이지리아", "콩고민주공화국", "아프가니스탄"], meta: "📈 높은 출생률 · 📉 급감하는 사망률", desc: "의료 보급 초기 단계로, 사망률만 급격히 감소하여 인구가 폭발적으로 증가하는 국가들." },
                     { name: "인구배당효과 (3단계)", examples: ["인도", "베트남", "브라질"], meta: "💰 풍부한 생산 인구 · 🚀 경제 성장 잠재력", desc: "생산가능인구가 부양인구보다 많아 경제 성장에 가속도가 붙는 황금기를 맞이한 국가들." },
@@ -2641,7 +2629,12 @@ const populationData = {
                 ]
             },
             {
-                title: "4-5단계: 인구 절벽과 축소 사회", desc: "낮은 출생률과 기대수명 증가로 인구가 정체하거나 감소하며 사회 전체가 늙어가는 시기.",
+                title: "4-5단계: 인구 절벽", desc: "낮은 출생률과 기대수명 증가로 인구가 정체하거나 감소하며 사회 전체가 늙어가는 시기.",
+                // [신규] 4-5단계 메타데이터
+                criteria: [
+                    { icon: "📉", label: "구조", text: "저출산 고령화" },
+                    { icon: "🧓", label: "원인", text: "가족 계획과 맞벌이" }
+                ],
                 items: [
                     { name: "인구 정체 및 감소 단계 (4-5단계)", examples: ["일본", "독일", "한국", "이탈리아"], meta: "📉 낮은 출생률 · ⏳ 초고령 사회", desc: "세계에서 가장 빠른 속도로 고령화가 진행되며 인구 감소를 눈앞에 둔 국가들." },
                     { name: "고령화의 그늘", examples: ["노동력 부족", "사회 활력 저하", "재정 압박"], meta: "💸 연금 고갈 · 👨‍⚕️ 의료비 부담", desc: "생산가능인구 감소와 노년 부양비 급증으로 국가 재정과 사회 전체의 활력이 떨어지는 현상." },
@@ -2654,7 +2647,6 @@ const populationData = {
     "population-4": {
         title: "국가의 체질: 인구 구성",
         subtitle: "연령과 성별, 한 사회의 잠재력과 약점을 말하다",
-        badge: "IV",
         theme: "#7f8c8d",
         iconSVG: `<rect x="60" y="40" width="80" height="120" fill="currentColor" opacity="0.2"/><path d="M60,100 H140" stroke="currentColor" stroke-width="4" opacity="0.4"/>`,
         criteria: [
@@ -2694,7 +2686,6 @@ const populationData = {
     "population-5": {
         title: "국가의 초상: 민족 구성",
         subtitle: "단일, 용광로, 모자이크, 그리고 분열",
-        badge: "V",
         theme: "#e67e22",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="currentColor" opacity="0.2"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.3"/>`,
         criteria: [
@@ -2762,7 +2753,6 @@ const agricultureData = {
     "agri-1": {
         title: "식량 작물",
         subtitle: "주요 문명의 주식이 된 세 위대한 곡물",
-        badge: "I",
         theme: "#4CAF50",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.2"/><path d="M100,20 V180 M20,100 H180" stroke="currentColor" stroke-width="2" opacity="0.3"/><path d="M60,60 C80,80 120,80 140,60" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         subCards: [
@@ -2841,7 +2831,6 @@ const agricultureData = {
     "agri-2": {
         title: "구황 작물",
         subtitle: "척박한 땅에서 인류를 기근에서 구원한 작물들",
-        badge: "II",
         theme: "#795548",
         iconSVG: `<path d="M100,50 L50,150 L150,150 Z" fill="currentColor" opacity="0.4"/><circle cx="100" cy="150" r="10" fill="currentColor" opacity="0.6"/>`,
         subCards: [
@@ -2919,7 +2908,6 @@ const agricultureData = {
         "agri-3": {
             title: "기호 작물",
             subtitle: "세계를 깨우고 움직이는 감각의 지배자",
-            badge: "III",
             theme: "#6F4E37", // 새로운 테마 색상 (커피색)
             iconSVG: `<path d="M50,150 Q20,150 20,120 V80 H80 V120 Q80,150 50,150 Z" fill="currentColor" opacity="0.3"/><path d="M120,60 Q160,20 160,100 Q120,180 80,100 Q80,20 120,60 Z" fill="currentColor" opacity="0.2"/>`,
             subCards: [
@@ -2989,8 +2977,7 @@ const agricultureData = {
         // [신규] "agri-industrial" 카드: "상품 작물"
         "agri-industrial": {
             title: "상품 작물",
-            subtitle: "자본과 권력의 원천이 된 욕망의 작물들",
-            badge: "III+", // 순서 유지를 위해 + 기호 사용
+            subtitle: "자본과 권력의 원천이 된 욕망의 작물들", // 순서 유지를 위해 + 기호 사용
             theme: "#FF9800", // 기존 agri-3의 테마색 계승
             iconSVG: `<path d="M100,20 Q180,100 100,180 Q20,100 100,20 Z" fill="currentColor" opacity="0.4"/><path d="M100,40 Q160,100 100,160 Q40,100 100,40 Z" fill="currentColor" opacity="0.3"/>`,
             subCards: [
@@ -3075,7 +3062,6 @@ const agricultureData = {
     "agri-8": {
         title: "과수와 첨단 원예",
         subtitle: "기후를 극복한 기술과 미식의 세계",
-        badge: "VIII",
         theme: "#8e44ad",
         iconSVG: `<circle cx="60" cy="60" r="20" fill="currentColor" opacity="0.3"/><circle cx="90" cy="90" r="20" fill="currentColor" opacity="0.4"/><circle cx="120" cy="60" r="20" fill="currentColor" opacity="0.3"/><path d="M90,90 L90,150" stroke="currentColor" stroke-width="6" opacity="0.5"/>`,
         criteria: [
@@ -3114,7 +3100,6 @@ const agricultureData = {
     "agri-9": {
         title: "현대 농업의 그림자",
         subtitle: "다국적 기업, 슈퍼푸드 열풍, 그리고 금지된 작물",
-        badge: "IX",
         theme: "#2d3436",
         iconSVG: `<path d="M100,20 L180,180 H20 Z" fill="none" stroke="currentColor" stroke-width="15" opacity="0.3"/><path d="M100,60 V130" stroke="currentColor" stroke-width="12" opacity="0.5"/><circle cx="100" cy="155" r="8" fill="currentColor" opacity="0.5"/>`,
         criteria: [
@@ -3157,7 +3142,6 @@ const livestockData = {
     "agri-4": {
         title: "농경의 엔진, 소",
         subtitle: "쟁기를 끄는 노동력에서 미식의 정점까지",
-        badge: "IV",
         theme: "#8e44ad",
         iconSVG: `<path d="M40,60 Q100,10 160,60" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" opacity="0.4"/><path d="M60,60 L60,140 Q100,180 140,140 L140,60" fill="currentColor" opacity="0.2"/><circle cx="70" cy="90" r="8" fill="currentColor" opacity="0.6"/><circle cx="130" cy="90" r="8" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -3205,7 +3189,6 @@ const livestockData = {
     "agri-5": {
         title: "습윤 기후의 단백질, 돼지",
         subtitle: "정착 농경민의 식탁을 책임지는 잡식성 가축",
-        badge: "V",
         theme: "#e84393",
         iconSVG: `<ellipse cx="100" cy="110" rx="70" ry="50" fill="currentColor" opacity="0.2"/><circle cx="100" cy="110" r="25" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><circle cx="90" cy="110" r="4" fill="currentColor" opacity="0.6"/><circle cx="110" cy="110" r="4" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -3251,7 +3234,6 @@ const livestockData = {
     "agri-6": {
         title: "건조 유목의 동반자, 양",
         subtitle: "풀이 드문 곳에서 털과 고기를 내어주는 가축",
-        badge: "VI",
         theme: "#f1c40f",
         iconSVG: `<path d="M50,100 C50,60 90,40 150,60 C180,70 190,100 180,130 C160,160 120,170 80,150 C50,130 50,100 50,100 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><path d="M50,100 Q30,80 40,60 Q60,40 80,60" fill="none" stroke="currentColor" stroke-width="8" opacity="0.5"/>`,
         criteria: [
@@ -3290,7 +3272,6 @@ const livestockData = {
     "agri-7": {
         title: "가축화된 인류의 동반자들",
         subtitle: "극한 환경 적응과 보편적 단백질",
-        badge: "VII",
         theme: "#636e72",
         iconSVG: `<path d="M40,100 L60,60 L80,100 M120,100 L140,60 L160,100" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M20,140 Q100,180 180,140" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/>`,
         criteria: [
@@ -3335,7 +3316,6 @@ const resourcesData = {
     "resources-1": {
         title: "화석 에너지: 문명의 검은 심장",
         subtitle: "산업 혁명을 이끌고 현대 지정학을 결정하는 지하의 동력원",
-        badge: "I",
         theme: "#D35400",
         iconSVG: `<path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="currentColor" opacity="0.2"/><path d="M100,40 V160 M40,100 H160" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
         criteria: [
@@ -3404,7 +3384,6 @@ const resourcesData = {
     "resources-2": {
         title: "철과 비철 금속",
         subtitle: "산업의 뼈대를 이루는 기초 금속 자원",
-        badge: "II",
         theme: "#8D6E63",
         iconSVG: `<path d="M100,20 L180,180 H20 Z" fill="currentColor" opacity="0.2"/><path d="M100,50 V150" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
         criteria: [
@@ -3465,7 +3444,6 @@ const resourcesData = {
     "resources-3": {
         title: "부와 권력의 상징, 귀금속",
         subtitle: "역사적으로 화폐와 장식의 역할을 해온 희소 자원",
-        badge: "III",
         theme: "#FFD700",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="currentColor" opacity="0.1"/><path d="M100,20 L180,100 L100,180 L20,100 Z" fill="currentColor" opacity="0.2"/>`,
         criteria: [
@@ -3525,7 +3503,6 @@ const resourcesData = {
     "resources-4": {
         title: "미래 기술의 열쇠, 전략 광물",
         subtitle: "4차 산업혁명 시대의 핵심. 첨단 기술의 필수 원료",
-        badge: "IV",
         theme: "#00B894",
         iconSVG: `<path d="M50,50 L150,50 L150,150 L50,150 Z" fill="currentColor" opacity="0.2"/><path d="M60,60 L140,60 L140,140 L60,140 Z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -3597,7 +3574,6 @@ const resourcesData = {
     "resources-5": {
         title: "비금속 광물",
         subtitle: "도시를 짓고 식량을 키우는 대지의 선물",
-        badge: "V",
         theme: "#95a5a6",
         iconSVG: `<path d="M20,180 L60,100 L100,140 L140,60 L180,180" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><rect x="80" y="120" width="40" height="60" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -3644,7 +3620,6 @@ const energyData = {
     "energy-1": {
         title: "화력 발전",
         subtitle: "탄소의 시대, 여전히 세계를 움직이는 기저 전력",
-        badge: "I",
         theme: "#e67e22",
         iconSVG: `<path d="M60,180 V100 L100,60 L140,100 V180 H60 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M100,60 V20" stroke="currentColor" stroke-width="6" opacity="0.5"/><path d="M80,40 Q100,10 120,40" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -3679,7 +3654,6 @@ const energyData = {
     "energy-2": {
         title: "원자력 발전",
         subtitle: "통제된 태양, 고밀도 에너지의 양면성",
-        badge: "II",
         theme: "#8e44ad",
         iconSVG: `<circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.6"/><ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="currentColor" stroke-width="4" opacity="0.4" transform="rotate(0 100 100)"/><ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="currentColor" stroke-width="4" opacity="0.4" transform="rotate(60 100 100)"/><ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="currentColor" stroke-width="4" opacity="0.4" transform="rotate(120 100 100)"/>`,
         criteria: [
@@ -3725,7 +3699,6 @@ const energyData = {
     "energy-3": {
         title: "수력 발전",
         subtitle: "중력을 에너지로, 물을 지배하는 자",
-        badge: "III",
         theme: "#3498db",
         iconSVG: `<path d="M20,100 Q60,140 100,100 T180,100" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><path d="M100,20 V180" stroke="currentColor" stroke-width="15" opacity="0.2"/><rect x="80" y="60" width="40" height="80" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -3774,7 +3747,6 @@ const energyData = {
     "energy-4": {
         title: "재생 에너지",
         subtitle: "자연의 순환, 지속 가능한 미래의 동력",
-        badge: "IV",
         theme: "#2ecc71",
         iconSVG: `<path d="M100,20 L130,80 H160 L110,120 L130,180 L100,140 L70,180 L90,120 L40,80 H70 Z" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/><circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.2"/>`,
         criteria: [
@@ -3854,7 +3826,6 @@ const energyData = {
     "energy-5": {
         title: "미래 및 대체 에너지",
         subtitle: "인류의 다음 도전을 이끄는 동력원",
-        badge: "V",
         theme: "#4b6584",
         iconSVG: `<path d="M100,20 L180,100 L100,180 L20,100 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -3910,7 +3881,6 @@ const industryData = {
     "industry-1": {
         title: "기간 산업: 철강과 기계",
         subtitle: "산업화 시대를 열고 현대 문명의 뼈대를 세운 기초 제조 산업",
-        badge: "I",
         theme: "#404E88",
         iconSVG: `<rect x="20" y="20" width="160" height="160" fill="currentColor" opacity="0.1"/><path d="M40,180 L160,180 V160 H40 Z M100,160 V40 M40,160 H160" stroke="currentColor" stroke-width="6" opacity="0.4" stroke-linecap="round"/>`,
         criteria: [
@@ -3998,7 +3968,6 @@ const industryData = {
     "industry-2": {
         title: "노동 및 소재 산업",
         subtitle: "세계의 공장, 저임금과 원료를 찾아 이동하는 생산 사슬",
-        badge: "II",
         theme: "#B53471",
         iconSVG: `<path d="M40,160 L40,40 L100,80 L160,40 L160,160" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3" stroke-linejoin="round"/><path d="M40,100 H160" stroke="currentColor" stroke-width="6" opacity="0.2"/><circle cx="100" cy="130" r="15" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -4043,7 +4012,6 @@ const industryData = {
     "industry-3": {
         title: "화학 산업: 정유와 재료",
         subtitle: "석유를 가공하여 모든 것을 만드는 기초 화학 산업",
-        badge: "III",
         theme: "#D6A32F",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="currentColor" opacity="0.1"/><circle cx="100" cy="100" r="50" fill="currentColor" opacity="0.2"/><path d="M100,20 V60 M100,140 V180 M20,100 H60 M140,100 H180" stroke="currentColor" stroke-width="8" opacity="0.3"/>`,
         criteria: [
@@ -4120,7 +4088,6 @@ const industryData = {
     "industry-4": {
         title: "첨단 산업: IT와 하이테크",
         subtitle: "모래를 뇌로 바꾸고 코드로 세계를 연결하는 지식 기반 산업",
-        badge: "IV",
         theme: "#2D98DA",
         iconSVG: `<path d="M100,50 L150,150 L50,150 Z M100,50 C120,30 140,50 150,70" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4" stroke-linecap="round"/><circle cx="100" cy="110" r="20" fill="currentColor" opacity="0.3"/><path d="M60,150 V180 M140,150 V180 M100,150 V180" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
         criteria: [
@@ -4181,7 +4148,6 @@ const industryData = {
     "industry-5": {
         title: "고가치 제조업: 정밀과 감성",
         subtitle: "장인 정신과 첨단 기술로 물질을 예술과 안보로 승화하다",
-        badge: "V",
         theme: "#6c5ce7",
         iconSVG: `<rect x="50" y="50" width="100" height="100" fill="currentColor" opacity="0.1"/><path d="M100,50 L100,150 M50,100 H150" stroke="currentColor" stroke-width="4" opacity="0.3"/><circle cx="100" cy="100" r="30" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -4226,7 +4192,6 @@ const cityData = {
     "city-1": {
         title: "<span class=\"geo-badge\">계층</span>글로벌 세계 도시",
         subtitle: "세계를 지휘하고 연결하는 문명의 사령탑",
-        badge: "I",
         theme: "#3c40c6",
         iconSVG: `<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -4286,7 +4251,6 @@ const cityData = {
     "city-2": {
         title: "<span class=\"geo-badge\">구조</span>도시의 내외부 체계",
         subtitle: "도심에서 메갈로폴리스까지, 유기적으로 연결된 공간",
-        badge: "II",
         theme: "#0fb9b1",
         iconSVG: `<path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -4333,7 +4297,6 @@ const cityData = {
     "city-3": {
         title: "<span class=\"geo-badge\">사회</span>도시와 인간",
         subtitle: "번영의 그늘, 불평등과 공간의 정치학",
-        badge: "III",
         theme: "#ff5e57",
         iconSVG: `<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -4386,7 +4349,6 @@ const cityData = {
     "city-4": {
         title: "<span class=\"geo-badge\">산업</span>글로벌 산업 클러스터",
         subtitle: "자원과 운송, 지식이 빚어낸 세계의 생산 거점",
-        badge: "IV",
         theme: "#6c5ce7",
         iconSVG: `<path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -4428,7 +4390,6 @@ const cityData = {
     "city-5": {
         title: "<span class=\"geo-badge\">가치</span>도시의 정체성과 미래",
         subtitle: "인류의 유산을 품고 지속 가능한 삶을 그리는 도시들",
-        badge: "V",
         theme: "#009432",
         iconSVG: `<path d="M100,20 L180,180 H20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.2"/><circle cx="100" cy="100" r="40" fill="currentColor" opacity="0.3"/><path d="M100,20 V180" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -4473,7 +4434,6 @@ const languageData = {
     "lang-1": {
         title: "유럽의 인도유럽어족",
         subtitle: "서구 문명의 뿌리이자 세계를 연결한 언어들",
-        badge: "I",
         theme: "#3c40c6",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4523,7 +4483,6 @@ const languageData = {
     "lang-2": {
         title: "아시아의 인도유럽어와 드라비다어",
         subtitle: "아리아인의 이동과 인도의 거대한 언어 모자이크",
-        badge: "II",
         theme: "#3c40c6",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4572,7 +4531,6 @@ const languageData = {
     "lang-3": {
         title: "동아시아와 동남아시아",
         subtitle: "단음절과 성조, 벼농사 문화권의 언어들",
-        badge: "III",
         theme: "#d63031",
         iconSVG: `<path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4619,7 +4577,6 @@ const languageData = {
     "lang-4": {
         title: "아프로-아시아 & 아프리카",
         subtitle: "인류의 고향, 사막의 경전부터 정글의 북소리까지",
-        badge: "IV",
         theme: "#e17055",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4668,7 +4625,6 @@ const languageData = {
     "lang-5": {
         title: "유목과 해양의 확산",
         subtitle: "초원을 달리고 바다를 건너 퍼져나간 교착어의 세계",
-        badge: "V",
         theme: "#00b894",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4716,7 +4672,6 @@ const languageData = {
     "lang-6": {
         title: "고립어와 신대륙",
         subtitle: "독자적으로 진화했거나, 문명에 의해 사라져가는 언어의 섬들",
-        badge: "VI",
         theme: "#6c5ce7",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -4768,7 +4723,6 @@ const religionData = {
     "religion-1": {
         title: "유대교",
         subtitle: "아브라함 계통 종교의 원류, 계약과 율법의 종교",
-        badge: "I",
         theme: "#5D729A",
         iconSVG: `<path d="M12,2 L22,20 L2,20 L12,2 M12,22 L2,4 L22,4 L12,22" fill="currentColor" />`,
         criteria: [
@@ -4804,7 +4758,6 @@ const religionData = {
     "religion-2": {
         title: "크리스트교",
         subtitle: "유대교 세계관을 넘어서 세계로 향한 예수의 사랑과 구원",
-        badge: "II",
         theme: "#D62828",
         iconSVG: `<path d="M11 2v7H4v4h7v9h4v-9h7V9h-7V2z" fill="currentColor"/>`,
         criteria: [
@@ -4849,7 +4802,6 @@ const religionData = {
     "religion-3": {
         title: "이슬람교",
         subtitle: "사막의 계시에서 시작된 복종, 최후의 아브라함 계통 종교",
-        badge: "III",
         theme: "#0096C7",
         iconSVG: `<path d="M12 2C10.34 2 8.78 2.42 7.4 3.15C8.47 3.05 9.55 3 10.64 3C15.6 3 19.64 7.04 19.64 12C19.64 16.96 15.6 21 10.64 21C9.55 21 8.47 20.95 7.4 20.85C8.78 21.58 10.34 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM7.44 5.84C7.44 5.84 7.44 5.84 7.44 5.84C5.07 7.34 3.5 9.98 3.5 13C3.5 17.97 7.53 22 12.5 22C13.28 22 14.04 21.9 14.77 21.71C10.8 21.1 7.74 17.82 7.46 13.78C7.45 13.71 7.44 13.65 7.44 13.58C7.36 10.9 8.25 8.39 9.96 6.41C9.08 6.04 8.23 5.85 7.44 5.84ZM15 11.5L16.5 14.5L19.5 15L17.5 17.5L18 20.5L15 19L12 20.5L12.5 17.5L10.5 15L13.5 14.5L15 11.5Z" fill="currentColor"/>`,
         criteria: [
@@ -4884,7 +4836,6 @@ const religionData = {
     "religion-4": {
         title: "힌두교",
         subtitle: "인도 문명의 근간, 윤회와 카스트의 복잡계",
-        badge: "IV",
         theme: "#F77F00",
         iconSVG: `<path d="M288.6 345.4c-15.4-8.6-36-14-44.6-31.4-5.4-11-3.8-23.4 4.4-32.6 12.2-13.8 33-17.6 49.6-10.8 16.4-26.4 13.4-62.8-9.2-85.4-24.6-24.6-65.6-25.2-91-1.4-19.2 18-23.4 46.6-10.6 69.4 7.4 13.2 20.2 23.2 35.2 25.6 4.8.8 9.4-2.4 10.2-7.2.8-4.8-2.4-9.4-7.2-10.2-8.2-1.4-15.6-6.6-20-13.6-8.4-13.4-6.8-30.4 4-41.2 15.4-15.4 40.2-15.8 56-1.4 14.4 13.2 17.4 35.2 8 52.4-10.6-2.4-21.6 0-30.6 6.6-15.6 11.4-19.6 32.8-8.8 49 8.2 12.2 23.2 17.8 37.6 14.8 3.2 7.4 8.8 13.6 16.2 17.6 14.4 7.8 32.2 5.2 44-6.6 1.8-1.8 3.4-3.8 4.8-5.8 14.8 8.2 31.8 12.6 48.8 12.6 33.4 0 65.2-16.8 83.6-45 13.6-20.8 20.6-45.2 20.6-70s-7-49.2-20.6-70c-18.4-28.2-50.2-45-83.6-45-19.2 0-38.2 5.6-54.6 16.2 2.8-17.4 11.2-33.4 24.4-46.6 4.2-4.2 3.4-11.2-1.6-14.4-4.8-3.2-11.4-2.2-14.4 2.8-15.2 24.4-13.6 56.2 4 78.6-4.2 2.6-8.2 5.4-12.2 8.4-26.4-17.4-59.2-18-86.2-1.8-26 15.6-42 43.6-42 73.6 0 24.4 10.4 47.6 28.6 64.2-3.8 7.4-6.2 15.4-7 23.6-1.4 15.4 3.2 30.6 12.6 42.2 15.6 19.2 39.4 28.8 63.6 25.8 19.6-2.4 37.6-13.4 49.2-29.2 3.2-4.4 2.4-10.6-2-13.8-4.4-3.2-10.6-2.4-13.8 2-7.4 10.2-19 17.2-31.6 18.8-15.2 1.8-30.2-4.2-40-16.4-5.8-7.2-8.8-16.4-8.2-25.6.6-7.6 3.4-14.8 8-20.8 7 4.2 15 6.4 23.2 6.4 16.8 0 32.8-9.4 41.2-24.2 10.6 16.6 28.8 26.4 48.4 26.4 13 0 25.8-4.4 36.4-12.6zm-64.4-188.2c22.2 0 43.4 11.2 55.6 30 9.2 14 14 30.2 14 47s-4.8 33-14 47c-12.2 18.8-33.4 30-55.6 30-13 0-25.6-3.8-36.6-11-4-2.6-7.6-5.6-10.8-9 13.6-8 23.4-22.2 25.2-38.8 1.2-11-1.6-21.8-7.6-30.8-4-6-9.6-10.8-16.2-14.2 2.2-3.8 4.6-7.4 7.4-10.8 10.6-13.4 25.6-23.2 42.6-27.6 5.2-1.4 8.2-6.8 6.8-12-1.4-5.2-6.8-8.2-12-6.8-20.4 5.2-38.4 17-51.2 33-7.2 9-12.8 19.2-16.6 30-15.4-14.6-24.2-35.4-24.2-56.8 0-20.2 10.8-39 28.4-49.6 18.2-11 39.2-10.6 57 .8 2.8 1.6 5.8 2.6 8.8 2.6z" fill="currentColor"/><path d="M364 103c14.4 0 26-11.6 26-26s-11.6-26-26-26-26 11.6-26 26 11.6 26 26 26z" fill="currentColor"/>`,
         criteria: [
@@ -4921,7 +4872,6 @@ const religionData = {
     "religion-5": {
         title: "불교",
         subtitle: "한 왕자의 고뇌에서 시작된 깨달음, 아시아를 물들이다",
-        badge: "V",
         theme: "#B8860B",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/><path d="M12 5.5L12 2 M18.5 12L22 12 M12 18.5L12 22 M5.5 12L2 12 M16.6 7.4L19.1 4.9 M16.6 16.6L19.1 19.1 M7.4 16.6L4.9 19.1 M7.4 7.4L4.9 4.9" stroke="currentColor" stroke-width="2"/>`,
         criteria: [
@@ -4955,7 +4905,6 @@ const religionData = {
     "religion-6": {
         title: "지역에 뿌리내린 신념들",
         subtitle: "삶의 질서와 자연의 도, 동아시아를 직조한 세계관",
-        badge: "VI",
         theme: "#43AA8B",
         iconSVG: `<path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,4 C14.21,4 16,5.79 16,8 C16,10.21 14.21,12 12,12 C9.79,12 8,10.21 8,8 C8,5.79 9.79,4 12,4 Z M12,20 C9.79,20 8,18.21 8,16 C8,13.79 9.79,12 12,12 C14.21,12 16,13.79 16,16 C16,18.21 14.21,20 12,20 Z" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/>`,
         criteria: null, // [특수 구조] 최상단 메타데이터 없음
@@ -5468,7 +5417,6 @@ const tourismData = {
     "tourism-1": {
         title: "대자연의 조각품, 자연지리 여행",
         subtitle: "지구가 빚어낸 경이로운 풍경을 찾아서",
-        badge: "I",
         theme: "#00cec9",
         iconSVG: `<path d="M100,20 Q160,80 100,140 T100,20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="80" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -5517,7 +5465,6 @@ const tourismData = {
     "tourism-2": {
         title: "문명의 시간 여행, 역사 유적",
         subtitle: "인류가 남긴 위대한 발자취",
-        badge: "II",
         theme: "#8D6E63",
         iconSVG: `<path d="M40,160 L40,40 L100,80 L160,40 L160,160" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M40,100 H160" stroke="currentColor" stroke-width="6" opacity="0.2"/>`,
         criteria: [
@@ -5567,7 +5514,6 @@ const tourismData = {
     "tourism-3": {
         title: "영혼의 지도, 종교와 순례",
         subtitle: "구원과 성찰을 향한 인간의 이동",
-        badge: "III",
         theme: "#6c5ce7",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -5610,7 +5556,6 @@ const tourismData = {
     "tourism-4": {
         title: "도시와 엔터테인먼트",
         subtitle: "현대 문명이 만든 화려한 놀이터",
-        badge: "IV",
         theme: "#3c40c6",
         iconSVG: `<rect x="40" y="80" width="40" height="80" fill="currentColor" opacity="0.3"/><rect x="100" y="40" width="40" height="120" fill="currentColor" opacity="0.5"/><path d="M20,160 H180" stroke="currentColor" stroke-width="4" opacity="0.2"/>`,
         criteria: [
@@ -5657,7 +5602,6 @@ const tourismData = {
     "tourism-5": {
         title: "지역화와 축제",
         subtitle: "공간이 브랜드가 되다: 세계를 유혹하는 지역의 전략",
-        badge: "V",
         theme: "#e17055",
         iconSVG: `<path d="M100,20 L130,80 H190 L140,120 L160,180 L100,140 L40,180 L60,120 L10,80 H70 Z" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/><circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -5711,7 +5655,6 @@ const tourismData = {
     "tourism-6": {
         title: "현대 관광의 그늘",
         subtitle: "관광객이 남기고 간 상처와 갈등",
-        badge: "VI",
         theme: "#636e72",
         iconSVG: `<path d="M40,100 H160 M100,40 V160" stroke="currentColor" stroke-width="12" opacity="0.3"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/>`,
         criteria: [
@@ -5747,7 +5690,6 @@ const tourismData = {
     "tourism-7": {
         title: "지속 가능한 여행의 미래",
         subtitle: "소비하는 여행에서 공존하고 성찰하는 여행으로",
-        badge: "VII",
         theme: "#27ae60",
         iconSVG: `<path d="M100,20 Q140,60 140,100 Q140,140 100,180 Q60,140 60,100 Q60,60 100,20 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><path d="M100,60 V140 M60,100 H140" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
         criteria: [
@@ -5787,7 +5729,6 @@ const geopoliticsData = {
     "geopol-1": {
         title: "심장지대 이론 (Heartland)",
         subtitle: "\"유라시아의 심장을 지배하는 자가 세계를 지배한다\"",
-        badge: "I",
         theme: "#c0392b",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="currentColor" opacity="0.1"/><path d="M60,100 H140 M100,60 V140" stroke="currentColor" stroke-width="12" opacity="0.4"/>`,
         criteria: [
@@ -5820,7 +5761,6 @@ const geopoliticsData = {
     "geopol-2": {
         title: "주변부 이론과 해양 권력",
         subtitle: "\"림랜드(Rimland)를 지배하는 자가 유라시아를 지배한다\"",
-        badge: "II",
         theme: "#2980b9",
         iconSVG: `<path d="M100,20 C160,20 180,60 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,60 40,20 100,20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><path d="M20,100 H180" stroke="currentColor" stroke-width="5" opacity="0.2"/>`,
         criteria: [
@@ -5852,7 +5792,6 @@ const geopoliticsData = {
     "geopol-3": {
         title: "경계와 국경의 정치학",
         subtitle: "지구 위에 그어진 선, 평화와 갈등의 시작",
-        badge: "III",
         theme: "#8e44ad",
         iconSVG: `<path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="4" stroke-dasharray="10 10" opacity="0.4"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/>`,
         criteria: [
@@ -5912,7 +5851,6 @@ const geopoliticsData = {
     "geopol-4": {
         title: "영역과 영토의 유형",
         subtitle: "기형적인 국경선이 만든 지정학적 운명",
-        badge: "IV",
         theme: "#e67e22",
         iconSVG: `<path d="M50,50 L150,50 L150,150 L100,100 L50,150 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="80" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -5974,7 +5912,6 @@ const geopoliticsData = {
     "geopol-5": {
         title: "세계 체제와 불균등 발전",
         subtitle: "중심부와 주변부, 기울어진 운동장의 경제학",
-        badge: "V",
         theme: "#636e72",
         iconSVG: `<rect x="50" y="80" width="40" height="80" fill="currentColor" opacity="0.3"/><rect x="110" y="40" width="40" height="120" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -6013,7 +5950,6 @@ const geopoliticsData = {
     "geopol-6": {
         title: "세계 패권의 이동과 질서",
         subtitle: "제국에서 시스템으로, 권력의 중심은 어떻게 이동했는가",
-        badge: "VI",
         theme: "#f1c40f",
         iconSVG: `<path d="M100,20 L160,180 L20,80 H180 L40,180 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6061,7 +5997,6 @@ const conflictData = {
     "conflict-1": {
         title: "영토와 국경 분쟁",
         subtitle: "선을 긋기 위한 끝없는 다툼",
-        badge: "I",
         theme: "#c0392b",
         iconSVG: `<path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="4" stroke-dasharray="10 10" opacity="0.4"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/>`,
         criteria: [
@@ -6105,7 +6040,6 @@ const conflictData = {
     "conflict-2": {
         title: "민족과 종교의 충돌",
         subtitle: "\"우리는 누구인가\"라는 질문이 피를 부르는 현장",
-        badge: "II",
         theme: "#8e44ad",
         iconSVG: `<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -6156,7 +6090,6 @@ const conflictData = {
     "conflict-3": {
         title: "자원 전쟁",
         subtitle: "생존과 번영을 위한 쟁탈전",
-        badge: "III",
         theme: "#f1c40f",
         iconSVG: `<path d="M100,20 L160,180 L20,80 H180 L40,180 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6198,7 +6131,6 @@ const conflictData = {
     "conflict-4": {
         title: "평화와 공존을 위한 노력",
         subtitle: "갈등을 넘어 공존으로 향하는 인류의 지혜",
-        badge: "IV",
         theme: "#3498db",
         iconSVG: `<path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -6253,7 +6185,6 @@ const economicData = {
     "econ-1": {
         title: "베버의 공업 입지론",
         subtitle: "그 공장은 어디를 향하는가",
-        badge: "I",
         theme: "#0984e3",
         iconSVG: `<rect x="50" y="80" width="40" height="80" fill="currentColor" opacity="0.3"/><rect x="110" y="40" width="40" height="120" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -6289,7 +6220,6 @@ const economicData = {
     "econ-2": {
         title: "크리스탈러의 중심지 이론",
         subtitle: "도시와 상권이 형성되는 공간적 균형의 원리",
-        badge: "II",
         theme: "#6c5ce7",
         iconSVG: `<path d="M100,20 L170,60 L170,140 L100,180 L30,140 L30,60 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><circle cx="100" cy="100" r="10" fill="currentColor" opacity="0.6"/>`,
         criteria: [
@@ -6331,7 +6261,6 @@ const economicData = {
     "econ-3": {
         title: "상업 입지론",
         subtitle: "소비자의 발길을 이끄는 점포와 상권의 비밀",
-        badge: "III",
         theme: "#e84393",
         iconSVG: `<path d="M100,20 L160,180 L20,80 H180 L40,180 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6377,7 +6306,6 @@ const ruralData = {
     "rural-1": {
         title: "촌락의 형태론: 집촌과 산촌",
         subtitle: "뭉치거나 흩어지거나, 공간 배열의 문법",
-        badge: "I",
         theme: "#6ab04c",
         iconSVG: `<path d="M60,60 H140 V140 H60 Z M100,60 V140 M60,100 H140" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -6413,7 +6341,6 @@ const ruralData = {
     "rural-2": {
         title: "촌락의 입지: 물과 땅의 선택",
         subtitle: "득수와 피수, 생존을 위한 최적의 장소",
-        badge: "II",
         theme: "#f0932b",
         iconSVG: `<circle cx="100" cy="100" r="15" fill="currentColor" opacity="0.5"/><path d="M100,85 V20 M100,115 V180 M85,100 H20 M115,100 H180" stroke="currentColor" stroke-width="6" opacity="0.3"/>`,
         criteria: [
@@ -6451,7 +6378,6 @@ const ruralData = {
     "rural-3": {
         title: "거리의 경제학: 튀넨의 고리",
         subtitle: "지대와 운송비가 결정하는 토지 이용의 법칙",
-        badge: "III",
         theme: "#be2edd",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="4" opacity="0.2"/><circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="6" opacity="0.3"/><circle cx="100" cy="100" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6490,7 +6416,6 @@ const ruralData = {
     "rural-4": {
         title: "휘틀지의 농업 지역 구분",
         subtitle: "기후와 자본이 빚어낸 13가지 농업의 얼굴",
-        badge: "IV",
         theme: "#4834d4",
         iconSVG: `<path d="M20,20 H180 V180 H20 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="1" stroke-dasharray="5 5" opacity="0.3"/><rect x="80" y="80" width="40" height="40" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6533,7 +6458,6 @@ const ruralData = {
     "rural-5": {
         title: "현대 농업의 구조 변동",
         subtitle: "자본과 기술이 재편하는 글로벌 푸드 시스템",
-        badge: "V",
         theme: "#636e72",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><path d="M100,20 L180,180 H20 Z" fill="currentColor" opacity="0.3"/>`,
         criteria: [
@@ -6572,7 +6496,6 @@ const urbanData = {
     "urban-1": {
         title: "성벽 안의 도시, 전산업 도시",
         subtitle: "종교와 정치, 그리고 길드로 엮어진 공간",
-        badge: "I",
         theme: "#fdcb6e",
         iconSVG: `<rect x="20" y="20" width="160" height="160" fill="none" stroke="currentColor" stroke-width="10" opacity="0.2"/><path d="M60,60 H140 V140 H60 Z M100,60 V140 M60,100 H140" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/>`,
         criteria: [
@@ -6613,7 +6536,6 @@ const urbanData = {
     "urban-2": {
         title: "굴뚝과 자동차의 도시, 포디즘 도시",
         subtitle: "대량생산과 대량소비의 시대를 연 산업 혁명과 교외화",
-        badge: "II",
         theme: "#b2bec3",
         iconSVG: `<rect x="60" y="80" width="80" height="40" fill="none" stroke="currentColor" stroke-width="8" opacity="0.4"/><circle cx="80" cy="120" r="15" fill="currentColor" opacity="0.3"/><circle cx="120" cy="120" r="15" fill="currentColor" opacity="0.3"/><path d="M40,160 H160" stroke="currentColor" stroke-width="4" stroke-dasharray="10 5" opacity="0.2"/>`,
         criteria: [
@@ -6656,7 +6578,6 @@ const urbanData = {
     "urban-3": {
         title: "네트워크와 포스트포디즘 도시",
         subtitle: "공업 그 너머로 향하는 도시의 새로운 길",
-        badge: "III",
         theme: "#a29bfe",
         iconSVG: `<circle cx="100" cy="100" r="10" fill="currentColor" opacity="0.6"/><circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><path d="M100,100 L40,40 M100,100 L160,40 M100,100 L40,160 M100,100 L160,160" stroke="currentColor" stroke-width="2" opacity="0.3"/><circle cx="40" cy="40" r="5" fill="currentColor" opacity="0.4"/><circle cx="160" cy="40" r="5" fill="currentColor" opacity="0.4"/><circle cx="40" cy="160" r="5" fill="currentColor" opacity="0.4"/><circle cx="160" cy="160" r="5" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6697,7 +6618,6 @@ const urbanData = {
     "urban-4": {
         title: "도시지리학의 핵심 이론과 모델",
         subtitle: "도시 공간을 해석하는 학술적 틀과 원리",
-        badge: "IV",
         theme: "#636e72",
         iconSVG: `<path d="M100,20 L180,180 H20 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.1"/><circle cx="100" cy="110" r="40" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><rect x="80" y="90" width="40" height="40" fill="currentColor" opacity="0.3"/><path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="1" stroke-dasharray="5 5" opacity="0.4"/>`,
         criteria: [
@@ -6741,7 +6661,6 @@ const culturalData = {
     "cultural-1": {
         title: "직접 전파",
         subtitle: "가장 원초적이고 강력한 전파",
-        badge: "I",
         theme: "#e17055",
         iconSVG: `<path d="M20,100 Q100,180 180,100" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3"/><circle cx="100" cy="100" r="10" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -6795,7 +6714,6 @@ const culturalData = {
     "cultural-2": {
         title: "간접 전파",
         subtitle: "사람은 가지 않지만 매체를 통해 정보와 문화가 전달되는 방식",
-        badge: "II",
         theme: "#e17055",
         iconSVG: `<rect x="40" y="40" width="120" height="120" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M60,100 H140 M100,60 V140" stroke="currentColor" stroke-width="6" opacity="0.5"/>`,
         criteria: [
@@ -6849,7 +6767,6 @@ const culturalData = {
     "cultural-3": {
         title: "자극 전파",
         subtitle: "아이디어만 건너와 새로운 꽃을 피우다",
-        badge: "III",
         theme: "#e17055",
         iconSVG: `<path d="M100,20 L120,180 M80,180 L100,20" stroke="currentColor" stroke-width="4" opacity="0.3"/>`,
         criteria: [
@@ -6908,7 +6825,6 @@ const culturalData = {
     "cultural-4": {
         title: "문화 융합",
         subtitle: "섞이고 합쳐져 새로운 하나가 되다",
-        badge: "IV",
         theme: "#e17055",
         iconSVG: `<circle cx="70" cy="100" r="40" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/><circle cx="130" cy="100" r="40" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/><path d="M100,70 V130" stroke="currentColor" stroke-width="4" opacity="0.6"/>`,
         criteria: [
@@ -6963,7 +6879,6 @@ const culturalData = {
     "cultural-5": {
         title: "문화 동화",
         subtitle: "고유함을 잃고 하나로 녹아들다",
-        badge: "V",
         theme: "#e17055",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><circle cx="100" cy="100" r="50" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -7016,7 +6931,6 @@ const culturalData = {
     "cultural-6": {
         title: "문화 공존",
         subtitle: "다름을 인정하며 조화를 이루다",
-        badge: "VI",
         theme: "#e17055",
         iconSVG: `<path d="M100,20 L180,80 L140,180 L60,180 L20,80 Z" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"/><path d="M100,20 L100,100 M20,80 H180 M60,180 L100,100 L140,180" stroke="currentColor" stroke-width="2" opacity="0.3"/>`,
         criteria: [
@@ -7071,7 +6985,6 @@ const culturalData = {
     "cultural-7": {
         title: "문화 경관",
         subtitle: "자연이라는 캔버스 위에 문화가 그린 그림",
-        badge: "VII",
         theme: "#27ae60",
         iconSVG: `<path d="M20,180 L80,60 L140,180 H20 Z" fill="none" stroke="currentColor" stroke-width="10" opacity="0.3"/><rect x="120" y="100" width="40" height="80" fill="currentColor" opacity="0.4"/><path d="M120,100 L140,60 L160,100" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -7114,7 +7027,6 @@ const culturalData = {
     "cultural-8": {
         title: "장소와 장소성",
         subtitle: "의미가 깃든 고향과 획일화된 현대의 공간",
-        badge: "VIII",
         theme: "#7f8c8d",
         iconSVG: `<rect x="40" y="40" width="120" height="120" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M40,40 L160,160 M160,40 L40,160" stroke="currentColor" stroke-width="4" opacity="0.2"/><circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -7163,7 +7075,6 @@ const culturalData = {
     "cultural-9": {
         title: "공간의 정치학",
         subtitle: "권력은 어떻게 공간을 지배하고 기억을 조작하는가",
-        badge: "IX",
         theme: "#2c3e50",
         iconSVG: `<rect x="60" y="40" width="80" height="120" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M60,160 H140 M100,40 V160" stroke="currentColor" stroke-width="4" opacity="0.5"/><circle cx="100" cy="80" r="20" fill="currentColor" opacity="0.4"/>`,
         criteria: [
@@ -7390,7 +7301,6 @@ const ChangeData = {
     "change-1": {
         title: "지질 시대와 인류세",
         subtitle: "인간이 지질학적 힘이 된 새로운 시대의 도래",
-        badge: "I",
         theme: "#2d3436",
         iconSVG: `<circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/><path d="M20,100 H180 M100,20 V180" stroke="currentColor" stroke-width="1" stroke-dasharray="5 5" opacity="0.3"/><path d="M60,140 L100,100 L140,60" stroke="currentColor" stroke-width="4" opacity="0.5"/>`,
         criteria: [
@@ -7411,7 +7321,7 @@ const ChangeData = {
             {
                 title: "인류세의 도래", desc: "인간 활동이 자연의 힘을 압도하여 지층에 흔적을 남기는 시대",
                 items: [
-                    { name: "테크노포실 (Technofossil)", examples: ["플라스틱", "콘크리트", "알루미늄"], meta: "🗑️ 분해되지 않는 쓰레기 · 🧱 인공 지층", desc: "자연적으로 분해되지 않는 인공 물질들이 퇴적되어 미래 지층에 남길 인류의 흔적." },
+                    { name: "기술 화석 (Technofossil)", examples: ["플라스틱", "콘크리트", "알루미늄"], meta: "🗑️ 분해되지 않는 쓰레기 · 🧱 인공 지층", desc: "자연적으로 분해되지 않는 인공 물질들이 퇴적되어 미래 지층에 남길 인류의 흔적." },
                     { name: "방사능 낙진", examples: ["1945년 이후", "핵실험", "플루토늄"], meta: "☢️ 전 지구적 오염 · 📅 인류세의 시작점", desc: "핵실험으로 인해 전 지구 지층에 얇게 깔린 방사성 물질 띠. 인류세의 유력한 시작 기준." },
                     { name: "닭 뼈", examples: ["연간 600억 마리", "공장식 축산", "표준 화석"], meta: "🦴 압도적 개체 수 · 🧬 인위적 진화", desc: "인간의 소비를 위해 개량되고 사육된 닭의 뼈가 전 세계 지층을 뒤덮은 현상." },
                     { name: "대기 성분 변화", examples: ["킬링 곡선", "이산화탄소 420ppm 돌파"], meta: "🏭 산업혁명 이후 급증 · 🌡️ 온난화의 주범", desc: "화석 연료 연소로 대기 중 온실가스 농도가 지난 80만 년 중 최고치를 경신." }
@@ -7430,7 +7340,6 @@ const ChangeData = {
     "change-2": {
         title: "온실 기체와 온난화",
         subtitle: "지구의 열수지를 무너뜨린 보이지 않는 범인들",
-        badge: "II",
         theme: "#e17055",
         iconSVG: `<circle cx="100" cy="100" r="60" fill="currentColor" opacity="0.2"/><path d="M100,20 V60 M100,140 V180 M20,100 H60 M140,100 H180" stroke="currentColor" stroke-width="8" opacity="0.4"/><path d="M60,60 L140,140 M60,140 L140,60" stroke="currentColor" stroke-width="6" opacity="0.3"/>`,
         criteria: [
@@ -7472,7 +7381,6 @@ const ChangeData = {
     "change-3": {
         title: "기후 변화의 파장",
         subtitle: "지구, 생명, 그리고 인간에게 닥친 위기",
-        badge: "III",
         theme: "#d63031",
         iconSVG: `<path d="M100,20 L130,80 H190 L140,120 L160,180 L100,140 L40,180 L60,120 L10,80 H70 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><path d="M100,100 L100,180" stroke="currentColor" stroke-width="6" opacity="0.5"/>`,
         criteria: [
@@ -7514,7 +7422,6 @@ const ChangeData = {
     "change-4": {
         title: "인류적 차원의 대응",
         subtitle: "파국을 막기 위한 약속과 혁신, 그리고 적응",
-        badge: "IV",
         theme: "#27ae60",
         iconSVG: `<path d="M100,20 L140,60 L100,100 L60,60 Z" fill="none" stroke="currentColor" stroke-width="8" opacity="0.3"/><circle cx="100" cy="140" r="40" fill="currentColor" opacity="0.4"/>`,
         criteria: [
