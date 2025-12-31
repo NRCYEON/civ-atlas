@@ -1860,7 +1860,8 @@ body::after {
 #section-language.active,
 #section-religion.active,
 #section-energy.active, 
-#section-population.active {
+#section-population.active,
+#section-change.active /* [추가됨] 쉼표(,) 주의 */ {
     background: transparent !important;
 }
 
@@ -1878,7 +1879,8 @@ body::after {
 #section-city.active .region-card,
 #section-language.active .region-card,
 #section-religion.active .region-card, 
-#section-energy.active .region-card {
+#section-energy.active .region-card
+#section-change.active .region-card  {
     background-color: var(--card-bg-inactive); 
     backdrop-filter: blur(10px);
 }
@@ -4002,7 +4004,7 @@ body {
 
 /* 4. 멕시코 만류 (북대서양 - 우측 상단) */
 /* [수정] 좌상단으로 미세 이동 (20%->18%, 60%->58%) */
-.gulf-stream { top: 35%; left: 80%; }
+.gulf-stream { top: 30%; left: 77%; }
 
 /* 5. 남극 순환류 (남극해 - 하단 중앙) [신규] */
 .antarctic { top: 80%; left: 40%; transform: translateX(-50%); }
@@ -4013,7 +4015,7 @@ body {
 .benguela { top: 57%; left: 7%; }
 
 /* 8. 북대서양 해류 (유럽 서안 - 우측 상단) */
-.north-atlantic { top: 10%; left: 82%; }
+.north-atlantic { top: 5%; left: 2%; }
 
 /* 9. 적도 반류 (태평양 중앙 - 캘리포니아 좌하단) */
 .equatorial-counter { top: 40%; left: 55%; }

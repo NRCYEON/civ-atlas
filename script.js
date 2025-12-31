@@ -332,7 +332,8 @@ function switchSection(sectionId) {
         'religion': "url('images_human/religion.webp')",
         'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
         'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
-        'cultural': "url('images/cultural.webp')"      // 문화의 확산과 경관
+        'cultural': "url('images/cultural.webp')",      // 문화의 확산과 경관
+        'change': "url('images/change.webp')", // [신규] 기후 변화 배경        
     };
 
     body.style.background = ''; 
@@ -437,7 +438,7 @@ function switchSection(sectionId) {
 const wikiMap = { "화북": "화베이", "화남": "화난", "내륙 고원 지대": "운귀고원", "일본 열도": "일본", "만주": "만주", "몽골 초원": "몽골", "시베리아": "시베리아", "류큐": "류큐", "대만": "타이완", "타림분지": "타림 분지", "티베트 고원": "티베트", "안남산맥 동부": "베트남", "안남산맥 서부": "인도차이나 반도", "말레이 및 순다 열도": "말레이 제도", "필리핀": "필리핀", "호주 대륙": "호주", "동남부/서남부 온대 해안": "호주", "북부 사바나": "다윈", "내륙 사막": "아웃백", "폴리네시아": "폴리네시아", "미크로네시아": "미크로네시아", "멜라네시아": "멜라네시아", "히말라야 권역": "히말라야 산맥", "네팔": "네팔", "부탄 및 시킴": "부탄", "북부 평원": "인도-갠지스 평원", "인더스 유역": "인더스 강", "힌두스탄 평원": "힌두스탄 평원", "갠지스 유역 (벵골)": "갠지스 강", "데칸 및 남인도": "데칸고원", "고원 고지대": "데칸고원", "해안 평야 지역": "뭄바이", "주변부 불교 지역": "스리랑카", "스리랑카": "스리랑카", "부탄": "부탄", "중앙아시아": "중앙아시아", "아나톨리아 고원": "아나톨리아", "이란 고원": "이란", "파미르 고원": "파미르 고원", "하천 농경 지역": "비옥한 초승달 지대", "오아시스 농업 지역": "아라비아 사막", "아나톨리아 서부": "아나톨리아", "마그레브 지역": "마그레브", "사헬 및 서아프리카": "사헬", "사헬 서부": "사헬", "기니만 연안": "기니만", "중앙아프리카": "중앙아프리카", "콩고 분지": "콩고 분지", "주변 사바나 및 호수": "아프리카 대호수", "동아프리카": "동아프리카", "사헬 동부": "수단", "아프리카의 뿔": "아프리카의 뿔", "동아프리카 해안": "스와힐리 해안", "남아프리카": "남아프리카", "한류성 사막 지역": "나미브 사막", "동부 온대 지역": "남아프리카 공화국", "마다가스카르섬": "마다가스카르", "마다가스카르": "마다가스카르", "서유럽": "서유럽", "브리튼 제도": "브리튼 제도", "서유럽 평원": "유럽 대평원", "중부유럽 평원": "북유럽 평원", "북독일 평원": "북독일 평원", "폴란드": "폴란드", "남유럽": "남유럽", "이베리아": "이베리아 반도", "이탈리아": "이탈리아", "발칸 남부": "발칸 반도", "동유럽 평원": "동유럽 평원", "흑해 연안": "흑해", "우랄 서부 삼림지대": "동유럽 평원", "북유럽": "북유럽", "스칸디나비아": "스칸디나비아", "발트 3국": "발트 3국", "산악 지대": "유럽의 산맥", "중부 내륙 산악": "알프스 산맥", "발칸 북부": "발칸 반도", "태평양 연안 온대기후": "북아메리카 서해안", "서부 산악 및 배후 비그늘": "북아메리카 코르디예라", "중부 농업지대": "내륙평야", "미 북동부 및 오대호": "미국 북동부", "남부 선벨트": "선벨트", "북극권 및 아한대": "북극", "북부 (서안해양성)": "북미 태평양 연안", "남부 (지중해성)": "캘리포니아", "건조 대분지": "그레이트베이슨", "산악 지역 (로키)": "로키 산맥", "그레이트플레인스 (서)": "그레이트플레인스", "프레리 (동)": "프레리", "오대호 연안": "오대호", "대서양 연안": "메갈로폴리스", "애팔래치아 권역": "애팔래치아 산맥", "남동부 및 플로리다": "미국 남동부", "멕시코만 연안": "멕시코만", "캐나다 순상지 및 북극 제도": "캐나다 순상지", "알래스카": "알래스카", "브라질": "브라질", "안데스": "안데스 산맥", "건조 권역": "파타고니아 사막", "라플라타 유역": "라플라타강", "저위도 플랜테이션": "플랜테이션", "멕시코 및 중앙아메리카": "중앙아메리카", "아마존 분지": "아마존 분지", "브라질 고원": "브라질고원", "중부 안데스": "페루", "북부 안데스": "콜롬비아", "남부 안데스": "칠레", "파타고니아": "파타고니아", "한류성 사막 (아타카마)": "아타카마 사막", "팜파스": "팜파스", "기아나 고지": "기아나", "카리브 연안": "카리브해", "멕시코 고원": "멕시코", "중앙아메리카 지협": "파나마", "힌두쿠시-카라코람": "카라코람 산맥", "아프가니스탄": "아프가니스탄", "카슈미르": "카슈미르", "카슈미르 계곡": "카슈미르", "캅카스 권역": "캅카스", "캅카스": "캅카스", "레반트 지역": "레반트", "이스라엘 및 팔레스타인": "이스라엘-팔레스타인 분쟁", "접경지 아랍권": "레반트" };
 function createSearchLink(text) { const cleanText = text.replace(/<[^>]+>/g, '').trim(); let query = wikiMap[cleanText] || cleanText; const iTagMatch = text.match(/<i[^>]*>(.*?)<\/i>/); if (iTagMatch) { query = iTagMatch[1]; } else if (query.includes('(')) { query = query.split('(')[0].trim(); } const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`; return `<a href="${url}" target="_blank" title="${query} Google 검색">${text}</a>`; }
 const ambientThemes = { 1: 'linear-gradient(135deg, #f5f5f5 0%, #cfd9df 100%)', 2: 'linear-gradient(135deg, #e0f7fa 0%, #80deea 100%)', 3: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%)', 4: 'linear-gradient(135deg, #fffde7 0%, #fff9c4 100%)', 5: 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)', 6: 'linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%)', 7: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', 8: 'linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%)', 9: 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)' };
-const geoFocus = { 1: { pos: '88% 28%', size: '260%' }, 2: { pos: '92% 75%', size: '240%' }, 3: { pos: '74% 42%', size: '300%' }, 4: { pos: '56% 38%', size: '230%' }, 5: { pos: '53% 65%', size: '230%' }, 6: { pos: '51% 18%', size: '350%' }, 7: { pos: '18% 25%', size: '230%' }, 8: { pos: '29% 75%', size: '230%' }, 9: { pos: '66% 32%', size: '300%' } };
+const geoFocus = { 1: { pos: '88% 28%', size: '260%' }, 2: { pos: '93% 66%', size: '240%' }, 3: { pos: '77% 36%', size: '300%' }, 4: { pos: '58% 33%', size: '230%' }, 5: { pos: '53% 65%', size: '230%' }, 6: { pos: '51% 11%', size: '350%' }, 7: { pos: '4% 19%', size: '250%' }, 8: { pos: '21% 75%', size: '230%' }, 9: { pos: '66% 32%', size: '300%' } };
 
 // 3. 카드 생성 함수 (renderCards): 페이지 로딩 시 실행됨
 function renderCards(containerId, dataObj) {
@@ -857,7 +858,8 @@ function closeAllPanels(event) {
         'religion': "url('images_human/religion.webp')", 
         'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
         'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
-        'cultural': "url('images/cultural.webp')"      // 문화의 확산과 경관
+        'cultural': "url('images/cultural.webp')",      // 문화의 확산과 경관
+        'change': "url('images/change.webp')", // [신규] 기후 변화 배경
     };
 
     if (currentId === 'geo') {
@@ -1483,6 +1485,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof culturalData !== 'undefined') renderCards('cultural-grid', culturalData);
     if (typeof soilData !== 'undefined') renderCards('soil-grid', soilData);
     if (typeof mapsData !== 'undefined') renderCards('maps-grid', mapsData);
+    // [신규] 기후 변화와 인류세 렌더링
+    if (typeof ChangeData !== 'undefined') renderCards('change-grid', ChangeData);
     
     // [중요] 구름 섹션 렌더링 호출
     if (typeof cloudData !== 'undefined') renderCloudGrid('cloud-grid', cloudData);
