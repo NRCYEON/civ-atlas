@@ -487,6 +487,7 @@ function renderCards(containerId, dataObj) {
 
 // [수정] 카드 활성화 함수 (페이지네이션 복구판)
 function activateCard(id, event) {
+    stopCardWiggleAnimation(); // [추가] 카드가 열리면 흔들기 중지
     if (event) { event.stopPropagation(); event.preventDefault(); }
     if (typeof resetTransparency === 'function') resetTransparency();
 
@@ -528,6 +529,19 @@ function activateCard(id, event) {
 
     if (hiddenData && contentArea) {
         contentArea.innerHTML = hiddenData.innerHTML;
+        // [신규] 카드 열림 효과음 재생
+    playOpenSound();
+
+    // [신규] 세부 항목 마우스 오버 효과음 이벤트 등록
+    // DOM이 업데이트된 직후이므로 약간의 지연을 주어 요소를 찾습니다.
+    setTimeout(() => {
+        const detailItems = contentArea.querySelectorAll('.detail-item');
+        detailItems.forEach(item => {
+            // 중복 방지를 위해 기존 리스너 제거 후 추가하는 패턴
+            item.removeEventListener('mouseenter', playClickSound);
+            item.addEventListener('mouseenter', playClickSound);
+        });
+    }, 100);
     } else {
         return;
     }
@@ -694,12 +708,28 @@ function activateCard(id, event) {
         }
     }
     
-    // 3. [데이터 로딩] 카드 내부에 숨겨진 HTML을 그대로 가져옴 (가장 안전함)
+// 3. [데이터 로딩] 카드 내부에 숨겨진 HTML을 그대로 가져옴 (가장 안전함)
     const contentArea = document.getElementById('detail-content-area');
     const hiddenData = clickedCard.querySelector('.hidden-data');
 
     if (hiddenData && contentArea) {
         contentArea.innerHTML = hiddenData.innerHTML;
+        
+        // [코딩해] 누락되었던 오디오 재생 로직 삽입
+        if (typeof playOpenSound === 'function') playOpenSound(); 
+
+        // DOM 렌더링 직후 세부 항목에 마우스 오버 효과음 연결
+        setTimeout(() => {
+            const detailItems = contentArea.querySelectorAll('.detail-item');
+            detailItems.forEach(item => {
+                // 중복 방지를 위해 제거 후 다시 추가
+                if (typeof playClickSound === 'function') {
+                    item.removeEventListener('mouseenter', playClickSound);
+                    item.addEventListener('mouseenter', playClickSound);
+                }
+            });
+        }, 100);
+
     } else {
         console.error("Hidden data is missing in the card.");
         return;
@@ -816,6 +846,14 @@ function insertPanelAfterRow(clickedCard) {
 
 // [수정] 패널 닫기 함수
 function closeAllPanels(event) {
+    // [신규] 효과음 리스너 정리 (메모리 누수 방지)
+    const oldContent = document.getElementById('detail-content-area');
+    if (oldContent) {
+        const oldItems = oldContent.querySelectorAll('.detail-item');
+        oldItems.forEach(item => {
+            item.removeEventListener('mouseenter', playClickSound);
+        });
+    }
     if (event) event.stopPropagation();
     if (typeof resetTransparency === 'function') resetTransparency();
     
@@ -893,7 +931,9 @@ function closeAllPanels(event) {
     if (dots) dots.remove();
 
     if (prevBtn) prevBtn.style.display = 'none';
-    if (nextBtn) nextBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';   
+    
+    startCardWiggleAnimation(); // [추가] 모든 패널이 닫히면 흔들기 재시작
 }
 
 // [6] 동적 리스트 및 텍스트 로테이션
@@ -1900,5 +1940,143 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// [중요] switchSection 함수 내부에 타이머 제어 로직 추가 필요
-// 기존 switchSection 함수 안에서 홈 화면을 벗어날 때 stopDiscoveryRolling()을 호출해야 합니다.
+// [신규] 카드 흔들기 애니메이션 제어
+let wiggleInterval = null;
+
+function startCardWiggleAnimation() {
+    if (wiggleInterval) return; // 이미 실행 중이면 패스
+
+    // 6초마다 실행
+    wiggleInterval = setInterval(() => {
+        // 1. 현재 활성화된 섹션 찾기
+        const activeSection = document.querySelector('.content-section.active');
+        if (!activeSection) return;
+
+        // 2. 패널이 열려있지 않을 때만 실행 (activeCardId가 null일 때)
+        if (!activeCardId) {
+            const cards = activeSection.querySelectorAll('.region-card');
+            if (cards.length === 0) return;
+
+            // 3. 랜덤 카드 선택
+            const randomIndex = Math.floor(Math.random() * cards.length);
+            const randomCard = cards[randomIndex];
+
+            // 4. 애니메이션 클래스 부여
+            randomCard.classList.add('wiggle-animation');
+
+            // 5. 애니메이션 종료 후 클래스 제거 (1.5초 뒤)
+            setTimeout(() => {
+                if (randomCard) randomCard.classList.remove('wiggle-animation');
+            }, 1500);
+        }
+    }, 6000); 
+}
+
+function stopCardWiggleAnimation() {
+    if (wiggleInterval) {
+        clearInterval(wiggleInterval);
+        wiggleInterval = null;
+        // 모든 카드에서 애니메이션 클래스 즉시 제거
+        document.querySelectorAll('.region-card').forEach(c => c.classList.remove('wiggle-animation'));
+    }
+}
+
+// 페이지 로드 시 시작
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(startCardWiggleAnimation, 2000); // 2초 뒤 시작
+});
+
+/* [수정] 웹 오디오 API 효과음 (강제 활성화 포함) */
+let audioCtx = null;
+
+// 오디오 컨텍스트 초기화 함수 (사용자 클릭 시 최초 1회 실행 및 복구용)
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    // 브라우저 정책으로 인해 일시정지 상태라면 강제로 깨움
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+// 1. '딸깍' 소리 (무성 파열음 - 노이즈 버스트 방식)
+function playClickSound() {
+    if (!audioCtx) initAudio(); 
+    if (audioCtx.state === 'suspended') audioCtx.resume(); 
+
+    // 0.05초 길이의 짧은 소음 버퍼 생성
+    const bufferSize = audioCtx.sampleRate * 0.05;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // 무작위 노이즈(백색 소음) 채우기
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    // 필터: 2000Hz 대역만 살려서 가볍고 건조한 '틱' 소리 생성
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 2000; 
+    filter.Q.value = 1; 
+
+    // 음량: 아주 짧고 날카롭게 끊어침 (0.03초 만에 소멸)
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime); // 초기 타격음 크기
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+
+    // 연결: 노이즈 -> 필터 -> 게인 -> 스피커
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    noise.start();
+}
+
+// 2. '샤라락' 소리 (종이 넘기는 소리 - 부드러운 마찰음)
+function playOpenSound() {
+    if (!audioCtx) initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    // 0.4초 길이의 소음 버퍼
+    const bufferSize = audioCtx.sampleRate * 0.4;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // 백색 소음 생성
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    // 필터: 회초리 같은 날카로움(고음)을 깎고, 종이의 질감(중저음)만 남김
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass'; // 고음 제거 필터
+    filter.frequency.value = 600; // 600Hz 이상의 날카로운 소리는 차단
+
+    const gain = audioCtx.createGain();
+    // 볼륨: 0.2 (요청하신 대로 작게 설정)
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    
+    // 0.1초 동안 천천히 커짐 -> '탁' 하는 타격감을 없애고 '스윽' 하는 느낌 구현
+    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
+    
+    // 나머지 시간 동안 자연스럽게 사라짐
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    noise.start();
+}
+
+// [핵심] 사용자가 페이지를 클릭하면 오디오 시스템 깨우기
+document.addEventListener('click', initAudio, { once: true });
+document.addEventListener('touchstart', initAudio, { once: true });

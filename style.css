@@ -176,7 +176,7 @@ header.header-shrunk .header-right {
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     border-radius: 12px;
     padding: 10px 0;
-    min-width: 360px;
+    min-width: 320px;
 
     /* [핵심 수정 1] 평소에는 투명하고, 클릭도 통과되도록 설정 */
     opacity: 0;
@@ -222,7 +222,7 @@ header.header-shrunk .header-right {
 .sub-tab-btn {
     width: calc(100% - 20px);
     text-align: left;
-    padding: 12px 15px;
+    padding: 8px 15px;
     background: transparent;
     border: none;
     color: var(--text-secondary);
@@ -232,9 +232,9 @@ header.header-shrunk .header-right {
     transition: all 0.2s;
     /* 그리드 레이아웃 핵심 */
     display: grid !important;
-    grid-template-columns: 50px 1fr; /* 이모지 50px, 나머지 텍스트 */
+    grid-template-columns: 40px 1fr; /* 이모지 50px, 나머지 텍스트 */
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .sub-tab-btn:hover { background: rgba(0,0,0,0.05); }
@@ -243,7 +243,7 @@ header.header-shrunk .header-right {
 /* 이모지 스타일: 텍스트에 밀리지 않도록 고정 */
 /* 평상시: 흑백 및 약간 투명하게 설정 */
 .sub-tab-btn .menu-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2626,10 +2626,11 @@ body.bg-geopolitics {
 #card-hydro-8 { --theme: #a55eea; }
 
 /* 5. 대양과 바다 (ocean) */
-#card-hydro-6 { --theme: #0c2461; }
+#card-hydro-6 { --theme: #143077; }
 #card-hydro-7 { --theme: #3498db; }
 #card-ocean-3 { --theme: #3498db; }
 #card-ocean-4 { --theme: #27ae60; }
+#card-ocean-5 { --theme: #2a5792; }
 
 /* 6. 세계의 기후 (climate) */
 #card-climate-e { --theme: #74b9ff; }
@@ -2757,6 +2758,12 @@ body.bg-geopolitics {
 #card-map-3 { --theme: #2980b9; }
 #card-map-4 { --theme: #c0392b; }
 #card-map-5 { --theme: #d35400; }
+
+/* 18. 토양 (soil) */
+#card-soil-1 { --theme: #795548; } /* 수목 성대 (갈색) */
+#card-soil-2 { --theme: #3e2723; } /* 무수목 성대 (진한 갈색/흑색) */
+#card-soil-3 { --theme: #d35400; } /* 간대 토양 (붉은색/테라로사) */
+#card-soil-4 { --theme: #8d6e63; } /* 미성숙토 (연한 갈색) */
 
 /* ----------------------------------------------------- */
 /* [통합] 카드 좌측 띠지 및 내부 색상 자동 적용          */
@@ -3626,8 +3633,8 @@ body {
 }
 
 @keyframes earth-rotate {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
 }
 
 /* 대기권 (푸른 빛) */
@@ -4269,3 +4276,86 @@ body {
     border-bottom: 1px solid var(--panel-theme, #2d3436) !important;
 }
 
+/* [수정] 카드 흔들기 애니메이션 (탄성 효과 강화) */
+@keyframes cardWiggle {
+    0% { transform: rotateZ(0deg); }
+    20% { transform: rotateZ(-1.5deg); }  /* 왼쪽으로 크게 */
+    40% { transform: rotateZ(1.5deg); }   /* 오른쪽으로 크게 */
+    60% { transform: rotateZ(-0.8deg); }  /* 왼쪽으로 작게 */
+    80% { transform: rotateZ(0.8deg); }   /* 오른쪽으로 작게 */
+    100% { transform: rotateZ(0deg); }
+}
+
+.wiggle-animation {
+    /* 시간 단축 (1.5s -> 0.8s) 및 가속도 변경 */
+    animation: cardWiggle 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    transform-origin: center center;
+}
+
+/* 텍스트 설명 (카드 추가로 인해 숨김 처리) */
+.balance-text {
+    display: none;
+}
+
+/* [신규] 지구 시스템 정보 카드 위치 */
+.earth-info-cards-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 카드 아래 지구와 상호작용 가능하게 */
+}
+
+.earth-info-cards-container .ocean-card {
+    pointer-events: auto; /* 카드 자체는 클릭/호버 가능하게 */
+    width: 220px; /* 카드 너비 조정 */
+}
+
+/* --- 위치 조정 영역 --- */
+
+/* 카드 1: 저위도 (좌측 하단) */
+.card-surplus {
+    top: 66%;
+    left: 42%;
+}
+
+/* 카드 2: 고위도 (좌측 상단) */
+.card-deficit {
+    top: 5%;
+    left: 57%;
+}
+
+/* 카드 3: 대기 대순환 (우측 상단) */
+.card-circulation {
+    top: 35%;
+    left: 44%;
+}
+
+/* 카드 4: 전향력 (우측 하단) */
+.card-coriolis {
+    top: 63%;
+    left: 86%;
+}
+
+/* [신규] 지구 시스템 정보 카드 제목 색상 */
+
+/* 1. 저위도: 에너지 과잉 (태양 복사 상징) */
+.card-surplus h3 {
+    color: #f1c40f; /* 노란색 */
+}
+
+/* 2. 고위도: 에너지 부족 (지구 복사 상징) */
+.card-deficit h3 {
+    color: #e74c3c; /* 붉은색 */
+}
+
+/* 3. 대기 대순환 (공기의 흐름 상징) */
+.card-circulation h3 {
+    color: #3498db; /* 파란색 */
+}
+
+/* 4. 전향력 (지구 자전 상징) */
+.card-coriolis h3 {
+    color: #9b59b6; /* 보라색 */
+}
