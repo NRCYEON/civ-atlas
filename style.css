@@ -1,3 +1,7 @@
+/* [수정] 스크롤바 공간만 투명하게 확보 (유령 스크롤바 안 보임) */
+html {
+    scrollbar-gutter: stable;
+}
     :root {
         --bg-pattern: none;
         --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -11,7 +15,7 @@
         color: var(--text-primary);
         background-color: #f5f7fa;
         background-image: var(--bg-pattern), var(--bg-gradient);
-        background-attachment: fixed; min-height: 100vh; overflow-y: scroll;
+        background-attachment: fixed; min-height: 100vh;
         transition: background 0.6s ease-in-out;
         /* [추가] 텍스트 좌우 폭 축소 (Condensing Effect) */
         letter-spacing: -0.03em; 
@@ -367,7 +371,13 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .home-section { 
         display: none; /* JS로 제어 */
         flex-direction: column; align-items: center; justify-content: center;
-        height: 100vh; text-align: center; padding-bottom: 0;
+        height: 100vh; text-align: center; 
+        
+        /* [수정] 상속받은 패딩을 완전히 제거하여 너비 초과 방지 */
+        padding: 0 !important; 
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     .home-section.active { display: flex; }
     
@@ -394,7 +404,7 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
         backdrop-filter: blur(3px); /* 블러는 유지하여 글자 가독성 확보 */
         
         /* 형태 유지 */
-        height: 120px; 
+        height: 100px; 
         border-radius: 12px;
         
         /* 테두리도 약간 더 투명하게 */
@@ -445,7 +455,10 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     /* [활성 카드] 강조 효과 */
     .region-card.active {
         background: var(--active-surface); 
-        border-color: rgba(0,0,0,0.1); 
+        /* 1. 전체 테두리는 연하게 하되 */
+        border-color: rgba(0,0,0,0.1);     
+        /* 2. [핵심] 왼쪽 테두리(띠지) 색상은 테마색을 유지하도록 명시 */
+        border-left-color: var(--theme) !important; 
         border-bottom: none;
         border-bottom-left-radius: 0; 
         border-bottom-right-radius: 0;
@@ -472,7 +485,7 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .header-content h2 {
         position: relative; /* 로마자 기준점 */
         font-family: 'Noto Serif KR', serif;
-        font-size: 1.35rem; /* 1.6 -> 1.35 축소 */
+        font-size: 1.3rem; /* 1.6 -> 1.3 축소 */
         font-weight: 800;
         margin: 0 0 4px 0;
         color: var(--text-primary);
@@ -491,12 +504,12 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
         
         /* 높이 축소에 맞춰 위치 재조정 */
         left: -1px;
-        top: -22px; 
+        top: -20px; 
         transform: none; 
 
         font-family: 'Inter', sans-serif;
         font-weight: 700;
-        font-size: 1.2rem; /* 1.5 -> 1.2 축소 */
+        font-size: 1.1rem; /* 1.5 -> 1.1 축소 */
         color: var(--theme);
         opacity: 0.6; /* 0.8 -> 0.6 투명도 조정 */
         
@@ -514,7 +527,7 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
 
     /* [활성 카드 제목] 확대 효과 */
     .region-card.active .header-content h2 { 
-        transform: scale(1.1); 
+        transform: scale(1.05); 
         color: #000; 
     }
 
@@ -534,9 +547,9 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
 /* [추가] 자원 섹션 5번 카드 (비금속) */
     .expand-icon { font-size: 1.2rem; color: var(--text-muted); border: 1px solid var(--text-muted); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; background: rgba(255,255,255,0.5); position: relative; z-index: 10; }
     .region-card.active .expand-icon { transform: rotate(180deg); background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
-    .detail-panel { grid-column: 1 / -1; background: var(--active-surface); border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); border-top: none; box-shadow: 0 30px 60px rgba(0,0,0,0.1); display: none; max-height: 0; opacity: 0; overflow: hidden; margin-top: -2px; padding: 0 50px; z-index: 10; position: relative; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-out, padding 0.3s ease-out; }
+    .detail-panel { grid-column: 1 / -1; background: var(--active-surface); border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); border-top: none; box-shadow: 0 30px 60px rgba(0,0,0,0.1); display: none; max-height: 0; opacity: 0; overflow: hidden; margin-top: -15px; padding: 0 50px; z-index: 10; position: relative; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease-out, padding 0.3s ease-out; }
     #detail-content-area { position: relative; z-index: 5; }
-    .detail-panel.open { display: block; max-height: 2500px; opacity: 1; padding: 30px; }
+    .detail-panel.open { display: block; max-height: 2500px; opacity: 1; padding: 10px 30px 30px 30px; }
     .panel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;}
     .hidden-data { display: none; }
     .sub-region-card { background: #fff; border-radius: 10px; padding: 25px; border: 1px solid rgba(0,0,0,0.05); transition: all 0.2s; }
@@ -544,15 +557,15 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     .sub-title-group { 
     display: flex; 
     align-items: flex-start; 
-    gap: 18px; 
-    margin-bottom: 20px; 
+    gap: 12px; 
+    margin-bottom: 15px; 
     position: relative; /* 버튼의 기준점 */
     /* padding-right: 100px;  <-- [삭제] 이 쓰레기 코드가 설명글을 좁게 만들었습니다 */
 }
     .sub-title-number { font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 900; color: var(--panel-theme, #dfe6e9); line-height: 1; opacity: 0.8; margin-top: -5px; transition: color 0.3s; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--panel-theme, #dfe6e9); border-radius: 10px; background-color: rgba(0,0,0,0.02); }
     .sub-title-content { flex: 1; padding-top: 2px; }
     .sub-title-heading { 
-    font-size: 1.25rem; 
+    font-size: 1.15rem; 
     font-weight: 700; 
     color: var(--text-primary); 
     margin: 0 0 8px 0;
@@ -818,16 +831,15 @@ i.term:hover {
     .panel-criteria-group {
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        margin-bottom: 20px;
-        border-top: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
+        gap: 12px;
+        margin-bottom: 15px;
         border-bottom: 1px dashed rgba(0,0,0,0.1); /* [개선 3] 점선으로 변경 */
-        padding: 15px 0;
+        padding: 0 0 15px 0; /* 위 0, 좌우 0, 아래 15px */
     }
     .criteria-item {
         display: flex;
         align-items: flex-start;
-        gap: 15px;
+        gap: 12px;
     }
     .criteria-icon {
         width: 24px;
@@ -842,12 +854,12 @@ i.term:hover {
     }
     .criteria-label {
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: var(--text-primary);
         margin-bottom: 4px;
     }
     .criteria-text {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: var(--text-secondary);
         line-height: 1.6;
     }
@@ -2339,11 +2351,7 @@ body:has(#section-energy.active) {
 #section-climate .panel-grid {
     align-items: start;
 }
-/* [신규] 홈 화면에서만 헤더를 배경 위로 띄우기 */
-body:has(#section-home.active) header {
-    position: absolute; /* 헤더를 '공중에 뜬 레이어'로 변경 */
-    width: 100%;      /* 가로 폭을 화면 전체로 설정 */
-}
+
 /* [신규] 대기 대순환 띠 및 토글 버튼 스타일 */
 #climate-bands-toggle {
     position: fixed;
@@ -2722,8 +2730,14 @@ body.bg-geopolitics {
 #card-cultural-9 { --theme: #2c3e50; } /* [신규] 공간의 정치 */
 
 /* 16. 지리학의 탐구 (Exploration) */
-#card-tourism-1, #card-tourism-2, #card-tourism-3,
-#card-tourism-4, #card-tourism-5, #card-tourism-6, #card-tourism-7 { --theme: #6c5ce7; }
+/* 16. 지리학의 탐구 (Exploration) - 여행과 관광 지리 */
+#card-tourism-1 { --theme: #00cec9; } /* 자연지리 (청록색 - 자연/물) */
+#card-tourism-2 { --theme: #d63031; } /* 역사 유적 (붉은색 - 역사/전통) */
+#card-tourism-3 { --theme: #6c5ce7; } /* 종교 순례 (보라색 - 신비/종교) */
+#card-tourism-4 { --theme: #e17055; } /* 엔터테인먼트 (주황색 - 활기/유희) */
+#card-tourism-5 { --theme: #c99d4d; } /* 축제 (노란색 - 축제/미식) */
+#card-tourism-6 { --theme: #2d3436; } /* 관광의 그늘 (검은색 - 문제/그림자) */
+#card-tourism-7 { --theme: #00b894; } /* 지속 가능 여행 (초록색 - 생태/환경) */
 
 #card-geopol-1 { --theme: #c0392b; }
 #card-geopol-2 { --theme: #2980b9; }
@@ -3011,9 +3025,9 @@ body {
 .sub-card-criteria-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* PC는 1fr로 넉넉하게 */
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px 0;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px 0;
     border-top: 1px dashed rgba(0,0,0,0.1);
     border-bottom: 1px dashed rgba(0,0,0,0.1);
     box-sizing: border-box;
@@ -3039,14 +3053,14 @@ body {
 .sub-card-criteria-grid .criteria-label {
     display: block;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     margin-bottom: 2px;
     color: var(--text-primary);
 }
 
 .sub-card-criteria-grid .criteria-text {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     color: var(--text-secondary);
 }
@@ -4359,3 +4373,17 @@ body {
 .card-coriolis h3 {
     color: #9b59b6; /* 보라색 */
 }
+
+/* [PC 전용 레이아웃 고정 - 최종 수정] */
+@media (min-width: 1025px) {
+    /* 1. body 자체에 최소 너비를 주어 
+          창이 줄어들면 브라우저가 알아서 스크롤바를 만들게 함 */
+    body {
+        min-width: 1850px !important; /* 스크롤바 고려한 안전 수치 */
+        overflow-x: auto !important;
+    }
+
+    /* 2. 헤더와 컨텐츠 컨테이너는 건드리지 않음 
+          (기존의 max-width와 margin: 0 auto가 작동하도록 둠) */
+}
+
