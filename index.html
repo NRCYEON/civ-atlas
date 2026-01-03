@@ -1,777 +1,857 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta name="viewport" id="dynamic-viewport" content="width=device-width, initial-scale=1.0">
-<script>
-    (function() {
-        const viewport = document.getElementById('dynamic-viewport');
-        const html = document.documentElement;
-        
-        function updateViewport() {
-            // [핵심] 픽셀값 대신 '비율'로만 판단 (오작동 원천 차단)
-            // innerWidth/Height는 뷰포트 설정에 따라 변하므로, 
-            // 기기 회전 상태를 가장 확실하게 아는 방법은 가로/세로 길이 비교뿐입니다.
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            
-            // PC 화면(창이 매우 클 때)은 건드리지 않음 (안전장치)
-            if (screen.width > 1200) return;
+    <script>
+        (function () {
+            const viewport = document.getElementById('dynamic-viewport');
+            const html = document.documentElement;
 
-            if (width > height) {
-                // [가로 모드] -> 무조건 1024px
-                viewport.setAttribute('content', 'width=1024, user-scalable=no');
-                html.classList.add('landscape-mode');
-                html.classList.remove('portrait-mode');
-            } else {
-                // [세로 모드] -> 무조건 600px
-                viewport.setAttribute('content', 'width=600, user-scalable=no');
-                html.classList.remove('landscape-mode');
-                html.classList.add('portrait-mode');
+            function updateViewport() {
+                // [핵심] 픽셀값 대신 '비율'로만 판단 (오작동 원천 차단)
+                // innerWidth/Height는 뷰포트 설정에 따라 변하므로, 
+                // 기기 회전 상태를 가장 확실하게 아는 방법은 가로/세로 길이 비교뿐입니다.
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+
+                // PC 화면(창이 매우 클 때)은 건드리지 않음 (안전장치)
+                if (screen.width > 1200) return;
+
+                if (width > height) {
+                    // [가로 모드] -> 무조건 1024px
+                    viewport.setAttribute('content', 'width=1024, user-scalable=no');
+                    html.classList.add('landscape-mode');
+                    html.classList.remove('portrait-mode');
+                } else {
+                    // [세로 모드] -> 무조건 600px
+                    viewport.setAttribute('content', 'width=600, user-scalable=no');
+                    html.classList.remove('landscape-mode');
+                    html.classList.add('portrait-mode');
+                }
             }
-        }
 
-        // 이벤트 감지 (회전 및 리사이즈)
-        window.addEventListener('orientationchange', () => { setTimeout(updateViewport, 100); });
-        window.addEventListener('resize', updateViewport);
-        
-        // 초기 실행
-        updateViewport();
-    })();
-</script>
-<meta charset="UTF-8">
-<title>문명의 아틀라스</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
-<link rel="stylesheet" href="style.css">
-<!-- 화면 폭이 1024px 이하일 때만 이 파일을 읽어라 (PC에서는 아예 무시됨) -->
-<link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)">
+            // 이벤트 감지 (회전 및 리사이즈)
+            window.addEventListener('orientationchange', () => { setTimeout(updateViewport, 100); });
+            window.addEventListener('resize', updateViewport);
+
+            // 초기 실행
+            updateViewport();
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <title>문명의 아틀라스</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="style.css">
+    <!-- 화면 폭이 1024px 이하일 때만 이 파일을 읽어라 (PC에서는 아예 무시됨) -->
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)">
     <!-- [수정] 스크립트를 헤더로 옮기고 defer 속성 추가 (순서 보장 및 로딩 최적화) -->
     <script src="data.js" defer></script>
     <script src="script.js" defer></script>
 </head>
+
 <body>
-<header>
-    <!-- [신규] 헤더 컨테이너: 좌우 분할을 위해 flex 적용 -->
-    <div class="header-container">
-        
-        <!-- 1. 좌측: 로고형 HOME 버튼 -->
-        <div class="header-left">
-            <button class="logo-btn" onclick="switchSection('home')">
-                <span class="logo-icon">🌐</span>
-                <span class="logo-text">문명의 아틀라스</span>
+    <header>
+        <!-- [신규] 헤더 컨테이너: 좌우 분할을 위해 flex 적용 -->
+        <div class="header-container">
+
+            <!-- 1. 좌측: 로고형 HOME 버튼 -->
+            <div class="header-left">
+                <button class="logo-btn" onclick="switchSection('home')">
+                    <span class="logo-icon">🌐</span>
+                    <span class="logo-text">문명의 아틀라스</span>
+                </button>
+            </div>
+
+            <nav class="header-right">
+
+                <!-- [그룹 A] 기초 지리 (단일 섹션) -->
+                <div class="nav-cluster">
+                    <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리
+                        정보</button>
+                    <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의
+                        권역</button>
+                </div>
+
+                <!-- 구분선 -->
+                <div class="nav-divider"></div>
+
+                <!-- [그룹 B] 4대 클러스터 (드롭다운 그룹) -->
+                <div class="nav-cluster">
+                    <!-- 1. 세계의 자연지리 (순서 재배치) -->
+                    <div class="nav-group">
+                        <button class="group-btn"><span class="menu-icon">🏔️</span>세계의 자연지리▼</button>
+                        <div class="sub-menu">
+                            <button class="sub-tab-btn" onclick="switchSection('terrain')">
+                                <span class="menu-icon">🗻</span>
+                                <span class="text-group">
+                                    <span class="menu-title">세계의 대지형</span>
+                                    <span class="menu-desc">문명이 뿌리내린 터전</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('special')">
+                                <span class="menu-icon">🌋</span>
+                                <span class="text-group">
+                                    <span class="menu-title">다양한 특수 지형</span>
+                                    <span class="menu-desc">자연이 조각한 천연의 예술품</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('earth-system')">
+                                <span class="menu-icon">🌏</span>
+                                <span class="text-group">
+                                    <span class="menu-title">지구 시스템</span>
+                                    <span class="menu-desc">대기와 해양의 거대한 순환</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('climate')">
+                                <span class="menu-icon">🌡️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">세계의 기후</span>
+                                    <span class="menu-desc">문명의 색채를 그린 기온과 강수의 띠</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('cloud')">
+                                <span class="menu-icon">☁️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">기단과 전선</span>
+                                    <span class="menu-desc">대기의 역동적인 파노라마</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('ocean')">
+                                <span class="menu-icon">🌊</span>
+                                <span class="text-group">
+                                    <span class="menu-title">대양과 바다</span>
+                                    <span class="menu-desc">대륙을 가르고 이은 거대한 연결</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('freshwater')">
+                                <span class="menu-icon">🏞️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">담수 시스템</span>
+                                    <span class="menu-desc">대지를 적시는 혈관, 문명을 키운 젖줄</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('soil')">
+                                <span class="menu-icon">🌱</span>
+                                <span class="text-group">
+                                    <span class="menu-title">세계의 토양</span>
+                                    <span class="menu-desc">생명을 품은 대지의 피부</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('bio')">
+                                <span class="menu-icon">🧬</span>
+                                <span class="text-group">
+                                    <span class="menu-title">생태와 생물지리</span>
+                                    <span class="menu-desc">생명의 분포와 진화의 수수께끼</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. 세계의 인문지리 (순서 미세 조정) -->
+                    <div class="nav-group">
+                        <button class="group-btn"><span class="menu-icon">🏛️</span>세계의 인문지리▼</button>
+                        <div class="sub-menu">
+                            <button class="sub-tab-btn" onclick="switchSection('population')">
+                                <span class="menu-icon">👨‍👩‍👧‍👦</span>
+                                <span class="text-group">
+                                    <span class="menu-title">세계의 인구</span>
+                                    <span class="menu-desc">문명의 주체, 인류의 분포와 흐름</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('agriculture')">
+                                <span class="menu-icon">🌾</span>
+                                <span class="text-group">
+                                    <span class="menu-title">세계의 농업</span>
+                                    <span class="menu-desc">인류를 지탱하는 가장 위대한 노동</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('livestock')">
+                                <span class="menu-icon">🐄</span>
+                                <span class="text-group">
+                                    <span class="menu-title">가축과 목축업</span>
+                                    <span class="menu-desc">문명과 함께 진화한 동반자</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('resources')">
+                                <span class="menu-icon">⛏️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">지하 자원</span>
+                                    <span class="menu-desc">문명을 세우고 일군 재료</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('industry')">
+                                <span class="menu-icon">🏭</span>
+                                <span class="text-group">
+                                    <span class="menu-title">공업</span>
+                                    <span class="menu-desc">도구의 진화가 부른 생산의 혁명</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('energy')">
+                                <span class="menu-icon">⚡</span>
+                                <span class="text-group">
+                                    <span class="menu-title">에너지와 발전</span>
+                                    <span class="menu-desc">세계를 움직이는 동력</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('city')">
+                                <span class="menu-icon">🏙️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">도시</span>
+                                    <span class="menu-desc">인류가 건설한 거대한 문명의 집합체</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('language')">
+                                <span class="menu-icon">🗣️</span>
+                                <span class="text-group">
+                                    <span class="menu-title">민족과 언어</span>
+                                    <span class="menu-desc">생각과 문화를 전달하는 인류의 목소리</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('religion')">
+                                <span class="menu-icon">🛐</span>
+                                <span class="text-group">
+                                    <span class="menu-title">종교</span>
+                                    <span class="menu-desc">인간을 인류로 만든 거대한 사상</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. 지리학 심화 탐구 (순서 유지) -->
+                    <div class="nav-group">
+                        <button class="group-btn"><span class="menu-icon">🧭</span>지리학 심화 탐구▼</button>
+                        <div class="sub-menu">
+                            <!-- [신규] 역사 지리학 버튼 -->
+                            <button class="sub-tab-btn" onclick="switchSection('history')">
+                                <span class="menu-icon">⏳</span>
+                                <span class="text-group">
+                                    <span class="menu-title">문명과 역사지리</span>
+                                    <span class="menu-desc">시간이 공간에 새긴 흔적</span>
+                                </span>
+                            </button>
+                            <button class="sub-tab-btn" onclick="switchSection('economic')"><span
+                                    class="menu-icon">📈</span><span class="text-group"><span class="menu-title">경제 활동의
+                                        입지</span><span class="menu-desc">재화가 이동하는 법칙과 원리</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('transport')"><span
+                                    class="menu-icon">🚆</span><span class="text-group"><span class="menu-title">교통과
+                                        네트워크 지리</span><span class="menu-desc">공간을 연결하는 흐름과 구조</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('rural')"><span
+                                    class="menu-icon">🌾</span><span class="text-group"><span class="menu-title">촌락과 농업
+                                        공간</span><span class="menu-desc">인류 정착 생활의 원형</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('urban')"><span
+                                    class="menu-icon">🏙️</span><span class="text-group"><span class="menu-title">도시의
+                                        시대적 변화</span><span class="menu-desc">시대 정신을 담아온 도시 공간</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('cultural')"><span
+                                    class="menu-icon">🎨</span><span class="text-group"><span class="menu-title">문화의 확산과
+                                        경관</span><span class="menu-desc">생각과 사상이 공간에 남긴 궤적</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('tourism')"><span
+                                    class="menu-icon">✈️</span><span class="text-group"><span class="menu-title">여행과 관광
+                                        지리</span><span class="menu-desc">일상을 벗어나 새로운 공간으로</span></span></button>
+                        </div>
+                    </div>
+
+                    <!-- 4. 세계는 지금 (순서 유지) -->
+                    <div class="nav-group">
+                        <button class="group-btn"><span class="menu-icon">🌐</span>세계는 지금▼</button>
+                        <div class="sub-menu" style="right: 0; left: auto;"> <!-- 오른쪽 끝 정렬 -->
+                            <button class="sub-tab-btn" onclick="switchSection('geopolitics')"><span
+                                    class="menu-icon">🌐</span><span class="text-group"><span class="menu-title">지정학과
+                                        정치지리</span><span class="menu-desc">질서를 재편하는 보이지 않는 힘</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('conflict')"><span
+                                    class="menu-icon">⚔️</span><span class="text-group"><span class="menu-title">갈등과 공존의
+                                        세계</span><span class="menu-desc">평화와 분쟁의 지정학</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('change')"><span
+                                    class="menu-icon">🔥</span><span class="text-group"><span class="menu-title">기후 변화와
+                                        인류세</span><span class="menu-desc">인간이 바꾼 지구의 얼굴</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('disaster')"><span
+                                    class="menu-icon">🚨</span><span class="text-group"><span class="menu-title">재난과
+                                        재해</span><span class="menu-desc">위험에 맞서는 인류의 도전</span></span></button>
+                            <button class="sub-tab-btn" onclick="switchSection('disease')"><span
+                                    class="menu-icon">🦠</span><span class="text-group"><span class="menu-title">질병과
+                                        전파</span><span class="menu-desc">공간을 넘나드는 보이지 않는 위협</span></span></button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 모바일 버튼 (기존 유지) -->
+        <button id="mobile-menu-btn" class="mobile-menu-toggle">
+            <span class="hamburger-icon"></span>
+        </button>
+    </header>
+    <div id="mobile-nav-overlay"></div>
+    <nav id="mobile-nav-panel">
+        <div class="mobile-nav-header">
+            <!-- 이 안은 이제 비어있습니다. -->
+        </div>
+        <div id="mobile-nav-content">
+            <!-- 자바스크립트가 데스크톱 메뉴를 복사해 여기에 채울 예정입니다. -->
+        </div>
+    </nav>
+    <!-- [신규 위치] 닫기 버튼을 패널 밖, 독립된 요소로 이동 -->
+    <button id="mobile-close-btn" class="mobile-menu-toggle">
+        <span class="close-icon"></span>
+    </button>
+
+    <button id="climate-bands-toggle" title="대기 대순환 보기">🌏️</button>
+    <!-- 1. 홈 섹션 -->
+    <!-- [신규] 우하단 플로팅 검색창 -->
+    <div class="floating-search" id="global-search">
+        <div class="search-icon">🔍</div>
+        <input type="text" class="search-input" placeholder="권역, 국가, 키워드 검색..." onkeyup="filterCards(this.value)">
+    </div>
+    <section id="section-home" class="content-section home-section active">
+        <div class="home-animated-bg"></div>
+        <h1 class="home-title">문명의 아틀라스</h1>
+        <div class="discovery-container">
+            <button id="discovery-btn" class="discovery-btn" onclick="randomJump()">
+                🎲 탐험하기: <span id="discovery-text">로딩 중...</span>
             </button>
         </div>
+        <p class="home-desc">
+            다양한 주제를 통해 인류 문명의 파노라마를 탐험하세요.<br>
+            상단 메뉴를 통해 각 세계로 진입할 수 있습니다.
+        </p>
+    </section>
+    <!-- [신규] 1.5 세계의 대지형 섹션 -->
+    <section id="section-terrain" class="content-section">
+        <main class="grid-container" id="terrain-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-        <!-- 2. 우측: 내비게이션 메뉴 -->
-        <nav class="header-right">
-            
-            <!-- [그룹 A] 기초 지리 (단일 섹션) -->
-            <div class="nav-cluster">
-                <button class="tab-btn" onclick="switchSection('maps')"><span class="menu-icon">🗺️</span>지도와 지리 정보</button>
-                <button class="tab-btn" onclick="switchSection('geo')"><span class="menu-icon">🌍</span>세계의 권역</button>
-            </div>
+    <!-- [신규] 1.6 세계의 특수 지형 섹션 -->
+    <section id="section-special" class="content-section">
+        <main class="grid-container" id="special-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-            <!-- 구분선 -->
-            <div class="nav-divider"></div>
+    <!-- [신규] 1.8 세계의 토양 섹션 -->
+    <section id="section-soil" class="content-section">
+        <main class="grid-container" id="soil-grid">
+            <!-- 자바스크립트가 soilData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-            <!-- [그룹 B] 심화 지리 (드롭다운 그룹) -->
-            <div class="nav-cluster">
-                <!-- 자연지리 -->
-                <div class="nav-group">
-                    <button class="group-btn"><span class="menu-icon">🏔️</span>세계의 자연지리▼</button>
-                    <div class="sub-menu">
-                        <button class="sub-tab-btn" onclick="switchSection('terrain')">
-                            <span class="menu-icon">🗻</span>
-                            <span class="text-group">
-                                <span class="menu-title">세계의 대지형</span>
-                                <span class="menu-desc">문명이 뿌리내린 터전</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('special')">
-                            <span class="menu-icon">🌋</span>
-                            <span class="text-group">
-                                <span class="menu-title">다양한 특수 지형</span>
-                                <span class="menu-desc">자연이 조각한 천연의 예술품</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('freshwater')">
-                            <span class="menu-icon">🏞️</span>
-                            <span class="text-group">
-                                <span class="menu-title">담수 시스템</span>
-                                <span class="menu-desc">대지를 적시는 혈관, 문명을 키운 젖줄</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('ocean')">
-                            <span class="menu-icon">🌊</span>
-                            <span class="text-group">
-                                <span class="menu-title">대양과 바다</span>
-                                <span class="menu-desc">대륙을 가르고 이은 거대한 연결</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('earth-system')">
-    <span class="menu-icon">🌏</span>
-    <span class="text-group">
-        <span class="menu-title">지구 시스템</span>
-        <span class="menu-desc">대기와 해양의 거대한 순환</span>
-    </span>
-</button>
-                        <button class="sub-tab-btn" onclick="switchSection('climate')">
-                            <span class="menu-icon">🌡️</span>
-                            <span class="text-group">
-                                <span class="menu-title">세계의 기후</span>
-                                <span class="menu-desc">문명의 색채를 그린 기온과 강수의 띠</span>
-                            </span>
-                        </button>
-                        <!-- [신규] 강수와 구름 버튼 -->
-                        <button class="sub-tab-btn" onclick="switchSection('cloud')">
-                            <span class="menu-icon">☁️</span>
-                            <span class="text-group">
-                                <span class="menu-title">기단과 전선</span>
-                                <span class="menu-desc">대기의 역동적인 파노라마</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('soil')">
-                            <span class="menu-icon">🌱</span>
-                            <span class="text-group">
-                                <span class="menu-title">세계의 토양</span>
-                                <span class="menu-desc">생명을 품은 대지의 피부</span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
+    <!-- [신규] 1.7 지도와 지리 정보 섹션 -->
+    <section id="section-maps" class="content-section">
+        <main class="grid-container" id="maps-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+    <!-- 2. 지역지리 섹션 (데이터 이식 완료) -->
+    <section id="section-geo" class="content-section">
+        <!-- 배경 지도 레이어 -->
+        <div class="geo-bg-layer" id="geo-bg"></div>
+        <!-- 어두워지는 막 -->
+        <div class="geo-dim-layer" id="geo-dim"></div>
 
-                <!-- 인문지리 -->
-                <div class="nav-group">
-                    <button class="group-btn"><span class="menu-icon">🏛️</span>세계의 인문지리▼</button>
-                    <div class="sub-menu">
-                        <button class="sub-tab-btn" onclick="switchSection('population')">
-                            <span class="menu-icon">👨‍👩‍👧‍👦</span>
-                            <span class="text-group">
-                                <span class="menu-title">세계의 인구</span>
-                                <span class="menu-desc">문명의 주체, 인류의 분포와 흐름</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('agriculture')">
-                            <span class="menu-icon">🌾</span>
-                            <span class="text-group">
-                                <span class="menu-title">세계의 농업</span>
-                                <span class="menu-desc">인류를 지탱하는 가장 위대한 노동</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('livestock')">
-                            <span class="menu-icon">🐄</span>
-                            <span class="text-group">
-                                <span class="menu-title">가축과 목축업</span>
-                                <span class="menu-desc">문명과 함께 진화한 동반자</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('resources')">
-                            <span class="menu-icon">⛏️</span>
-                            <span class="text-group">
-                                <span class="menu-title">지하 자원</span>
-                                <span class="menu-desc">문명을 세우고 일군 재료</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('energy')">
-                            <span class="menu-icon">⚡</span>
-                            <span class="text-group">
-                                <span class="menu-title">에너지와 발전</span>
-                                <span class="menu-desc">세계를 움직이는 동력</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('industry')">
-                            <span class="menu-icon">🏭</span>
-                            <span class="text-group">
-                                <span class="menu-title">공업</span>
-                                <span class="menu-desc">도구의 진화가 부른 생산의 혁명</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('city')">
-                            <span class="menu-icon">🏙️</span>
-                            <span class="text-group">
-                                <span class="menu-title">도시</span>
-                                <span class="menu-desc">인류가 건설한 거대한 문명의 집합체</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('language')">
-                            <span class="menu-icon">🗣️</span>
-                            <span class="text-group">
-                                <span class="menu-title">민족과 언어</span>
-                                <span class="menu-desc">생각과 문화를 전달하는 인류의 목소리</span>
-                            </span>
-                        </button>
-                        <button class="sub-tab-btn" onclick="switchSection('religion')">
-                            <span class="menu-icon">🛐</span>
-                            <span class="text-group">
-                                <span class="menu-title">종교</span>
-                                <span class="menu-desc">인간을 인류로 만든 거대한 사상</span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
+        <div class="geo-hero-title">
+            <h1>세계의 권역</h1>
+            <p>지리적, 문화적 특성으로 구분된 지구촌의 모습</p>
+            <p style="font-size:0.9rem; margin-top:30px; opacity:0.7;">▼ 스크롤하여 탐험하기</p>
+        </div>
+        <main class="grid-container" id="main-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-                <!-- 탐구 -->
-                <div class="nav-group">
-                    <button class="group-btn"><span class="menu-icon">🧭</span>지리학의 탐구▼</button>
-                    <div class="sub-menu" style="right: 0; left: auto;"> <!-- 오른쪽 끝 정렬 -->
-                        <button class="sub-tab-btn" onclick="switchSection('tourism')"><span class="menu-icon">✈️</span><span class="text-group"><span class="menu-title">여행과 관광 지리</span><span class="menu-desc">일상을 벗어나 새로운 공간으로</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('geopolitics')"><span class="menu-icon">🌐</span><span class="text-group"><span class="menu-title">지정학과 정치지리</span><span class="menu-desc">질서를 재편하는 보이지 않는 힘</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('conflict')"><span class="menu-icon">⚔️</span><span class="text-group"><span class="menu-title">갈등과 공존의 세계</span><span class="menu-desc">평화와 분쟁의 지정학</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('economic')"><span class="menu-icon">📈</span><span class="text-group"><span class="menu-title">경제 활동의 입지</span><span class="menu-desc">재화가 이동하는 법칙과 원리</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('rural')"><span class="menu-icon">🌾</span><span class="text-group"><span class="menu-title">촌락과 농업 공간</span><span class="menu-desc">인류 정착 생활의 원형</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('urban')"><span class="menu-icon">🏙️</span><span class="text-group"><span class="menu-title">도시의 시대적 변화</span><span class="menu-desc">시대 정신을 담아온 도시 공간</span></span></button>
-                        <button class="sub-tab-btn" onclick="switchSection('cultural')"><span class="menu-icon">🎨</span><span class="text-group"><span class="menu-title">문화의 확산과 경관</span><span class="menu-desc">생각과 사상이 공간에 남긴 궤적</span></span></button>
-                        <!-- [신규] 기후 변화와 인류세 버튼 -->
-                        <button class="sub-tab-btn" onclick="switchSection('change')">
-                            <span class="menu-icon">🔥</span>
-                            <span class="text-group">
-                                <span class="menu-title">기후 변화와 인류세</span>
-                                <span class="menu-desc">인간이 바꾼 지구의 얼굴</span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <section id="section-freshwater" class="content-section">
+        <main class="grid-container" id="freshwater-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-        </nav>
-    </div>
-    
-    <!-- 모바일 버튼 (기존 유지) -->
-    <button id="mobile-menu-btn" class="mobile-menu-toggle">
-        <span class="hamburger-icon"></span>
-    </button>
-</header>
-<div id="mobile-nav-overlay"></div>
-<nav id="mobile-nav-panel">
-    <div class="mobile-nav-header">
-        <!-- 이 안은 이제 비어있습니다. -->
-    </div>
-    <div id="mobile-nav-content">
-        <!-- 자바스크립트가 데스크톱 메뉴를 복사해 여기에 채울 예정입니다. -->
-    </div>
-</nav>
-<!-- [신규 위치] 닫기 버튼을 패널 밖, 독립된 요소로 이동 -->
-<button id="mobile-close-btn" class="mobile-menu-toggle">
-    <span class="close-icon"></span>
-</button>
+    <!-- [신규] 대양과 바다 섹션 -->
+    <section id="section-ocean" class="content-section">
+        <main class="grid-container" id="ocean-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
 
-<button id="climate-bands-toggle" title="대기 대순환 보기">🌏️</button>
-<!-- 1. 홈 섹션 -->
-<!-- [신규] 우하단 플로팅 검색창 -->
-<div class="floating-search" id="global-search">
-    <div class="search-icon">🔍</div>
-    <input type="text" class="search-input" placeholder="권역, 국가, 키워드 검색..." onkeyup="filterCards(this.value)">
-</div>
-<section id="section-home" class="content-section home-section active">
-    <div class="home-animated-bg"></div>
-    <h1 class="home-title">문명의 아틀라스</h1>
-    <div class="discovery-container">
-        <button id="discovery-btn" class="discovery-btn" onclick="randomJump()">
-            🎲 탐험하기: <span id="discovery-text">로딩 중...</span>
-        </button>
-    </div>
-    <p class="home-desc">
-        다양한 주제를 통해 인류 문명의 파노라마를 탐험하세요.<br>
-        상단 메뉴를 통해 각 세계로 진입할 수 있습니다.
-    </p>
-</section>
-<!-- [신규] 1.5 세계의 대지형 섹션 -->
-<section id="section-terrain" class="content-section">
-    <main class="grid-container" id="terrain-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 1.6 세계의 특수 지형 섹션 -->
-<section id="section-special" class="content-section">
-    <main class="grid-container" id="special-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 1.8 세계의 토양 섹션 -->
-<section id="section-soil" class="content-section">
-    <main class="grid-container" id="soil-grid">
-        <!-- 자바스크립트가 soilData를 기반으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 1.7 지도와 지리 정보 섹션 -->
-<section id="section-maps" class="content-section">
-    <main class="grid-container" id="maps-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-<!-- 2. 지역지리 섹션 (데이터 이식 완료) -->
-<section id="section-geo" class="content-section">
-    <!-- 배경 지도 레이어 -->
-    <div class="geo-bg-layer" id="geo-bg"></div>
-    <!-- 어두워지는 막 -->
-    <div class="geo-dim-layer" id="geo-dim"></div>
-
-    <div class="geo-hero-title">
-        <h1>세계의 권역</h1>
-        <p>지리적, 문화적 특성으로 구분된 지구촌의 모습</p>
-        <p style="font-size:0.9rem; margin-top:30px; opacity:0.7;">▼ 스크롤하여 탐험하기</p>
-    </div>
-    <main class="grid-container" id="main-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->    
-    </main>
-</section>
-
-<section id="section-freshwater" class="content-section">
-    <main class="grid-container" id="freshwater-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 대양과 바다 섹션 -->
-<section id="section-ocean" class="content-section">
-    <main class="grid-container" id="ocean-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 3. 기후구분 섹션 (복구 및 청소 완료) -->
-<section id="section-climate" class="content-section">
-    <!-- [1] 대기 대순환 띠 (삭제 금지: 정적 요소) -->
-    <div id="atmospheric-bands-container">
-        <div class="pressure-band polar-high"><span>극 고압대</span></div>
-        <div class="wind-band polar-easterlies"><span>⬋⬋⬋극동풍대⬋⬋⬋</span></div>
-        <div class="pressure-band polar-front"><span>고위도 저압대 (한대 전선)</span></div>
-        <div class="wind-band westerlies"><span>⬈⬈⬈편서풍대⬈⬈⬈</span></div>
-        <div class="pressure-band subtropical-high"><span>아열대 고압대</span></div>
-        <div class="wind-band trade-winds"><span>⬋⬋⬋북동무역풍⬋⬋⬋</span></div> <!-- 기존 trade-winds는 북반구니까 북동무역풍으로 수정 -->
-        <div class="pressure-band itcz"><span>열대 수렴대 (ITCZ)</span></div>
-        <!-- [신규] 남반구 무역풍 추가 -->
-        <div class="wind-band trade-winds2"><span>⬉⬉⬉남동무역풍⬉⬉⬉</span></div> 
-    </div>
-    </div>
-
-    <!-- [2] 메인 그리드 (여기는 비워둡니다. JS가 카드를 채웁니다) -->
-    <main class="climate-vertical-stack" id="climate-main-grid">
-    </main>
-
-    <!-- [3] 기후 눈금선 (삭제 금지: 정적 요소) -->
-    <aside id="climate-scale" style="display:none;">
-        <div class="scale-line"></div>
-        <div class="scale-tick" style="top: 5%;"><span class="tick-label">극한의 추위</span><span class="tick-temp">-38°C</span></div>
-        <div class="scale-tick" style="bottom: 72%;"><span class="tick-label">적설 한계</span><span class="tick-temp">-3°C</span></div>
-        <div class="scale-tick" style="bottom: 66%;"><span class="tick-label">물의 빙결</span><span class="tick-temp">0°C</span></div>
-        <div class="scale-tick" style="bottom: 45%;"><span class="tick-label">수목 한계</span><span class="tick-temp">10°C</span></div>
-        <div class="scale-tick" style="bottom: 24%;"><span class="tick-label">열대성 식물 한계</span><span class="tick-temp">18°C</span></div>
-        <div class="scale-tick" style="bottom: 12%;"><span class="tick-label">무더운 여름</span><span class="tick-temp">22°C</span></div>
-    </aside>
-</section>
-
-<!-- [신규] 4. 세계종교 섹션 -->
-<section id="section-religion" class="content-section">
-    <main class="grid-container" id="religion-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 인문지리 추가 섹션 (준비중) -->
-<section id="section-city" class="content-section">
-    <main class="grid-container" id="city-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<section id="section-language" class="content-section">
-    <main class="grid-container" id="language-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 4. 농업과 목축업 섹션 -->
-<section id="section-agriculture" class="content-section">
-    <main class="grid-container" id="agriculture-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 4-2. 가축과 목축업 섹션 -->
-<section id="section-livestock" class="content-section">
-    <main class="grid-container" id="livestock-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 자원 섹션 -->
-<section id="section-resources" class="content-section">
-    <main class="grid-container" id="resources-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규 섹션] 에너지와 발전 -->
-<section id="section-energy" class="content-section">
-    <main class="grid-container" id="energy-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 인구 통계와 이동 섹션 -->
-<section id="section-population" class="content-section">
-    <main class="grid-container" id="population-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<section id="section-industry" class="content-section">
-    <main class="grid-container" id="industry-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신규] 지리학의 탐구 섹션들 -->
-<!-- 1. 여행과 관광 지리 -->
-<section id="section-tourism" class="content-section">
-    <main class="grid-container" id="tourism-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- 2. 지정학과 정치지리 -->
-<section id="section-geopolitics" class="content-section">
-    <main class="grid-container" id="geopolitics-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [신설] 갈등과 공존의 세계 -->
-<section id="section-conflict" class="content-section">
-    <main class="grid-container" id="conflict-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- 3. 경제 활동의 입지 -->
-<section id="section-economic" class="content-section">
-    <main class="grid-container" id="economic-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- 4. 촌락과 농업 공간 -->
-<section id="section-rural" class="content-section">
-    <main class="grid-container" id="rural-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- 6. 도시의 시대적 변화 -->
-<section id="section-urban" class="content-section">
-    <main class="grid-container" id="urban-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- 7. 문화의 확산과 경관 -->
-<section id="section-cultural" class="content-section">
-    <main class="grid-container" id="cultural-grid">
-        <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
-    </main>
-</section>
-
-<!-- [패널 템플릿] (필수) -->
-<div id="detail-panel-template" class="detail-panel">
-    <button class="close-panel-btn" onclick="closeAllPanels(event)">✕</button>
-    <div id="detail-content-area"></div>
-</div>
-<!-- [수정됨] 전역 카드 네비게이션 버튼 (아이콘 변경) -->
-<button id="prev-card-btn" class="global-nav-btn prev" title="이전 카드">◀</button>
-<button id="next-card-btn" class="global-nav-btn next" title="다음 카드">▶</button>
-<!-- [신규] 지도 초기화(나침반) 버튼 -->
-<button id="map-reset-btn" class="map-reset-btn" onclick="resetMap()" title="지도 전체 보기">🧭</button>
-<!-- [최종 수정] 배경 이미지 전체 보기 모달 -->
-<!-- [최종] 겹쳐진 단축키가 포함된 배경 보기 버튼 -->
-<button id="bg-view-btn" class="bg-view-btn" title="배경 보기 (V)">
-    <span class="btn-icon">👁️</span>
-    <sup class="btn-shortcut-overlay">V</sup>
-</button>
-
-<div id="bg-modal" class="bg-modal" onclick="closeBgModal()">
-    <!-- 1. 글씨 영역 (ID 확인 필수: bg-modal-title, bg-modal-desc) -->
-    <div class="bg-modal-text">
-        <h2 id="bg-modal-title" style="color: white; text-shadow: 0 0 20px black;"></h2>
-        <p id="bg-modal-desc" style="color: white; text-shadow: 0 0 10px black;"></p>
-    </div>
-    
-    <!-- 2. 닫기 버튼 -->
-    <button class="bg-modal-close" style="z-index: 30000;">✕</button>
-    
-    <!-- 3. 이미지 (ID 확인 필수: bg-modal-img) -->
-    <img id="bg-modal-img" src="" alt="배경 이미지 원본">
-</div>
-
-<!-- [자바스크립트 연결] -->
-<!-- [신규] 도약 후 돌아가기 버튼 (평소엔 숨김) -->
-<button id="return-jump-btn" class="return-jump-btn" title="이전 위치로 복귀">
-    ↩️ 돌아가기
-</button>
-<!-- [수정] 심화 학습 아티클 모달 (이미지 위치 변경) -->
-<div id="article-modal" class="article-modal" onclick="closeArticleModal(event)">
-    <div class="article-content-box" onclick="event.stopPropagation()">
-        <button class="article-close-btn" onclick="closeArticleModal()">✕</button>
-        
-        <!-- 1. 제목 영역 -->
-        <div class="article-header">
-            <span class="article-badge">Deep Dive</span>
-            <h2 id="article-title">아티클 제목</h2>
+    <!-- [신규] 3. 기후구분 섹션 (복구 및 청소 완료) -->
+    <section id="section-climate" class="content-section">
+        <!-- [1] 대기 대순환 띠 (삭제 금지: 정적 요소) -->
+        <div id="atmospheric-bands-container">
+            <div class="pressure-band polar-high"><span>극 고압대</span></div>
+            <div class="wind-band polar-easterlies"><span>⬋⬋⬋극동풍대⬋⬋⬋</span></div>
+            <div class="pressure-band polar-front"><span>고위도 저압대 (한대 전선)</span></div>
+            <div class="wind-band westerlies"><span>⬈⬈⬈편서풍대⬈⬈⬈</span></div>
+            <div class="pressure-band subtropical-high"><span>아열대 고압대</span></div>
+            <div class="wind-band trade-winds"><span>⬋⬋⬋북동무역풍⬋⬋⬋</span></div> <!-- 기존 trade-winds는 북반구니까 북동무역풍으로 수정 -->
+            <div class="pressure-band itcz"><span>열대 수렴대 (ITCZ)</span></div>
+            <!-- [신규] 남반구 무역풍 추가 -->
+            <div class="wind-band trade-winds2"><span>⬉⬉⬉남동무역풍⬉⬉⬉</span></div>
+        </div>
         </div>
 
-        <!-- 2. 이미지 영역 (제목 아래로 이동) -->
-        <div id="article-img-container" class="article-img-container">
-            <img id="article-img" src="" alt="Deep Dive Image">
-        </div>
-
-        <!-- 3. 본문 영역 -->
-        <div id="article-body" class="article-body">
-            <!-- 자바스크립트가 내용을 채웁니다 -->
-        </div>
-    </div>
-</div>
-<!-- [신규] 1.45 지구 시스템 섹션 -->
-<section id="section-earth-system" class="content-section">
-    <!-- 제1구간: 우주에서 본 지구 (대기 대순환 & 열수지) -->
-    <div class="earth-system-space-view">
-        <div class="space-stars"></div> <!-- 별 배경 -->
-        
-        <!-- 중앙 컨테이너 -->
-        <div class="earth-container">
-            <!-- 1. 지구 본체 -->
-            <div class="earth-sphere">
-                <div class="earth-texture"></div>
-                
-                <!-- [신규] 항상풍대 (바람 띠) 및 기압대 -->
-                <div class="wind-bands-overlay">
-                    <!-- 1. 극고압대 (Polar High) -->
-                    <div class="pressure-label polar-high-label">극고압대</div>
-
-                    <!-- 2. 극동풍대 -->
-                    <div class="wind-band polar-easterlies">
-                        <span>⬋⬋ 극동풍 ⬋⬋</span>
-                    </div>
-
-                    <!-- 3. 한대전선대 (Polar Front) -->
-                    <div class="pressure-label polar-front-label">한대전선대</div>
-
-                    <!-- 4. 편서풍대 -->
-                    <div class="wind-band westerlies">
-                        <span>⬈⬈ 편서풍 ⬈⬈</span>
-                    </div>
-
-                    <!-- 5. 아열대고압대 (Subtropical High) -->
-                    <div class="pressure-label subtropical-high-label">아열대고압대</div>
-
-                    <!-- 6. 무역풍대 -->
-                    <div class="wind-band trade-winds">
-                        <span>⬋⬋ 무역풍 ⬋⬋</span>
-                    </div>
-
-                    <!-- 7. 열대수렴대 (ITCZ) -->
-                    <div class="pressure-label itcz-label">열대수렴대</div>
-                </div>
-
-                <div class="earth-shadow"></div>
-                <div class="earth-atmosphere"></div>
-            </div>
-
-            <!-- 2. 대기 대순환 도식 -->
-            <svg class="circulation-svg" viewBox="0 0 1000 1000">
-                
-                <!-- 1. 해들리 순환 (적도 부근) -->
-                <path id="hadley-cell" class="cell-path" 
-                      d="M 180,600 Q 120,530 180,460 Q 240,530 180,600" />
-                <text class="cell-label" x="100" y="550" text-anchor="end">해들리 순환</text>
-                
-                <!-- 2. 페렐 순환 (중위도) -->
-                <path id="ferrel-cell" class="cell-path" 
-                      d="M 200,440 Q 140,370 240,300 Q 280,370 200,440" />
-                <text class="cell-label" x="120" y="370" text-anchor="end">페렐 순환</text>
-                
-                <!-- 3. 극 순환 (고위도) - [수정] 우측으로 약 10도 기울임 -->
-                <!-- 기존: M 260,280 ... -->
-                <!-- 수정: 상단 제어점을 우측 하단으로 이동하여 곡률 맞춤 -->
-                <path id="polar-cell" class="cell-path" 
-                      d="M 260,280 Q 230,220 370,160 Q 390,240 260,280" />
-                <text class="cell-label" x="200" y="190" text-anchor="end">극 순환</text>
-            </svg>
-        </div>
-        
-        <!-- [복구] 3. 열수지 (에너지 불균형) 화살표 및 텍스트 -->
-        <div class="energy-balance-container">
-            <!-- 1. 극지방 (상단, 에너지 부족) -->
-            <div class="balance-group polar-balance">
-                <div class="balance-arrows">
-                    <div class="arrow output large tilted" title="지구 복사 (많음)"></div>
-                    <div class="arrow input small" title="태양 복사 (적음)"></div>
-                </div>
-            </div>           
-
-            <!-- 3. 적도 (하단, 에너지 과잉) -->
-            <div class="balance-group equator-balance">
-                <div class="balance-arrows">
-                    <div class="arrow input large" title="태양 복사 (많음)"></div>
-                    <div class="arrow output small" title="지구 복사 (적음)"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
-        <div class="earth-info-cards-container">
-            <!-- ... (카드 4개 내용) ... -->
-        </div>
-
-        <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
-        <div class="earth-info-cards-container">
-            <!-- 카드 1: 저위도 에너지 과잉 -->
-            <div class="ocean-card card-surplus">
-                <h3>저위도: 에너지 과잉</h3>
-                <p>단위 면적당 태양 복사 입사량이 높으며 식생이 두터워 알베도가 낮으므로 지구 방출 복사량이 낮아 열이 축적된다. 이 과잉 에너지가 모든 순환의 원동력이 된다.</p>
-            </div>
-            <!-- 카드 2: 고위도 에너지 부족 -->
-            <div class="ocean-card card-deficit">
-                <h3>고위도: 에너지 부족</h3>
-                <p>지구 복사 방출량이 태양 복사 입사량보다 많아 열이 부족하다. 빙상으로 인해 높은 알베도는 이를 심화시키며, 저위도에서 수송된 에너지로 균형을 이루려 한다.</p>
-            </div>
-            <!-- 카드 3: 대기 대순환 -->
-            <div class="ocean-card card-circulation">
-                <h3>대기 대순환</h3>
-                <p>에너지 불균형을 해소하기 위해, 뜨거운 공기는 상승하고 차가운 공기는 하강하며 거대한 순환 세포를 형성한다.</p>
-            </div>
-            <!-- 카드 4: 전향력 -->
-            <div class="ocean-card card-coriolis">
-                <h3>전향력</h3>
-                <p>지구의 자전으로 인해 북반구에서는 바람이 오른쪽으로, 남반구에서는 왼쪽으로 휘어지며 항상풍의 방향이 결정된다.</p>
-            </div>
-        </div>        
-
-            
-        </div>
-    </div>
-
-    <!-- 제2구간: 바다의 길 (해양 순환 & 엘니뇨) -->
-    <div class="earth-system-ocean-view">
-        <!-- 1. 배경 지도 (CSS로 처리) -->
-        
-        <!-- 2. 엘니뇨/라니냐 오버레이 (태평양 적도 부근) -->
-        <div id="enso-overlay" class="enso-overlay">
-            <div class="warm-pool"></div> <!-- 수온 상승 구역 -->
-            <div class="wind-arrow"></div> <!-- 바람 방향 -->
-            <div class="enso-label"></div>
-        </div>
-
-        <!-- 3. 컨트롤 패널 -->
-        <div class="enso-controls">
-            <button onclick="setEnso('normal')" class="active">평상시</button>
-            <button onclick="setEnso('elnino')">엘니뇨</button>
-            <button onclick="setEnso('lanina')">라니냐</button>
-        </div>
-
-        <!-- 4. 해류 정보 카드 (주요 지점) -->
-        <div class="ocean-cards-container">
-            <!-- 멕시코 만류 -->
-            <div class="ocean-card gulf-stream">
-                <h3>➚멕시코 만류➚</h3>
-                <p>세계에서 가장 강력한 난류.<br>열대 에너지를 고위도로 수송하는<br>거대한 컨베이어 벨트.</p>
-            </div>
-            <!-- 북대서양 해류 (신규 추가) -->
-            <div class="ocean-card north-atlantic">
-                <h3>➚북대서양 해류➚</h3>
-                <p>서안 해양성 기후와<br>러시아 부동항의 근원</p>
-            </div>
-            <!-- 적도 반류 (신규 추가) -->
-            <div class="ocean-card equatorial-counter">
-                <h3>⇒적도 반류⇒</h3>
-                <p>무역풍에 서쪽에 모인 물이<br>동쪽으로 흘러내리는 보상류</p>
-            </div>
-            <!-- 페루 해류 -->
-            <div class="ocean-card peru-current">
-                <h3>➚훔볼트 해류➚</h3>
-                <p>가장 건조한 아타카마 사막과<br>황금어장을 만든 용승 해류</p>
-            </div>
-            <!-- 쿠로시오 해류 -->
-            <div class="ocean-card kuroshio">
-                <h3>➚쿠로시오 해류➚</h3>
-                <p>동아시아의 기후와 어업에<br>영향을 주는 검은 조류</p>
-            </div>
-            <!-- 캘리포니아 해류 -->
-            <div class="ocean-card california">
-                <h3>➘캘리포니아 해류➘</h3>
-                <p>북미 서안에 서늘한 여름과<br>안개를 가져옴</p>
-            </div>
-            <!-- 남극 순환류 (신규 추가) -->
-            <div class="ocean-card antarctic">
-                <h3>⇒남극 순환류⇒</h3>
-                <p>지구를 한 바퀴 도는<br>가장 거대한 해류</p>
-            </div>
-            <!-- 소말리아 해류 (인도양) -->
-            <div class="ocean-card somali">
-                <h3>➚소말리아 해류↙</h3>
-                <p>계절풍에 따라 방향이 바뀌는<br>몬순 해류</p>
-            </div>
-            <!-- 벵겔라 해류 (남대서양) -->
-            <div class="ocean-card benguela">
-                <h3>↖벵겔라 해류↖</h3>
-                <p>안개가 자욱한 해안 사막<br>나미브를 만든 한류</p>
-            </div>
-            <!-- 벵겔라 해류 (남대서양) -->
-            <div class="ocean-card eastwind">
-                <h3>⇐남극 연안류⇐</h3>
-                <p>극동풍에 의해 서쪽으로 흐르는<br>남극 연안 해류</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- [수정] 1.9 기단과 전선 섹션 -->
-<section id="section-cloud" class="content-section">
-    <div class="sky-container-wrapper">
-        
-        <!-- 1. 제트기류 (기존 유지) -->
-        <div id="jet-stream-layer">
-            <div class="jet-text-track">
-                <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
-                <!-- ... (반복) ... -->
-            </div>
-        </div>        
-        
-        <!-- [신규] 소제목: 구름 -->
-        <h3 class="sky-section-title">☁️ 구름의 운형</h3>
-        <main class="sky-grid-container" id="cloud-grid">
-            <!-- 구름 카드 -->
+        <!-- [2] 메인 그리드 (여기는 비워둡니다. JS가 카드를 채웁니다) -->
+        <main class="climate-vertical-stack" id="climate-main-grid">
         </main>
 
-        <!-- [신규] 소제목: 기단 -->
-        <h3 class="sky-section-title">🌬️ 등질한 공기 덩어리, 기단</h3>
-        <div id="air-mass-panel" class="precip-container">
-            <!-- 기단 카드 -->
+        <!-- [3] 기후 눈금선 (삭제 금지: 정적 요소) -->
+        <aside id="climate-scale" style="display:none;">
+            <div class="scale-line"></div>
+            <div class="scale-tick" style="top: 5%;"><span class="tick-label">극한의 추위</span><span
+                    class="tick-temp">-38°C</span></div>
+            <div class="scale-tick" style="bottom: 72%;"><span class="tick-label">적설 한계</span><span
+                    class="tick-temp">-3°C</span></div>
+            <div class="scale-tick" style="bottom: 66%;"><span class="tick-label">물의 빙결</span><span
+                    class="tick-temp">0°C</span></div>
+            <div class="scale-tick" style="bottom: 45%;"><span class="tick-label">수목 한계</span><span
+                    class="tick-temp">10°C</span></div>
+            <div class="scale-tick" style="bottom: 24%;"><span class="tick-label">열대성 식물 한계</span><span
+                    class="tick-temp">18°C</span></div>
+            <div class="scale-tick" style="bottom: 12%;"><span class="tick-label">무더운 여름</span><span
+                    class="tick-temp">22°C</span></div>
+        </aside>
+    </section>
+
+    <!-- [신규] 4. 세계종교 섹션 -->
+    <section id="section-religion" class="content-section">
+        <main class="grid-container" id="religion-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 인문지리 추가 섹션 (준비중) -->
+    <section id="section-city" class="content-section">
+        <main class="grid-container" id="city-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <section id="section-language" class="content-section">
+        <main class="grid-container" id="language-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 4. 농업과 목축업 섹션 -->
+    <section id="section-agriculture" class="content-section">
+        <main class="grid-container" id="agriculture-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 4-2. 가축과 목축업 섹션 -->
+    <section id="section-livestock" class="content-section">
+        <main class="grid-container" id="livestock-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 자원 섹션 -->
+    <section id="section-resources" class="content-section">
+        <main class="grid-container" id="resources-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규 섹션] 에너지와 발전 -->
+    <section id="section-energy" class="content-section">
+        <main class="grid-container" id="energy-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 인구 통계와 이동 섹션 -->
+    <section id="section-population" class="content-section">
+        <main class="grid-container" id="population-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <section id="section-industry" class="content-section">
+        <main class="grid-container" id="industry-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신규] 지리학의 탐구 섹션들 -->
+    <!-- 1. 여행과 관광 지리 -->
+    <section id="section-tourism" class="content-section">
+        <main class="grid-container" id="tourism-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- 2. 지정학과 정치지리 -->
+    <section id="section-geopolitics" class="content-section">
+        <main class="grid-container" id="geopolitics-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신설] 갈등과 공존의 세계 -->
+    <section id="section-conflict" class="content-section">
+        <main class="grid-container" id="conflict-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- 3. 경제 활동의 입지 -->
+    <section id="section-economic" class="content-section">
+        <main class="grid-container" id="economic-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [신설] 교통과 네트워크 지리 -->
+    <section id="section-transport" class="content-section">
+        <main class="grid-container" id="transport-grid">
+            <!-- 자바스크립트가 transportData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- 4. 촌락과 농업 공간 -->
+    <section id="section-rural" class="content-section">
+        <main class="grid-container" id="rural-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- 6. 도시의 시대적 변화 -->
+    <section id="section-urban" class="content-section">
+        <main class="grid-container" id="urban-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- 7. 문화의 확산과 경관 -->
+    <section id="section-cultural" class="content-section">
+        <main class="grid-container" id="cultural-grid">
+            <!-- 자바스크립트가 자동으로 카드를 생성합니다 -->
+        </main>
+    </section>
+
+    <!-- [패널 템플릿] (필수) -->
+    <div id="detail-panel-template" class="detail-panel">
+        <button class="close-panel-btn" onclick="closeAllPanels(event)">✕</button>
+        <div id="detail-content-area"></div>
+    </div>
+    <!-- [수정됨] 전역 카드 네비게이션 버튼 (아이콘 변경) -->
+    <button id="prev-card-btn" class="global-nav-btn prev" title="이전 카드">◀</button>
+    <button id="next-card-btn" class="global-nav-btn next" title="다음 카드">▶</button>
+    <!-- [신규] 지도 초기화(나침반) 버튼 -->
+    <button id="map-reset-btn" class="map-reset-btn" onclick="resetMap()" title="지도 전체 보기">🧭</button>
+    <!-- [최종 수정] 배경 이미지 전체 보기 모달 -->
+    <!-- [최종] 겹쳐진 단축키가 포함된 배경 보기 버튼 -->
+    <button id="bg-view-btn" class="bg-view-btn" title="배경 보기 (V)">
+        <span class="btn-icon">👁️</span>
+        <sup class="btn-shortcut-overlay">V</sup>
+    </button>
+
+    <div id="bg-modal" class="bg-modal" onclick="closeBgModal()">
+        <!-- 1. 글씨 영역 (ID 확인 필수: bg-modal-title, bg-modal-desc) -->
+        <div class="bg-modal-text">
+            <h2 id="bg-modal-title" style="color: white; text-shadow: 0 0 20px black;"></h2>
+            <p id="bg-modal-desc" style="color: white; text-shadow: 0 0 10px black;"></p>
         </div>
 
-        <!-- [신규] 소제목: 전선 -->
-        <h3 class="sky-section-title">⚔️ 기단이 만나는 전선면</h3>
-        <div id="front-panel" class="precip-container">
-            <!-- 전선 카드 -->
-        </div>
+        <!-- 2. 닫기 버튼 -->
+        <button class="bg-modal-close" style="z-index: 30000;">✕</button>
 
-        <!-- [신규] 소제목: 강수 -->
-        <h3 class="sky-section-title">☔ 강수의 유형</h3>
-        <div id="precip-panel" class="precip-container">
-            <!-- 강수 카드 -->
+        <!-- 3. 이미지 (ID 확인 필수: bg-modal-img) -->
+        <img id="bg-modal-img" src="" alt="배경 이미지 원본">
+    </div>
+
+    <!-- [자바스크립트 연결] -->
+    <!-- [신규] 도약 후 돌아가기 버튼 (평소엔 숨김) -->
+    <button id="return-jump-btn" class="return-jump-btn" title="이전 위치로 복귀">
+        ↩️ 돌아가기
+    </button>
+    <!-- [수정] 심화 학습 아티클 모달 (이미지 위치 변경) -->
+    <div id="article-modal" class="article-modal" onclick="closeArticleModal(event)">
+        <div class="article-content-box" onclick="event.stopPropagation()">
+            <button class="article-close-btn" onclick="closeArticleModal()">✕</button>
+
+            <!-- 1. 제목 영역 -->
+            <div class="article-header">
+                <span class="article-badge">Deep Dive</span>
+                <h2 id="article-title">아티클 제목</h2>
+            </div>
+
+            <!-- 2. 이미지 영역 (제목 아래로 이동) -->
+            <div id="article-img-container" class="article-img-container">
+                <img id="article-img" src="" alt="Deep Dive Image">
+            </div>
+
+            <!-- 3. 본문 영역 -->
+            <div id="article-body" class="article-body">
+                <!-- 자바스크립트가 내용을 채웁니다 -->
+            </div>
         </div>
     </div>
-</section>
-<!-- [신규] 기후 변화와 인류세 섹션 -->
-<section id="section-change" class="content-section">
-    <main class="grid-container" id="change-grid">
-        <!-- 자바스크립트가 ChangeData를 기반으로 카드를 생성합니다 -->
-    </main>
-</section>
+    <!-- [신규] 1.45 지구 시스템 섹션 -->
+    <section id="section-earth-system" class="content-section">
+        <!-- 제1구간: 우주에서 본 지구 (대기 대순환 & 열수지) -->
+        <div class="earth-system-space-view">
+            <div class="space-stars"></div> <!-- 별 배경 -->
+
+            <!-- 중앙 컨테이너 -->
+            <div class="earth-container">
+                <!-- 1. 지구 본체 -->
+                <div class="earth-sphere">
+                    <div class="earth-texture"></div>
+
+                    <!-- [신규] 항상풍대 (바람 띠) 및 기압대 -->
+                    <div class="wind-bands-overlay">
+                        <!-- 1. 극고압대 (Polar High) -->
+                        <div class="pressure-label polar-high-label">극고압대</div>
+
+                        <!-- 2. 극동풍대 -->
+                        <div class="wind-band polar-easterlies">
+                            <span>⬋⬋ 극동풍 ⬋⬋</span>
+                        </div>
+
+                        <!-- 3. 한대전선대 (Polar Front) -->
+                        <div class="pressure-label polar-front-label">한대전선대</div>
+
+                        <!-- 4. 편서풍대 -->
+                        <div class="wind-band westerlies">
+                            <span>⬈⬈ 편서풍 ⬈⬈</span>
+                        </div>
+
+                        <!-- 5. 아열대고압대 (Subtropical High) -->
+                        <div class="pressure-label subtropical-high-label">아열대고압대</div>
+
+                        <!-- 6. 무역풍대 -->
+                        <div class="wind-band trade-winds">
+                            <span>⬋⬋ 무역풍 ⬋⬋</span>
+                        </div>
+
+                        <!-- 7. 열대수렴대 (ITCZ) -->
+                        <div class="pressure-label itcz-label">열대수렴대</div>
+                    </div>
+
+                    <div class="earth-shadow"></div>
+                    <div class="earth-atmosphere"></div>
+                </div>
+
+                <!-- 2. 대기 대순환 도식 -->
+                <svg class="circulation-svg" viewBox="0 0 1000 1000">
+
+                    <!-- 1. 해들리 순환 (적도 부근) -->
+                    <path id="hadley-cell" class="cell-path" d="M 180,600 Q 120,530 180,460 Q 240,530 180,600" />
+                    <text class="cell-label" x="100" y="550" text-anchor="end">해들리 순환</text>
+
+                    <!-- 2. 페렐 순환 (중위도) -->
+                    <path id="ferrel-cell" class="cell-path" d="M 200,440 Q 140,370 240,300 Q 280,370 200,440" />
+                    <text class="cell-label" x="120" y="370" text-anchor="end">페렐 순환</text>
+
+                    <!-- 3. 극 순환 (고위도) - [수정] 우측으로 약 10도 기울임 -->
+                    <!-- 기존: M 260,280 ... -->
+                    <!-- 수정: 상단 제어점을 우측 하단으로 이동하여 곡률 맞춤 -->
+                    <path id="polar-cell" class="cell-path" d="M 260,280 Q 230,220 370,160 Q 390,240 260,280" />
+                    <text class="cell-label" x="200" y="190" text-anchor="end">극 순환</text>
+                </svg>
+            </div>
+
+            <!-- [복구] 3. 열수지 (에너지 불균형) 화살표 및 텍스트 -->
+            <div class="energy-balance-container">
+                <!-- 1. 극지방 (상단, 에너지 부족) -->
+                <div class="balance-group polar-balance">
+                    <div class="balance-arrows">
+                        <div class="arrow output large tilted" title="지구 복사 (많음)"></div>
+                        <div class="arrow input small" title="태양 복사 (적음)"></div>
+                    </div>
+                </div>
+
+                <!-- 3. 적도 (하단, 에너지 과잉) -->
+                <div class="balance-group equator-balance">
+                    <div class="balance-arrows">
+                        <div class="arrow input large" title="태양 복사 (많음)"></div>
+                        <div class="arrow output small" title="지구 복사 (적음)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
+            <div class="earth-info-cards-container">
+                <!-- ... (카드 4개 내용) ... -->
+            </div>
+
+            <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
+            <div class="earth-info-cards-container">
+                <!-- 카드 1: 저위도 에너지 과잉 -->
+                <div class="ocean-card card-surplus">
+                    <h3>저위도: 에너지 과잉</h3>
+                    <p>단위 면적당 태양 복사 입사량이 높으며 식생이 두터워 알베도가 낮으므로 지구 방출 복사량이 낮아 열이 축적된다. 이 과잉 에너지가 모든 순환의 원동력이 된다.</p>
+                </div>
+                <!-- 카드 2: 고위도 에너지 부족 -->
+                <div class="ocean-card card-deficit">
+                    <h3>고위도: 에너지 부족</h3>
+                    <p>지구 복사 방출량이 태양 복사 입사량보다 많아 열이 부족하다. 빙상으로 인해 높은 알베도는 이를 심화시키며, 저위도에서 수송된 에너지로 균형을 이루려 한다.</p>
+                </div>
+                <!-- 카드 3: 대기 대순환 -->
+                <div class="ocean-card card-circulation">
+                    <h3>대기 대순환</h3>
+                    <p>에너지 불균형을 해소하기 위해, 뜨거운 공기는 상승하고 차가운 공기는 하강하며 거대한 순환 세포를 형성한다.</p>
+                </div>
+                <!-- 카드 4: 전향력 -->
+                <div class="ocean-card card-coriolis">
+                    <h3>전향력</h3>
+                    <p>지구의 자전으로 인해 북반구에서는 바람이 오른쪽으로, 남반구에서는 왼쪽으로 휘어지며 항상풍의 방향이 결정된다.</p>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+
+        <!-- 제2구간: 바다의 길 (해양 순환 & 엘니뇨) -->
+        <div class="earth-system-ocean-view">
+            <!-- 1. 배경 지도 (CSS로 처리) -->
+
+            <!-- 2. 엘니뇨/라니냐 오버레이 (태평양 적도 부근) -->
+            <div id="enso-overlay" class="enso-overlay">
+                <div class="warm-pool"></div> <!-- 수온 상승 구역 -->
+                <div class="wind-arrow"></div> <!-- 바람 방향 -->
+                <div class="enso-label"></div>
+            </div>
+
+            <!-- 3. 컨트롤 패널 -->
+            <div class="enso-controls">
+                <button onclick="setEnso('normal')" class="active">평상시</button>
+                <button onclick="setEnso('elnino')">엘니뇨</button>
+                <button onclick="setEnso('lanina')">라니냐</button>
+            </div>
+
+            <!-- 4. 해류 정보 카드 (주요 지점) -->
+            <div class="ocean-cards-container">
+                <!-- 멕시코 만류 -->
+                <div class="ocean-card gulf-stream">
+                    <h3>➚멕시코 만류➚</h3>
+                    <p>세계에서 가장 강력한 난류.<br>열대 에너지를 고위도로 수송하는<br>거대한 컨베이어 벨트.</p>
+                </div>
+                <!-- 북대서양 해류 (신규 추가) -->
+                <div class="ocean-card north-atlantic">
+                    <h3>➚북대서양 해류➚</h3>
+                    <p>서안 해양성 기후와<br>러시아 부동항의 근원</p>
+                </div>
+                <!-- 적도 반류 (신규 추가) -->
+                <div class="ocean-card equatorial-counter">
+                    <h3>⇒적도 반류⇒</h3>
+                    <p>무역풍에 서쪽에 모인 물이<br>동쪽으로 흘러내리는 보상류</p>
+                </div>
+                <!-- 페루 해류 -->
+                <div class="ocean-card peru-current">
+                    <h3>➚훔볼트 해류➚</h3>
+                    <p>가장 건조한 아타카마 사막과<br>황금어장을 만든 용승 해류</p>
+                </div>
+                <!-- 쿠로시오 해류 -->
+                <div class="ocean-card kuroshio">
+                    <h3>➚쿠로시오 해류➚</h3>
+                    <p>동아시아의 기후와 어업에<br>영향을 주는 검은 조류</p>
+                </div>
+                <!-- 캘리포니아 해류 -->
+                <div class="ocean-card california">
+                    <h3>➘캘리포니아 해류➘</h3>
+                    <p>북미 서안에 서늘한 여름과<br>안개를 가져옴</p>
+                </div>
+                <!-- 남극 순환류 (신규 추가) -->
+                <div class="ocean-card antarctic">
+                    <h3>⇒남극 순환류⇒</h3>
+                    <p>지구를 한 바퀴 도는<br>가장 거대한 해류</p>
+                </div>
+                <!-- 소말리아 해류 (인도양) -->
+                <div class="ocean-card somali">
+                    <h3>➚소말리아 해류↙</h3>
+                    <p>계절풍에 따라 방향이 바뀌는<br>몬순 해류</p>
+                </div>
+                <!-- 벵겔라 해류 (남대서양) -->
+                <div class="ocean-card benguela">
+                    <h3>↖벵겔라 해류↖</h3>
+                    <p>안개가 자욱한 해안 사막<br>나미브를 만든 한류</p>
+                </div>
+                <!-- 벵겔라 해류 (남대서양) -->
+                <div class="ocean-card eastwind">
+                    <h3>⇐남극 연안류⇐</h3>
+                    <p>극동풍에 의해 서쪽으로 흐르는<br>남극 연안 해류</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [수정] 1.9 기단과 전선 섹션 -->
+    <section id="section-cloud" class="content-section">
+        <div class="sky-container-wrapper">
+
+            <!-- 1. 제트기류 (기존 유지) -->
+            <div id="jet-stream-layer">
+                <div class="jet-text-track">
+                    <span>ᯓ ✈︎ 제트 기류 (JET STREAM) &gt;&gt;&gt;</span>
+                    <!-- ... (반복) ... -->
+                </div>
+            </div>
+
+            <!-- [신규] 소제목: 구름 -->
+            <h3 class="sky-section-title">☁️ 구름의 운형</h3>
+            <main class="sky-grid-container" id="cloud-grid">
+                <!-- 구름 카드 -->
+            </main>
+
+            <!-- [신규] 소제목: 기단 -->
+            <h3 class="sky-section-title">🌫️ 등질한 공기 덩어리, 기단</h3>
+            <div id="air-mass-panel" class="precip-container">
+                <!-- 기단 카드 -->
+            </div>
+
+            <!-- [신규] 소제목: 전선 -->
+            <h3 class="sky-section-title">⚔️ 기단이 만나는 전선면</h3>
+            <div id="front-panel" class="precip-container">
+                <!-- 전선 카드 -->
+            </div>
+
+            <!-- [신규] 소제목: 강수 -->
+            <h3 class="sky-section-title">☔ 강수의 유형</h3>
+            <div id="precip-panel" class="precip-container">
+                <!-- 강수 카드 -->
+            </div>
+        </div>
+    </section>
+    <!-- [신규] 기후 변화와 인류세 섹션 -->
+    <section id="section-change" class="content-section">
+        <main class="grid-container" id="change-grid">
+            <!-- 자바스크립트가 ChangeData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
+    <!-- [신설] 재난과 재해 -->
+    <section id="section-disaster" class="content-section">
+        <main class="grid-container" id="disaster-grid">
+            <!-- 자바스크립트가 disasterData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
+    <!-- [신규] 질병과 전파 섹션 -->
+    <section id="section-disease" class="content-section">
+        <main class="grid-container" id="disease-grid">
+            <!-- 자바스크립트가 diseaseData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
+    <!-- [신규] 생태와 생물지리 섹션 -->
+    <section id="section-bio" class="content-section">
+        <main class="grid-container" id="bio-grid">
+            <!-- 자바스크립트가 bioData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
+    <!-- [신규] 역사 지리학 섹션 -->
+    <section id="section-history" class="content-section">
+        <main class="grid-container" id="history-grid">
+            <!-- 자바스크립트가 historyData를 기반으로 카드를 생성합니다 -->
+        </main>
+    </section>
 </body>
+
 </html>

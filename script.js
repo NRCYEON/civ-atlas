@@ -8,7 +8,7 @@ window.InlineGallery = {
     dataStore: {},
 
     // [1] 데이터 등록 (후보군 등록)
-    register: function(id, candidates) {
+    register: function (id, candidates) {
         this.dataStore[id] = {
             candidates: candidates || [], // 로딩 전 후보 리스트
             images: [],                   // 실제 로딩 성공한 이미지
@@ -18,7 +18,7 @@ window.InlineGallery = {
     },
 
     // [2] 토글 (열기/닫기)
-    toggle: function(id, btn, event) {
+    toggle: function (id, btn, event) {
         if (event) { event.stopPropagation(); event.preventDefault(); }
 
         const container = btn.closest('.sub-title-group').nextElementSibling;
@@ -52,7 +52,7 @@ window.InlineGallery = {
     },
 
     // [3] 이미지 검증 및 로드 (핵심 로직)
-    verifyAndRender: async function(id, container) {
+    verifyAndRender: async function (id, container) {
         const data = this.dataStore[id];
         container.innerHTML = `<div class="gallery-empty-state"><div style="font-size:1.5rem;">⏳</div><div>이미지 확인 중...</div></div>`;
         this.updateHeight(container);
@@ -84,7 +84,7 @@ window.InlineGallery = {
     },
 
     // 이미지 존재 여부 체크 (비동기)
-    checkImage: function(src) {
+    checkImage: function (src) {
         return new Promise((resolve) => {
             const img = new Image();
             img.onload = () => resolve(true);
@@ -94,7 +94,7 @@ window.InlineGallery = {
     },
 
     // [4] 렌더링
-    render: function(id, container) {
+    render: function (id, container) {
         const data = this.dataStore[id];
         const images = data.images;
 
@@ -136,27 +136,27 @@ window.InlineGallery = {
             </div>
             ${controlsHTML}
         `;
-        
+
         this.updateHeight(container);
     },
 
     // 높이 강제 업데이트
-    updateHeight: function(container) {
+    updateHeight: function (container) {
         const scrollHeight = container.scrollHeight > 200 ? container.scrollHeight : 200;
         container.style.maxHeight = scrollHeight + "px";
     },
 
     // [5] 슬라이드 이동
-    move: function(id, direction, event) {
+    move: function (id, direction, event) {
         if (event) { event.stopPropagation(); event.preventDefault(); }
-        
+
         const data = this.dataStore[id];
         if (!data || data.images.length <= 1) return;
 
         const btn = event.target.closest('button');
         const container = btn.closest('.inline-gallery-container');
         const track = container.querySelector('.gallery-track');
-        
+
         const total = data.images.length;
         data.currentIndex = (data.currentIndex + direction + total) % total;
         track.style.transform = `translateX(-${data.currentIndex * 100}%)`;
@@ -184,7 +184,7 @@ const bgModal = document.getElementById('bg-modal');
 const returnBtn = document.getElementById('return-jump-btn'); // [추가] 돌아가기 버튼 객체
 
 /* [교체] 패널 콘텐츠 생성 함수 (기존 이미지 자동 연동) */
-window.generatePanelContent = function(data, cardId) {
+window.generatePanelContent = function (data, cardId) {
     let html = '';
 
     // (1) 상단 기준 (Criteria) - 기존 유지
@@ -209,33 +209,33 @@ window.generatePanelContent = function(data, cardId) {
         data.subCards.forEach((card, index) => {
             const subCardId = `sub-card-${cardId}-${index}`;
             const subCardIndex = index + 1;
-            
+
             // [핵심] 이미지 경로 자동 생성 (기존 로직 활용)
             // 중분류 대표 이미지 (Main)
             const mainImageSrc = `images/gallery/${cardId}-${subCardIndex}.webp`;
-            
+
             let collectedImages = [];
             collectedImages.push({ src: mainImageSrc, title: card.title, isMain: true });
 
             // 세부 항목 이미지 경로 미리 생성하여 매핑
-            let itemImages = {}; 
+            let itemImages = {};
 
             if (card.items) {
                 card.items.forEach((item, itemIndex) => {
                     const textOnly = item.name.replace(/<[^>]*>?/gm, '');
                     // 세부 항목 이미지 (Sub)
                     const itemImageSrc = `images/gallery/${cardId}-${subCardIndex}-${itemIndex + 1}.webp`;
-                    
+
                     collectedImages.push({ src: itemImageSrc, title: textOnly, isMain: false });
                     itemImages[itemIndex] = itemImageSrc; // 인덱스로 매핑해둠
                 });
             }
-            
+
             if (window.InlineGallery) { window.InlineGallery.register(subCardId, collectedImages); }
 
             // [수정] 버튼 그룹 생성 (기존 갤러리 버튼 + 신규 딥다이브 버튼)
             let btnGroupHTML = `<div class="sub-control-group">`;
-            
+
             // 1. 신규 딥다이브 버튼 (아이콘만, 텍스트 제거)
             if (card.deepDive) {
                 // 이미지 경로는 상단에서 생성된 mainImageSrc 사용
@@ -248,7 +248,7 @@ window.generatePanelContent = function(data, cardId) {
 
             // 2. 기존 갤러리 버튼 (이 안으로 이동)
             btnGroupHTML += `<button class="inline-gallery-btn" onclick="window.InlineGallery.toggle('${subCardId}', this, event)">🖼️</button>`;
-            
+
             btnGroupHTML += `</div>`;
 
             // [수정] HTML 조립
@@ -272,7 +272,7 @@ window.generatePanelContent = function(data, cardId) {
                 </div>` : ''}
                 
                 <ul class="detail-list">`;
-            
+
             if (card.items) {
                 card.items.forEach((item, itemIndex) => {
                     const linkedName = createSearchLink(item.name);
@@ -283,7 +283,7 @@ window.generatePanelContent = function(data, cardId) {
                         const tags = item.meta.split('·').map(tag => `<span class="meta-tag">${tag.trim()}</span>`).join('');
                         metaInfo = `<div class="meta-info">${tags}</div>`;
                     }
-                    
+
                     // [수정] 세부 항목 딥다이브 버튼 (자동 생성된 itemImages 사용)
                     let itemDeepDiveBtn = '';
                     if (item.deepDive) {
@@ -307,41 +307,46 @@ window.generatePanelContent = function(data, cardId) {
     return html;
 };
 
-    // [1] 섹션 전환 기능 (모바일 활성화 오류 수정)
+// [1] 섹션 전환 기능 (모바일 활성화 오류 수정)
 function switchSection(sectionId) {
     const body = document.body;
-    
-    const bgMap = { 
-        'home': "url('images/world-map-main.webp')", 
+
+    const bgMap = {
+        'home': "url('images/world-map-main.webp')",
         'maps': "url('images/maps-bg.webp')",
-        'ocean': "url('images_ocean/ocean-rainbow.webp')", 
-        'terrain': "url('images/world-physical-map.webp')", 
-        'climate': "url('images/world-climate.webp')", 
-        'soil': "url('images/soil-bg.webp')", 
+        'ocean': "url('images_ocean/ocean-rainbow.webp')",
+        'terrain': "url('images/world-physical-map.webp')",
+        'climate': "url('images/world-climate.webp')",
+        'soil': "url('images/soil-bg.webp')",
+        'bio': "url('images/bio.webp')",
+        'disease': "url('images/disease.webp')",
+        'history': "url('images/history.webp')",
         'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
         'earth-system': "black", // [신규] 우주 배경을 위해 검은색으로 시작 (CSS로 제어 예정)
-        'special': "url('images/special.webp')", 
-        'freshwater': "url('images/freshwater.webp')", 
+        'special': "url('images/special.webp')",
+        'freshwater': "url('images/freshwater.webp')",
         'agriculture': "url('images_human/agri.webp')",
         'livestock': "url('images_human/livestock.webp')",
-        'resources': "url('images_human/resources.webp')", 
-        'energy': "url('images_human/energy.webp')", 
+        'resources': "url('images_human/resources.webp')",
+        'energy': "url('images_human/energy.webp')",
         'population': "url('images_human/population.webp')",
-        'industry': "url('images_human/industry.webp')", 
-        'city': "url('images_human/city.webp')", 
+        'industry': "url('images_human/industry.webp')",
+        'city': "url('images_human/city.webp')",
         'language': "url('images_human/language.webp')",
         'rural': "url('images/rural.webp')",
         'urban': "url('images/urban.webp')",
         'economic': "url('images/economic.webp')",
-        'geopolitics': "url('images/geopolitics.webp')", 
+        'transport': "url('images/transport.webp')", // [신규] 교통지리학 배경
+        'geopolitics': "url('images/geopolitics.webp')",
         'religion': "url('images_human/religion.webp')",
         'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
         'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
         'cultural': "url('images/cultural.webp')",      // 문화의 확산과 경관
-        'change': "url('images/change.webp')", // [신규] 기후 변화 배경        
+        'change': "url('images/change.webp')", // [신규] 기후 변화 배경   
+        'disaster': "url('images/disaster.webp')", // [신규] 재난과 재해 배경     
     };
 
-    body.style.background = ''; 
+    body.style.background = '';
 
     if (bgBtn) {
         if (sectionId === 'home') {
@@ -363,7 +368,7 @@ function switchSection(sectionId) {
         body.style.backgroundRepeat = 'no-repeat';
     } else {
         body.style.background = 'none';
-    }   
+    }
 
     document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
     const targetSection = document.getElementById(`section-${sectionId}`);
@@ -379,7 +384,7 @@ function switchSection(sectionId) {
 
     // [핵심 수정] querySelectorAll을 사용하여 데스크톱과 모바일의 모든 해당 버튼을 찾습니다.
     const targetBtns = document.querySelectorAll(`button[onclick*="switchSection('${sectionId}')"]`);
-    
+
     if (targetBtns.length > 0) {
         // 찾은 모든 버튼(원본, 복사본)에 active 클래스를 추가합니다.
         targetBtns.forEach(btn => {
@@ -392,7 +397,7 @@ function switchSection(sectionId) {
         const descEl = firstBtn.querySelector('.menu-desc');
         currentSectionTitle = titleEl ? (titleEl.innerText || titleEl.textContent) : "";
         currentSectionDesc = descEl ? (descEl.innerText || descEl.textContent) : "";
-        
+
         // 상위 그룹 버튼(.group-btn)도 모두 활성화합니다.
         targetBtns.forEach(btn => {
             const parentGroup = btn.closest('.nav-group');
@@ -425,7 +430,7 @@ function switchSection(sectionId) {
 
     closeAllPanels();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     const climateBandsBtn = document.getElementById('climate-bands-toggle');
     if (climateBandsBtn) {
         if (sectionId === 'climate') {
@@ -453,7 +458,7 @@ function renderCards(containerId, dataObj) {
     Object.keys(dataObj).forEach(key => {
         const data = dataObj[key];
         const cardId = `card-${key}`;
-        
+
         if (document.getElementById(cardId)) return;
 
         const article = document.createElement('article');
@@ -493,21 +498,21 @@ function activateCard(id, event) {
 
     const header = document.querySelector('header');
     if (header) { header.classList.add('scrolled', 'header-shrunk'); }
-    
+
     if (activeCardId === id) { closeAllPanels(); return; }
-    
-    document.querySelectorAll('.region-card').forEach(card => { 
-        card.classList.remove('active'); 
-        card.classList.add('dimmed'); 
+
+    document.querySelectorAll('.region-card').forEach(card => {
+        card.classList.remove('active');
+        card.classList.add('dimmed');
     });
-    
+
     stopTextRotation();
     if (closeTimeout) clearTimeout(closeTimeout);
-    
+
     activeCardId = id;
     const clickedCard = document.getElementById(`card-${id}`);
     if (!clickedCard) return;
-    
+
     clickedCard.classList.add('active');
     clickedCard.classList.remove('dimmed');
     if (ambientThemes[id]) document.body.style.background = ambientThemes[id];
@@ -523,31 +528,31 @@ function activateCard(id, event) {
             geoBg.style.backgroundSize = 'cover';
         }
     }
-    
+
     const contentArea = document.getElementById('detail-content-area');
     const hiddenData = clickedCard.querySelector('.hidden-data');
 
     if (hiddenData && contentArea) {
         contentArea.innerHTML = hiddenData.innerHTML;
         // [신규] 카드 열림 효과음 재생
-    playOpenSound();
+        playOpenSound();
 
-    // [신규] 세부 항목 마우스 오버 효과음 이벤트 등록
-    // DOM이 업데이트된 직후이므로 약간의 지연을 주어 요소를 찾습니다.
-    setTimeout(() => {
-        const detailItems = contentArea.querySelectorAll('.detail-item');
-        detailItems.forEach(item => {
-            // 중복 방지를 위해 기존 리스너 제거 후 추가하는 패턴
-            item.removeEventListener('mouseenter', playClickSound);
-            item.addEventListener('mouseenter', playClickSound);
-        });
-    }, 100);
+        // [신규] 세부 항목 마우스 오버 효과음 이벤트 등록
+        // DOM이 업데이트된 직후이므로 약간의 지연을 주어 요소를 찾습니다.
+        setTimeout(() => {
+            const detailItems = contentArea.querySelectorAll('.detail-item');
+            detailItems.forEach(item => {
+                // 중복 방지를 위해 기존 리스너 제거 후 추가하는 패턴
+                item.removeEventListener('mouseenter', playClickSound);
+                item.addEventListener('mouseenter', playClickSound);
+            });
+        }, 100);
     } else {
         return;
     }
 
-    let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() || 
-                     window.getComputedStyle(clickedCard).borderLeftColor;
+    let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() ||
+        window.getComputedStyle(clickedCard).borderLeftColor;
     detailPanel.style.setProperty('--panel-theme', themeColor);
 
     if (window.innerWidth <= 1024) {
@@ -570,7 +575,7 @@ function activateCard(id, event) {
                 const jumpBtn = document.createElement('button');
                 jumpBtn.className = 'jump-link-btn';
                 jumpBtn.innerHTML = `🚀 ${data.label}`;
-                jumpBtn.onclick = function() { executeJump(data.section, data.card); };
+                jumpBtn.onclick = function () { executeJump(data.section, data.card); };
                 jumpBtnContainer.appendChild(jumpBtn);
             });
             contentArea.appendChild(jumpBtnContainer);
@@ -580,25 +585,25 @@ function activateCard(id, event) {
     detailPanel.classList.remove('open');
     detailPanel.style.display = 'block';
     insertPanelAfterRow(clickedCard);
-    
-    requestAnimationFrame(() => { 
-        requestAnimationFrame(() => { 
-            detailPanel.classList.add('open'); 
-        }); 
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            detailPanel.classList.add('open');
+        });
     });
-    
+
     startTextRotation(contentArea);
-    
+
     // [핵심] 0.3초 뒤에 페이지네이션 생성 (렌더링 완료 후)
     setTimeout(() => {
         let targetY;
         const panelTop = detailPanel.getBoundingClientRect().top + window.scrollY;
 
         if (window.innerWidth <= 1024) {
-            targetY = panelTop - 60; 
+            targetY = panelTop - 60;
             // [호출] 여기서 실행
-            setupMobilePagination(contentArea); 
-        } 
+            setupMobilePagination(contentArea);
+        }
         else {
             const pcHeaderHeight = document.querySelector('header')?.offsetHeight || 0;
             targetY = clickedCard.offsetTop - pcHeaderHeight - 20;
@@ -606,7 +611,7 @@ function activateCard(id, event) {
 
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, 300);
-    
+
     if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
 }
 
@@ -624,7 +629,7 @@ function renderCards(containerId, dataObj) {
     Object.keys(dataObj).forEach(key => {
         const data = dataObj[key];
         const cardId = `card-${key}`;
-        
+
         // 이미 존재하는 카드는 건너뜀 (중복 방지)
         if (document.getElementById(cardId)) return;
 
@@ -632,7 +637,7 @@ function renderCards(containerId, dataObj) {
         article.className = 'region-card';
         article.id = cardId;
         article.onclick = (event) => activateCard(key, event);
-        
+
         // 테마 색상 적용
 
         // SVG 아이콘 처리
@@ -669,19 +674,19 @@ function activateCard(id, event) {
 
     const header = document.querySelector('header');
     if (header) { header.classList.add('scrolled', 'header-shrunk'); }
-    
+
     // 이미 열려있는 카드를 다시 누르면 닫기
     if (activeCardId === id) { closeAllPanels(); return; }
-    
+
     // 다른 카드들 비활성화 처리
-    document.querySelectorAll('.region-card').forEach(card => { 
-        card.classList.remove('active'); 
-        card.classList.add('dimmed'); 
+    document.querySelectorAll('.region-card').forEach(card => {
+        card.classList.remove('active');
+        card.classList.add('dimmed');
     });
-    
+
     stopTextRotation();
     if (closeTimeout) clearTimeout(closeTimeout);
-    
+
     // 2. 현재 클릭한 카드 식별
     activeCardId = id;
     const clickedCard = document.getElementById(`card-${id}`);
@@ -689,7 +694,7 @@ function activateCard(id, event) {
         console.error(`Card not found: card-${id}`);
         return;
     }
-    
+
     // 스타일 활성화
     clickedCard.classList.add('active');
     clickedCard.classList.remove('dimmed');
@@ -707,16 +712,16 @@ function activateCard(id, event) {
             geoBg.style.backgroundSize = 'cover';
         }
     }
-    
-// 3. [데이터 로딩] 카드 내부에 숨겨진 HTML을 그대로 가져옴 (가장 안전함)
+
+    // 3. [데이터 로딩] 카드 내부에 숨겨진 HTML을 그대로 가져옴 (가장 안전함)
     const contentArea = document.getElementById('detail-content-area');
     const hiddenData = clickedCard.querySelector('.hidden-data');
 
     if (hiddenData && contentArea) {
         contentArea.innerHTML = hiddenData.innerHTML;
-        
+
         // [코딩해] 누락되었던 오디오 재생 로직 삽입
-        if (typeof playOpenSound === 'function') playOpenSound(); 
+        if (typeof playOpenSound === 'function') playOpenSound();
 
         // DOM 렌더링 직후 세부 항목에 마우스 오버 효과음 연결
         setTimeout(() => {
@@ -736,8 +741,8 @@ function activateCard(id, event) {
     }
 
     // 4. 테마 색상 적용
-    let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() || 
-                     window.getComputedStyle(clickedCard).borderLeftColor;
+    let themeColor = window.getComputedStyle(clickedCard).getPropertyValue('--theme').trim() ||
+        window.getComputedStyle(clickedCard).borderLeftColor;
     detailPanel.style.setProperty('--panel-theme', themeColor);
 
     // 5. 모바일 그리드 강제 조정 (CSS 충돌 방지)
@@ -758,17 +763,17 @@ function activateCard(id, event) {
         if (jumpList && jumpList.length > 0) {
             const jumpBtnContainer = document.createElement('div');
             jumpBtnContainer.className = 'jump-btn-container';
-            
+
             const guideText = document.createElement('span');
             guideText.className = 'jump-guide-text';
             guideText.innerText = '더 알아보기';
             jumpBtnContainer.appendChild(guideText);
-            
+
             jumpList.forEach(data => {
                 const jumpBtn = document.createElement('button');
                 jumpBtn.className = 'jump-link-btn';
                 jumpBtn.innerHTML = `🚀 ${data.label}`;
-                jumpBtn.onclick = function() { executeJump(data.section, data.card); };
+                jumpBtn.onclick = function () { executeJump(data.section, data.card); };
                 jumpBtnContainer.appendChild(jumpBtn);
             });
             contentArea.appendChild(jumpBtnContainer);
@@ -778,22 +783,22 @@ function activateCard(id, event) {
     // 8. 패널 표시 및 애니메이션
     detailPanel.classList.remove('open');
     detailPanel.style.display = 'block';
-    
+
     // 패널 위치 이동 (클릭한 카드 다음 줄로)
     insertPanelAfterRow(clickedCard);
-    
+
     // [수정됨] 에러를 유발하던 setupMobilePagination 호출 삭제함
     // 모바일 가로 스크롤은 CSS(scroll-snap)로 자동 처리됩니다.
-    
+
     // 열림 애니메이션 강제 실행
-    requestAnimationFrame(() => { 
-        requestAnimationFrame(() => { 
-            detailPanel.classList.add('open'); 
-        }); 
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            detailPanel.classList.add('open');
+        });
     });
-    
+
     startTextRotation(contentArea);
-    
+
     // 9. 스크롤 이동 (헤더 높이 고려)
     setTimeout(() => {
         let targetY;
@@ -802,10 +807,10 @@ function activateCard(id, event) {
         if (window.innerWidth <= 1024) {
             // 모바일: 패널 상단이 헤더 아래에 오도록 (여유분 60px)
             targetY = panelTop - 60;
-            
+
             // [복구] 페이지네이션 점 생성 함수 호출
-            setupMobilePagination(contentArea); 
-        } 
+            setupMobilePagination(contentArea);
+        }
         else {
             // PC: 클릭한 카드가 보이도록
             const pcHeaderHeight = document.querySelector('header')?.offsetHeight || 0;
@@ -814,7 +819,7 @@ function activateCard(id, event) {
 
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, 300);
-    
+
     // 전역 네비게이션 버튼 업데이트
     if (typeof updateGlobalNav === 'function') updateGlobalNav(clickedCard);
 }
@@ -856,51 +861,56 @@ function closeAllPanels(event) {
     }
     if (event) event.stopPropagation();
     if (typeof resetTransparency === 'function') resetTransparency();
-    
+
     const header = document.querySelector('header');
     if (header) header.classList.remove('header-shrunk', 'scrolled');
-    
+
     activeCardId = null;
     stopTextRotation();
-    
-    document.querySelectorAll('.region-card').forEach(card => { 
-        card.classList.remove('active', 'dimmed'); 
+
+    document.querySelectorAll('.region-card').forEach(card => {
+        card.classList.remove('active', 'dimmed');
     });
 
     document.body.style.background = '';
     // [배경 복구 로직 시작]
     const currentSection = document.querySelector('.content-section.active');
     const currentId = currentSection ? currentSection.id.replace('section-', '') : '';
-    
+
     // 섹션별 배경 이미지 매핑 (switchSection 함수와 동일)
-    const bgMapForReset = { 
-        'home': "url('images/world-map-main.webp')", 
+    const bgMapForReset = {
+        'home': "url('images/world-map-main.webp')",
         'maps': "url('images/maps-bg.webp')",
-        'ocean': "url('images_ocean/ocean-rainbow.webp')", 
-        'terrain': "url('images/world-physical-map.webp')", 
-        'climate': "url('images/world-climate.webp')", 
-        'special': "url('images/special.webp')", 
-        'soil': "url('images/soil-bg.webp')", 
+        'ocean': "url('images_ocean/ocean-rainbow.webp')",
+        'terrain': "url('images/world-physical-map.webp')",
+        'climate': "url('images/world-climate.webp')",
+        'special': "url('images/special.webp')",
+        'soil': "url('images/soil-bg.webp')",
+        'bio': "url('images/bio.webp')",
+        'disease': "url('images/disease.webp')",
+        'history': "url('images/history.webp')",
         'cloud': "linear-gradient(to bottom, #1e3c72 0%, #2a5298 40%, #6dd5fa 80%, #ffffff 100%)",
         'earth-system': "black", // [신규] 우주 배경을 위해 검은색으로 시작 (CSS로 제어 예정)
-        'freshwater': "url('images/freshwater.webp')", 
+        'freshwater': "url('images/freshwater.webp')",
         'agriculture': "url('images_human/agri.webp')",
-        'livestock': "url('images_human/livestock.webp')", 
-        'resources': "url('images_human/resources.webp')", 
-        'energy': "url('images_human/energy.webp')", 
+        'livestock': "url('images_human/livestock.webp')",
+        'resources': "url('images_human/resources.webp')",
+        'energy': "url('images_human/energy.webp')",
         'population': "url('images_human/population.webp')",
-        'industry': "url('images_human/industry.webp')", 
-        'city': "url('images_human/city.webp')", 
+        'industry': "url('images_human/industry.webp')",
+        'city': "url('images_human/city.webp')",
         'language': "url('images_human/language.webp')",
         'rural': "url('images/rural.webp')",
         'urban': "url('images/urban.webp')",
         'economic': "url('images/economic.webp')",
-        'geopolitics': "url('images/geopolitics.webp')", 
-        'religion': "url('images_human/religion.webp')", 
+        'transport': "url('images/transport.webp')", // [신규] 교통지리학 배경
+        'geopolitics': "url('images/geopolitics.webp')",
+        'religion': "url('images_human/religion.webp')",
         'tourism': "url('images/tourism.webp')",       // 여행과 관광 지리
         'conflict': "url('images/conflict.webp')",     // 갈등과 공존의 세계
         'cultural': "url('images/cultural.webp')",      // 문화의 확산과 경관
         'change': "url('images/change.webp')", // [신규] 기후 변화 배경
+        'disaster': "url('images/disaster.webp')", // [신규] 재난과 재해 배경
     };
 
     if (currentId === 'geo') {
@@ -920,19 +930,19 @@ function closeAllPanels(event) {
         detailPanel.classList.remove('open');
         detailPanel.classList.add('closing');
         if (closeTimeout) clearTimeout(closeTimeout);
-        closeTimeout = setTimeout(() => { 
-            detailPanel.style.display = 'none'; 
+        closeTimeout = setTimeout(() => {
+            detailPanel.style.display = 'none';
             detailPanel.classList.remove('closing');
         }, 400);
     }
-    
+
     // [추가] 점 제거
     const dots = document.querySelector('.pagination-dots');
     if (dots) dots.remove();
 
     if (prevBtn) prevBtn.style.display = 'none';
-    if (nextBtn) nextBtn.style.display = 'none';   
-    
+    if (nextBtn) nextBtn.style.display = 'none';
+
     startCardWiggleAnimation(); // [추가] 모든 패널이 닫히면 흔들기 재시작
 }
 
@@ -948,41 +958,43 @@ function filterCards(keyword) { const lowerKeyword = keyword.toLowerCase(); cons
 // [8] 이벤트 리스너
 window.addEventListener("click", e => { if (!e.target.closest(".region-card, .detail-panel, .nav-tabs, .floating-search, .global-nav-btn")) closeAllPanels(); });
 window.addEventListener("resize", () => { if (activeCardId) { const activeCardElement = document.getElementById(`card-${activeCardId}`); if (activeCardElement) insertPanelAfterRow(activeCardElement); } });
-window.addEventListener('DOMContentLoaded', () => { 
-    updateActiveLabel(); 
+window.addEventListener('DOMContentLoaded', () => {
+    updateActiveLabel();
     // 초기 로딩 시 홈 화면이면 눈 버튼 숨기기
-    const bgBtn = document.getElementById('bg-view-btn'); 
-    const homeSection = document.getElementById('section-home'); 
-    if (bgBtn && homeSection && homeSection.classList.contains('active')) { 
-        bgBtn.style.display = 'none'; 
-    } 
+    const bgBtn = document.getElementById('bg-view-btn');
+    const homeSection = document.getElementById('section-home');
+    if (bgBtn && homeSection && homeSection.classList.contains('active')) {
+        bgBtn.style.display = 'none';
+    }
 });
 
 // [9] 아코디언 토글
-window.toggleAccordion = function(element, event) { if (event) event.stopPropagation(); const content = element.querySelector('.climate-accordion-body'); if (!content) return; const isExpanded = element.classList.contains('expanded'); if (isExpanded) { content.style.maxHeight = content.scrollHeight + "px"; requestAnimationFrame(() => { content.style.maxHeight = "0"; content.style.opacity = "0"; element.classList.remove('expanded'); }); } else { element.classList.add('expanded'); content.style.maxHeight = content.scrollHeight + "px"; content.style.opacity = "1"; } };
+window.toggleAccordion = function (element, event) { if (event) event.stopPropagation(); const content = element.querySelector('.climate-accordion-body'); if (!content) return; const isExpanded = element.classList.contains('expanded'); if (isExpanded) { content.style.maxHeight = content.scrollHeight + "px"; requestAnimationFrame(() => { content.style.maxHeight = "0"; content.style.opacity = "0"; element.classList.remove('expanded'); }); } else { element.classList.add('expanded'); content.style.maxHeight = content.scrollHeight + "px"; content.style.opacity = "1"; } };
 
 // [10] 기후 지도 토글 함수
-function toggleClimateMap(btn) { const panelGroup = btn.closest('.panel-criteria-group'); if (!panelGroup) return; const isOpen = panelGroup.classList.toggle('map-open'); if (!btn.dataset.originalText) {
-    btn.dataset.originalText = btn.innerHTML;
+function toggleClimateMap(btn) {
+    const panelGroup = btn.closest('.panel-criteria-group'); if (!panelGroup) return; const isOpen = panelGroup.classList.toggle('map-open'); if (!btn.dataset.originalText) {
+        btn.dataset.originalText = btn.innerHTML;
+    }
+    btn.innerHTML = isOpen ? '🔼 접기' : btn.dataset.originalText;
 }
-btn.innerHTML = isOpen ? '🔼 접기' : btn.dataset.originalText; }
 
 // [11] 패럴랙스 & 스크롤 보정
 window.addEventListener('scroll', () => { const geoSection = document.getElementById('section-geo'); if (!geoSection || !geoSection.classList.contains('active')) return; const scrollY = window.scrollY; const bgLayer = document.getElementById('geo-bg'); const dimLayer = document.getElementById('geo-dim'); if (bgLayer && dimLayer) { bgLayer.style.transform = `translateY(${-scrollY * 0.05}px)`; const progress = Math.min(scrollY / 600, 1); bgLayer.style.filter = `blur(${progress * 3}px)`; dimLayer.style.backgroundColor = `rgba(12, 22, 59, ${progress * 0.6})`; } });
 const originalScrollTo = window.scrollTo;
-window.scrollTo = function(options) { 
-    const geoSection = document.getElementById('section-geo'); 
+window.scrollTo = function (options) {
+    const geoSection = document.getElementById('section-geo');
     // [수정] PC 화면(1024px 초과)일 때만 작동하도록 제한
-    if (window.innerWidth > 1024 && geoSection && geoSection.classList.contains('active') && activeCardId) { 
-        const card = document.getElementById(`card-${activeCardId}`); 
-        if (card) { 
-            const headerHeight = document.querySelector('header')?.offsetHeight || 0; 
-            const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20; 
-            originalScrollTo.call(window, { top: targetY, behavior: 'smooth' }); 
-            return; 
-        } 
-    } 
-    originalScrollTo.apply(window, arguments); 
+    if (window.innerWidth > 1024 && geoSection && geoSection.classList.contains('active') && activeCardId) {
+        const card = document.getElementById(`card-${activeCardId}`);
+        if (card) {
+            const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+            const targetY = card.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+            originalScrollTo.call(window, { top: targetY, behavior: 'smooth' });
+            return;
+        }
+    }
+    originalScrollTo.apply(window, arguments);
 };
 
 // [12] 그래프 토글
@@ -1001,10 +1013,10 @@ function executeJump(targetSection, targetCardId) {
     // (active 클래스가 붙은 섹션을 찾되, 없으면 home으로 간주)
     const activeSec = document.querySelector('.content-section.active');
     const currentSection = activeSec ? activeSec.id.replace('section-', '') : 'home';
-    
+
     // 현재 스크롤 위치
     const currentScroll = window.scrollY;
-    
+
     // 현재 열려있는 카드 ID (전역변수 activeCardId 활용)
     const currentCard = activeCardId;
 
@@ -1017,11 +1029,11 @@ function executeJump(targetSection, targetCardId) {
 
     // C. 버튼 보여주기
     const returnBtn = document.getElementById('return-jump-btn');
-    if(returnBtn) returnBtn.style.display = 'block';
+    if (returnBtn) returnBtn.style.display = 'block';
 
     // D. 이동 시작
     switchSection(targetSection);
-    
+
     // 0.6초 뒤 도착지 카드 열기
     setTimeout(() => {
         activateCard(targetCardId);
@@ -1039,23 +1051,23 @@ function returnToOrigin() {
 
     // A. 저장된 섹션으로 이동
     switchSection(jumpHistory.section);
-    
+
     // B. 0.6초 대기 후 카드 열기
     setTimeout(() => {
         // 저장된 카드가 있으면 열기
         if (jumpHistory.cardId) {
             activateCard(jumpHistory.cardId);
         }
-        
+
         // C. 다시 0.6초 대기 후 스크롤 복구 및 버튼 숨김
         setTimeout(() => {
             window.scrollTo({ top: jumpHistory.scroll, behavior: 'smooth' });
-            
+
             // 초기화
             jumpHistory = null;
             document.getElementById('return-jump-btn').style.display = 'none';
         }, 600);
-        
+
     }, 600);
 }
 
@@ -1092,7 +1104,7 @@ if (bgBtn) {
     };
 
     bgBtn.addEventListener('mousedown', startAction);
-    bgBtn.addEventListener('touchstart', startAction, {passive: false});
+    bgBtn.addEventListener('touchstart', startAction, { passive: false });
     bgBtn.addEventListener('mouseup', endAction);
     bgBtn.addEventListener('mouseleave', endAction);
     bgBtn.addEventListener('touchend', endAction);
@@ -1149,32 +1161,32 @@ function closeBgModal() {
 }
 
 // [16] 지도 위치 초기화 함수
-function resetMap() { 
-    const geoBg = document.getElementById('geo-bg'); 
-    if (geoBg) { 
-        geoBg.style.backgroundSize = 'cover'; 
-        geoBg.style.backgroundPosition = 'center 85%'; 
-    } 
+function resetMap() {
+    const geoBg = document.getElementById('geo-bg');
+    if (geoBg) {
+        geoBg.style.backgroundSize = 'cover';
+        geoBg.style.backgroundPosition = 'center 85%';
+    }
 }
 
 // [17] 전역 네비게이션 버튼 제어 & 키보드 단축키 로직 통합
 if (prevBtn && nextBtn) {
     function navigateGlobal(direction) {
         if (!activeCardId) return;
-        
+
         // 투명화 상태라면 복구 먼저 (안전장치)
         if (isGeoTransparent) resetTransparency();
 
         const currentCard = document.getElementById(`card-${activeCardId}`);
         if (!currentCard) return;
-        
+
         let targetCard = (direction === 'next') ? currentCard.nextElementSibling : currentCard.previousElementSibling;
-        
+
         // detail-panel 건너뛰기
         while (targetCard && !targetCard.classList.contains('region-card')) {
             targetCard = (direction === 'next') ? targetCard.nextElementSibling : targetCard.previousElementSibling;
         }
-        
+
         if (targetCard && targetCard.classList.contains('region-card')) {
             const newId = targetCard.id.replace('card-', '');
             activateCard(newId);
@@ -1216,19 +1228,19 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'v' || event.key === 'V') {
         if (bgBtn && bgBtn.style.display !== 'none') {
             const isGeoSection = document.getElementById('section-geo').classList.contains('active');
-            
+
             if (isGeoSection) {
                 // 권역 섹션: 투명화 토글
                 setGeoTransparency(!isGeoTransparent);
             } else {
                 // 다른 섹션: 팝업 모달 토글
                 const modal = document.getElementById('bg-modal');
-                if(modal.style.display === 'flex') closeBgModal();
+                if (modal.style.display === 'flex') closeBgModal();
                 else openBgModalLogic();
             }
         }
     }
-    
+
     // 3. 방향키: 카드 이동
     if (isPanelOpen) {
         if (event.key === 'ArrowLeft') {
@@ -1291,14 +1303,14 @@ function renderClimateCards(containerId, dataObj) {
 
         const data = dataObj[key];
         const cardId = `card-${key}`;
-        
+
         if (document.getElementById(cardId)) return;
 
         const article = document.createElement('article');
         article.className = 'region-card';
         article.id = cardId;
         article.onclick = (event) => activateCard(key, event);
-        
+
         // [수정] 데이터에 테마 색상이 있을 때만 인라인 스타일 적용 (없으면 CSS 파일 따름)
         if (data.theme) {
             article.style.setProperty('--theme', data.theme);
@@ -1318,7 +1330,7 @@ function renderClimateCards(containerId, dataObj) {
             group2HTML += data.guides.group2.map(g => `<div class="guide-row"><span class="guide-char">${g.char}</span>${g.text}</div>`).join('');
         }
         group2HTML += `</div>`;
-        
+
         let group3HTML = `<div class="climate-sub-group-3" style="${styleGroup3}">`;
         if (data.guides.group3.length > 0) {
             group3HTML += data.guides.group3.map(g => `<div class="guide-row"><span class="guide-char">${g.char}</span>${g.text}</div>`).join('');
@@ -1351,7 +1363,7 @@ function renderClimateCards(containerId, dataObj) {
         if (data.criteria.mapImage) {
             mapHTML = `<div class="climate-map-area"><img src="${data.criteria.mapImage}" alt="${data.title} 분포도" class="climate-map-img"></div>`;
         }
-        
+
         const criteriaHTML = `
             <div class="panel-criteria-group">
                 <button class="map-toggle-btn" onclick="toggleClimateMap(this)">🗺️ 지도 펼치기</button>
@@ -1371,7 +1383,7 @@ function renderClimateCards(containerId, dataObj) {
                 feat.items.forEach(item => {
                     // [수정] 메타데이터를 알약 태그로 변환
                     const metaTags = item.meta.split('·').map(m => `<span class="meta-tag">${m.trim()}</span>`).join('');
-                    
+
                     itemsHTML += `
                         <li class="detail-item">
                             <span class="detail-name">${item.name}</span>
@@ -1404,7 +1416,7 @@ function renderClimateCards(containerId, dataObj) {
             sub.items.forEach(item => {
                 const linkedName = createSearchLink(item.name);
                 const examplesAttr = JSON.stringify(item.examples).replace(/"/g, '&quot;');
-                
+
                 // [추가] 메타데이터가 있으면 HTML 생성, 없으면 빈 문자열
                 // [수정] 기후 섹션 메타데이터도 알약 태그로 변환
                 let metaInfo = '';
@@ -1412,7 +1424,7 @@ function renderClimateCards(containerId, dataObj) {
                     const tags = item.meta.split('·').map(tag => `<span class="meta-tag">${tag.trim()}</span>`).join('');
                     metaInfo = `<div class="meta-info">${tags}</div>`;
                 }
-                
+
                 itemsHTML += `
                     <li class="detail-item">
                         <div class="detail-header">
@@ -1467,7 +1479,7 @@ function renderCloudGrid(containerId, dataObj) {
     if (!container) return;
 
     container.innerHTML = '';
-    
+
     // 데이터 그룹 순회 (상층 -> 중층 -> 하층 -> 수직)
     const order = ["cloud-high", "cloud-mid", "cloud-low", "cloud-vertical"];
 
@@ -1479,7 +1491,7 @@ function renderCloudGrid(containerId, dataObj) {
             const card = document.createElement('div');
             // CSS 클래스 조합: 기본 + 행 위치 + (수직/성장 여부)
             card.className = `cloud-card ${cloud.gridArea || ''}`;
-            
+
             if (cloud.isVertical) {
                 card.classList.add('vertical-cloud');
             }
@@ -1489,7 +1501,7 @@ function renderCloudGrid(containerId, dataObj) {
 
             // 이미지 경로 자동 생성
             // [수정] 파일명이 대문자로 시작한다면 toLowerCase()를 제거해야 함
-            const imageName = cloud.english + ".webp"; 
+            const imageName = cloud.english + ".webp";
             card.style.setProperty('--bg-image', `url('images/${imageName}')`);
 
             // 태그 생성
@@ -1507,7 +1519,7 @@ function renderCloudGrid(containerId, dataObj) {
                 <p class="cloud-desc">${cloud.desc}</p>
                 <div class="cloud-phenomena">${tagsHTML}</div>
             `;
-            
+
             container.appendChild(card);
         });
     });
@@ -1515,7 +1527,7 @@ function renderCloudGrid(containerId, dataObj) {
 
 /* [최종 통합] 페이지 로딩 및 초기화 */
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // 1. 모든 데이터 렌더링 실행
     if (typeof geoData !== 'undefined') renderCards('main-grid', geoData);
     if (typeof terrainData !== 'undefined') renderCards('terrain-grid', terrainData);
@@ -1536,14 +1548,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof geopoliticsData !== 'undefined') renderCards('geopolitics-grid', geopoliticsData);
     if (typeof conflictData !== 'undefined') renderCards('conflict-grid', conflictData);
     if (typeof economicData !== 'undefined') renderCards('economic-grid', economicData);
+    if (typeof transportData !== 'undefined') renderCards('transport-grid', transportData);
     if (typeof ruralData !== 'undefined') renderCards('rural-grid', ruralData);
     if (typeof urbanData !== 'undefined') renderCards('urban-grid', urbanData);
     if (typeof culturalData !== 'undefined') renderCards('cultural-grid', culturalData);
     if (typeof soilData !== 'undefined') renderCards('soil-grid', soilData);
     if (typeof mapsData !== 'undefined') renderCards('maps-grid', mapsData);
+    if (typeof bioData !== 'undefined') renderCards('bio-grid', bioData);
+    if (typeof diseaseData !== 'undefined') renderCards('disease-grid', diseaseData);
+    if (typeof historyData !== 'undefined') renderCards('history-grid', historyData);
     // [신규] 기후 변화와 인류세 렌더링
     if (typeof ChangeData !== 'undefined') renderCards('change-grid', ChangeData);
-    
+    if (typeof disasterData !== 'undefined') renderCards('disaster-grid', disasterData);
+
     // [중요] 구름 섹션 렌더링 호출
     if (typeof cloudData !== 'undefined') renderCloudGrid('cloud-grid', cloudData);
     if (typeof precipData !== 'undefined') renderPrecipitation('precip-panel', precipData);
@@ -1567,7 +1584,7 @@ document.addEventListener('DOMContentLoaded', () => {
     allDesktopItems.forEach(item => {
         if (item.classList.contains('logo-btn')) {
             const homeBtn = document.createElement('button');
-            homeBtn.className = 'tab-btn active'; 
+            homeBtn.className = 'tab-btn active';
             homeBtn.setAttribute('onclick', "switchSection('home')");
             homeBtn.innerHTML = `<span class="menu-icon">🏠</span>HOME`;
             mobileMenuHTML += homeBtn.outerHTML;
@@ -1614,13 +1631,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderPrecipitation(containerId, data) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     container.innerHTML = '';
-    
+
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'precip-card';
-        
+
         card.innerHTML = `
             <div class="precip-header">
                 <h3 class="precip-title">${item.title}</h3>
@@ -1631,7 +1648,7 @@ function renderPrecipitation(containerId, data) {
                 <span class="related-label">연관 구름:</span> ${item.related}
             </div>
         `;
-        
+
         container.appendChild(card);
     });
 }
@@ -1655,7 +1672,7 @@ function setupMobilePagination(contentArea) {
     // 4. 점 컨테이너 생성
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'pagination-dots';
-    
+
     // 5. 점 생성
     cards.forEach((_, i) => {
         const dot = document.createElement('div');
@@ -1670,9 +1687,9 @@ function setupMobilePagination(contentArea) {
     // 6. 스크롤 이벤트
     panelGrid.onscroll = () => {
         const scrollLeft = panelGrid.scrollLeft;
-        const cardWidth = cards[0].offsetWidth + 15; 
+        const cardWidth = cards[0].offsetWidth + 15;
         const activeIndex = Math.round(scrollLeft / cardWidth);
-        
+
         const dots = dotsContainer.querySelectorAll('.dot');
         dots.forEach((d, i) => {
             if (i === activeIndex) d.classList.add('active');
@@ -1737,18 +1754,18 @@ function closeArticleModal(event) {
 function setEnso(state) {
     const container = document.querySelector('.earth-system-ocean-view');
     const btns = document.querySelectorAll('.enso-controls button');
-    
+
     // 클래스 초기화
     container.classList.remove('elnino', 'lanina');
-    
+
     // 버튼 활성 상태 초기화
     btns.forEach(btn => btn.classList.remove('active'));
-    
+
     // 상태 적용
     if (state !== 'normal') {
         container.classList.add(state);
     }
-    
+
     // 클릭한 버튼 활성화 (텍스트로 찾기)
     const targetBtn = Array.from(btns).find(btn => {
         if (state === 'normal') return btn.innerText === '평상시';
@@ -1762,13 +1779,13 @@ function setEnso(state) {
 function renderAirMass(containerId, data) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     container.innerHTML = '';
-    
+
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'precip-card'; // 기존 스타일 재사용
-        
+
         card.innerHTML = `
             <div class="precip-header">
                 <h3 class="precip-title">${item.title}</h3>
@@ -1787,13 +1804,13 @@ function renderAirMass(containerId, data) {
 function renderFronts(containerId, data) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    
+
     container.innerHTML = '';
-    
+
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'precip-card'; // 기존 스타일 재사용
-        
+
         card.innerHTML = `
             <div class="precip-header">
                 <h3 class="precip-title">${item.title} <span style="float:right;">${item.symbol}</span></h3>
@@ -1879,15 +1896,15 @@ let discoveryInterval = null; // 타이머 변수
 
 function setRandomDiscovery() {
     if (!discoveryData || discoveryData.length === 0) return;
-    
+
     const randomIndex = Math.floor(Math.random() * discoveryData.length);
     currentDiscovery = discoveryData[randomIndex];
-    
+
     const textEl = document.getElementById('discovery-text');
     if (textEl) {
         // 페이드 아웃 -> 텍스트 변경 -> 페이드 인 효과
         textEl.style.opacity = 0;
-        
+
         setTimeout(() => {
             textEl.innerText = currentDiscovery.text;
             textEl.style.opacity = 1;
@@ -1927,7 +1944,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (homeSection && homeSection.classList.contains('active')) {
         startDiscoveryRolling();
     }
-    
+
     const logoBtn = document.querySelector('.logo-btn');
     if (logoBtn) {
         logoBtn.addEventListener('click', () => {
@@ -1969,7 +1986,7 @@ function startCardWiggleAnimation() {
                 if (randomCard) randomCard.classList.remove('wiggle-animation');
             }, 1500);
         }
-    }, 6000); 
+    }, 6000);
 }
 
 function stopCardWiggleAnimation() {
@@ -2002,8 +2019,8 @@ function initAudio() {
 
 // 1. '딸깍' 소리 (무성 파열음 - 노이즈 버스트 방식)
 function playClickSound() {
-    if (!audioCtx) initAudio(); 
-    if (audioCtx.state === 'suspended') audioCtx.resume(); 
+    if (!audioCtx) initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
     // 0.05초 길이의 짧은 소음 버퍼 생성
     const bufferSize = audioCtx.sampleRate * 0.05;
@@ -2021,8 +2038,8 @@ function playClickSound() {
     // 필터: 2000Hz 대역만 살려서 가볍고 건조한 '틱' 소리 생성
     const filter = audioCtx.createBiquadFilter();
     filter.type = 'bandpass';
-    filter.frequency.value = 2000; 
-    filter.Q.value = 1; 
+    filter.frequency.value = 2000;
+    filter.Q.value = 1;
 
     // 음량: 아주 짧고 날카롭게 끊어침 (0.03초 만에 소멸)
     const gain = audioCtx.createGain();
@@ -2033,7 +2050,7 @@ function playClickSound() {
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(audioCtx.destination);
-    
+
     noise.start();
 }
 
@@ -2063,17 +2080,17 @@ function playOpenSound() {
     const gain = audioCtx.createGain();
     // 볼륨: 0.2 (요청하신 대로 작게 설정)
     gain.gain.setValueAtTime(0, audioCtx.currentTime);
-    
+
     // 0.1초 동안 천천히 커짐 -> '탁' 하는 타격감을 없애고 '스윽' 하는 느낌 구현
     gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
-    
+
     // 나머지 시간 동안 자연스럽게 사라짐
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
 
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(audioCtx.destination);
-    
+
     noise.start();
 }
 
