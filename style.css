@@ -1325,11 +1325,11 @@ i.term::after {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 15px;
+    /* [수정] 하단 여백을 15px -> 30px로 늘려 일반 카드(JS 인라인 스타일)와 간격 통일 */
+    margin-bottom: 30px; 
     border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-    /* [개선 3] 점선으로 변경 */
-    padding: 0 0 15px 0;
-    /* 위 0, 좌우 0, 아래 15px */
+    padding: 15px 0 15px 0;
+    position: relative;
 }
 
 .criteria-item {
@@ -6294,3 +6294,4 @@ body {
     /* 2. 헤더와 컨텐츠 컨테이너는 건드리지 않음 
           (기존의 max-width와 margin: 0 auto가 작동하도록 둠) */
 }
+
