@@ -187,19 +187,50 @@ const returnBtn = document.getElementById('return-jump-btn'); // [추가] 돌아
 window.generatePanelContent = function (data, cardId) {
     let html = '';
 
-    // (1) 상단 기준 (Criteria) - 기존 유지
+    // (1) 상단 기준 (Criteria) - [수정] 데이터 개수에 따른 동적 그리드 할당
     if (data.criteria) {
         if (data.criteria.isSpecial) {
-            html += `<div class="panel-criteria-group"><button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText || '지도 보기'}</button><div class="criteria-wrapper"><div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">`;
-            data.criteria.items.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
-            html += `</div></div>`;
-            if (data.criteria.image) html += `<div class="climate-map-area"><img src="${data.criteria.image}" class="climate-map-img"></div>`;
-            html += `</div>`;
+            // 특수 카드 (버튼이 있는 경우 - 예: 기후, 인구변천)
+            // items 배열의 길이를 세어서 컬럼 수 결정
+            const colCount = data.criteria.items ? data.criteria.items.length : 4;
+            
+            html += `
+            <div class="panel-criteria-group map-open-wrapper">
+                <button class="map-toggle-btn" onclick="toggleClimateMap(this)">${data.criteria.buttonText || '지도 보기'}</button>
+                <div class="criteria-wrapper">
+                    <!-- [핵심] repeat(${colCount}, 1fr)로 개수에 맞춰 자동 분할 -->
+                    <div style="display: grid; grid-template-columns: repeat(${colCount}, 1fr); gap: 15px;">
+                        ${data.criteria.items.map(c => 
+                            `<div class="criteria-item">
+                                <span class="criteria-icon">${c.icon}</span>
+                                <div class="criteria-content">
+                                    <span class="criteria-label">${c.label}</span>
+                                    <span class="criteria-text">${c.text}</span>
+                                </div>
+                            </div>`
+                        ).join('')}
+                    </div>
+                </div>
+                ${data.criteria.image ? `<div class="climate-map-area"><img src="${data.criteria.image}" class="climate-map-img"></div>` : ''}
+            </div>`;
+
         } else if (Array.isArray(data.criteria)) {
+            // 일반 카드 (배열 형태)
             const colCount = data.criteria.length;
-            html += `<div class="panel-criteria-group" style="display: grid; grid-template-columns: repeat(${colCount}, 1fr) !important; gap: 15px; padding: 20px 0; margin-bottom: 30px; border-bottom: 1px dashed rgba(0,0,0,0.1);">`;
-            data.criteria.forEach(c => { html += `<div class="criteria-item"><span class="criteria-icon">${c.icon}</span><div class="criteria-content"><span class="criteria-label">${c.label}</span><span class="criteria-text">${c.text}</span></div></div>`; });
-            html += `</div>`;
+            
+            // [핵심] 데이터 개수(colCount)만큼 열을 생성하도록 인라인 스타일 주입
+            html += `
+            <div class="panel-criteria-group" style="grid-template-columns: repeat(${colCount}, 1fr);">
+                ${data.criteria.map(c => 
+                    `<div class="criteria-item">
+                        <span class="criteria-icon">${c.icon}</span>
+                        <div class="criteria-content">
+                            <span class="criteria-label">${c.label}</span>
+                            <span class="criteria-text">${c.text}</span>
+                        </div>
+                    </div>`
+                ).join('')}
+            </div>`;
         }
     }
 

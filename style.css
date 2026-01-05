@@ -1320,16 +1320,31 @@ i.term::after {
     padding-top: 15px;
 }
 
-/* [v5.7 FINAL CSS] 기후 패널 디자인 개선 */
+/* [v5.9 Layout Fix] 메타데이터 그룹 레이아웃 유동화 */
 .panel-criteria-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    /* [수정] 하단 여백을 15px -> 30px로 늘려 일반 카드(JS 인라인 스타일)와 간격 통일 */
-    margin-bottom: 30px; 
+    display: grid;
+    gap: 15px;
+    padding: 20px 0;
+    margin-bottom: 30px;
     border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
-    padding: 15px 0 15px 0;
     position: relative;
+    
+    /* [핵심] PC에서는 JS가 지정한 inline-style(개수에 따른 n열)을 따르도록 
+       여기서는 grid-template-columns를 정의하지 않습니다. */
+}
+
+/* [모바일 대응] 화면이 좁을 때는 데이터 개수와 상관없이 강제로 2열 또는 1열로 변경 */
+@media (max-width: 1024px) {
+    .panel-criteria-group {
+        /* !important로 JS 인라인 스타일을 덮어씌움 */
+        grid-template-columns: repeat(2, 1fr) !important; 
+    }
+}
+
+@media (max-width: 600px) {
+    .panel-criteria-group {
+        grid-template-columns: 1fr !important; /* 폰에서는 1열 */
+    }
 }
 
 .criteria-item {
@@ -1545,30 +1560,6 @@ i.term::after {
     gap: 15px;
 }
 
-/* [농업 섹션 전용] 메타데이터 2x2 배치 */
-#agriculture-grid .panel-criteria-group {
-    grid-template-columns: repeat(2, 1fr) !important;
-    /* 2열로 강제 재정의 */
-    gap: 15px 30px !important;
-    /* 행 간격과 열 간격 분리 */
-}
-
-/* [지하자원 섹션 전용] 메타데이터 2x2 배치 */
-#resources-grid .panel-criteria-group {
-    grid-template-columns: repeat(2, 1fr) !important;
-    /* 2열로 강제 재정의 */
-    gap: 15px 30px !important;
-    /* 행 간격과 열 간격 분리 */
-}
-
-/* [공업 섹션 전용] 메타데이터 2x2 배치 */
-#industry-grid .panel-criteria-group {
-    grid-template-columns: repeat(2, 1fr) !important;
-    /* 2열로 강제 재정의 */
-    gap: 15px 30px !important;
-    /* 행 간격과 열 간격 분리 */
-}
-
 /* [신규 추가] 에너지 섹션 전용 메타데이터 2x2 배치 */
 #energy-grid .panel-criteria-group {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -1577,11 +1568,6 @@ i.term::after {
     /* 행 간격과 열 간격 분리 */
 }
 
-/* 1. 주요 5대 종교 (패널 상단): 4열로 넓게 배치 */
-#religion-grid .region-card>.hidden-data>.panel-criteria-group {
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;
-}
 
 /* 2. 기타 종교 (카드 내부): 2열로 좁게 배치 */
 #card-religion-6 .sub-region-card .panel-criteria-group {
@@ -6295,3 +6281,8 @@ body {
           (기존의 max-width와 margin: 0 auto가 작동하도록 둠) */
 }
 
+/* [v5.8 Refactoring] 특수 카드(버튼 포함) 내부 레이아웃 보정 */
+.panel-criteria-group.map-open-wrapper {
+    display: flex; /* 특수 카드는 내부 구조가 복잡하므로 Flex로 전환 */
+    flex-direction: column;
+}
