@@ -565,19 +565,40 @@
     /* ===================================================== */
 
     /* 1. 리스트 아이템 레이아웃: 좌우 배치 -> 상하 수직 배치로 변경 */
-    .content-section:not(#section-climate) .detail-item {
+    .content-section:not(#section-climate):not(#section-cloud) .detail-item {
         display: flex !important;
         flex-direction: column !important;
-        /* 위에서 아래로 흐르게 */
         align-items: flex-start !important;
         padding: 22px 18px !important;
-        /* 터치하기 좋게 패딩 대폭 확대 */
         margin-bottom: 15px !important;
-        /* 항목끼리 확실히 떨어뜨림 */
         background: #fff !important;
         border: 1px solid rgba(0, 0, 0, 0.08) !important;
-        /* 테두리 살짝 진하게 */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03) !important;
+    }
+
+    /* [기단/전선 섹션] 모바일 다크모드 가독성 최종 보정 */
+    html body #section-cloud .sub-region-card {
+        background: rgba(255, 255, 255, 0.1) !important; /* 바깥 박스를 투명한 유리질감으로 */
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    html body #section-cloud .detail-item {
+        background: rgba(0, 0, 0, 0.6) !important; /* 안쪽 아이템을 확실히 어둡게 */
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    html body #section-cloud .item-title-group {
+        background: transparent !important; /* 띠지 영역 배경 중첩 제거 */
+    }
+
+    /* 기단 섹션 내의 모든 설명 및 제목 문구를 순수 흰색으로 강제 */
+    html body #section-cloud .header-content p,
+    html body #section-cloud .sub-title-description,
+    html body #section-cloud .detail-desc,
+    html body #section-cloud .sub-title-heading,
+    html body #section-cloud .detail-name {
+        color: #ffffff !important;
     }
 
     /* 2. 항목 이름 (맨 위): 크기 키우고 아래 여백 추가 */
@@ -606,16 +627,12 @@
     }
 
     /* 4. 설명 문구 (맨 아래): 줄간격 넓히고 글자 키움 */
-    .content-section:not(#section-climate) .detail-desc {
+    .content-section:not(#section-climate):not(#section-cloud) .detail-desc {
         font-size: 1.05rem !important;
-        /* 본문 폰트 확대 */
         line-height: 1.65 !important;
-        /* 줄간격 시원하게 (165%) */
         color: #444 !important;
-        /* 흐릿한 회색 -> 진한 회색 */
         margin-top: 5px !important;
         word-break: keep-all !important;
-        /* 단어 중간에 끊기지 않게 */
     }
 
     /* 5. 중분류 카드(흰색 박스) 제목도 밸런스 맞게 키움 */
@@ -624,7 +641,7 @@
         margin-bottom: 8px !important;
     }
 
-    .content-section:not(#section-climate) .sub-title-description {
+    .content-section:not(#section-climate):not(#section-cloud) .sub-title-description {
         font-size: 1.0rem !important;
         line-height: 1.5 !important;
         color: #555 !important;
@@ -1376,3 +1393,39 @@ header {
     opacity: 0.8;
     color: var(--text-primary) !important;
 }
+
+/* [기단/전선 섹션] 모바일 다크모드 가독성 최종 강제 보정 */
+    html body #section-cloud .sub-region-card {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    html body #section-cloud .detail-item {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 모든 설명 및 부제 텍스트를 흰색으로 강제 전환 */
+    html body #section-cloud .header-content p,
+    html body #section-cloud .precip-meta,
+    html body #section-cloud .sub-title-description,
+    html body #section-cloud .detail-desc,
+    html body #section-cloud .detail-examples,
+    html body #section-cloud .detail-name {
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+    }
+
+    /* 메타데이터(알약) 내부 텍스트 가독성 보정 */
+    html body #section-cloud .meta-tag {
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* 제목 배경 박스 투명화 */
+    html body #section-cloud .detail-name {
+        background-color: transparent !important;
+    }
+
+    

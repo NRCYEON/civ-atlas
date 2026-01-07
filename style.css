@@ -1598,15 +1598,6 @@ i.term::after {
     gap: 15px;
 }
 
-/* [신규 추가] 에너지 섹션 전용 메타데이터 2x2 배치 */
-#energy-grid .panel-criteria-group {
-    grid-template-columns: repeat(2, 1fr) !important;
-    /* 2열로 강제 재정의 */
-    gap: 15px 30px !important;
-    /* 행 간격과 열 간격 분리 */
-}
-
-
 /* 2. 기타 종교 (카드 내부): 2열로 좁게 배치 */
 #card-religion-6 .sub-region-card .panel-criteria-group {
     grid-template-columns: repeat(2, 1fr);
@@ -6417,6 +6408,8 @@ body {
 /* 4. 리스트 아이템 스타일 조정 */
 #section-cloud .detail-item {
     border-left: none !important;
+    /* rgba의 마지막 수치(0.4)를 높일수록 더 어두워집니다 */
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }
 #section-cloud .item-title-group {
     border-left: none !important;
@@ -6430,7 +6423,8 @@ body {
 }
 
 #section-cloud .detail-item:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important; /* 호버 시 밝게 */
+    /* 색상을 0, 0, 0으로 바꾸고 마지막 수치(0.6)를 높일수록 더 어두워집니다 */
+    background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 /* 5. 메타데이터 태그 (알약) 스타일 */
@@ -6740,11 +6734,17 @@ button:focus-visible {
   font-style: italic;
   font-size: 0.76rem;
   opacity: 0.85;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
 /* (선택) 링크도 동일하게 기울임 유지 */
 .full-list-container a{
   font-style: italic;
+}
+
+/* [예시 전용] '국기 처리(i 태그)'만 자간(letter-spacing) 정상화 */
+.detail-examples i,
+.full-list-container i {
+  letter-spacing: -0.04em !important;
 }
 
