@@ -850,30 +850,68 @@ header:not(.header-shrunk):has(.sub-tab-btn.active) {
     display: flex;
     flex-direction: column;
     margin-bottom: 11px;
-    padding: 11px 15px 11px 20px;
-    border-left: 3px solid var(--panel-theme, #dfe6e9);
-    border-bottom: none;
-    /* 기존 점선 제거 */
+    padding: 0 0 11px 0;
+    border-left: none;
     border-radius: 4px;
-    /* 둥근 모서리 추가 */
-    background-color: rgba(255, 255, 255, 0.4);
-    /* 반투명 흰색으로 변경하여 밝게 만듦 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
-    /* 옅은 그림자 추가 */
+    /* 밝아진 배경 위에서 시인성을 확보하기 위해 투명도를 살짝 올림 */
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease-out;
-    /* 부드러운 효과를 위한 트랜지션 */
+    overflow: hidden;
 }
 
 .detail-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
     background-color: #fff;
+    border-color: var(--panel-theme, #2d3436);
+    border-left-color: transparent !important; /* 부모 테두리와 띠지 중첩 방지 */
 }
 
 .detail-item:last-child {
     border-bottom: none;
     margin-bottom: 0;
 }
+
+.item-title-group {
+    border-left: 3px; /* 딱딱한 세로선 제거 */
+    padding: 11px 15px 2px 20px;
+    transition: all 0.2s;
+    position: relative;
+}
+
+/* [가로선] 오른쪽으로 갈수록 자연스럽게 사라짐 */
+.item-title-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px; /* 길이를 약간 늘려 부드러운 소멸 유도 */
+    height: 2px;
+    background: linear-gradient(to right, var(--panel-theme, #dfe6e9), transparent);
+    transition: all 0.2s;
+}
+
+/* [세로선] 아래쪽으로 갈수록 자연스럽게 사라짐 */
+.item-title-group::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%; /* 제목 영역 높이만큼 */
+    background: linear-gradient(to bottom, var(--panel-theme, #dfe6e9), transparent);
+    transition: all 0.2s;
+}
+
+/* 호버 시 가로/세로선 동시 강조 및 페이드 유지 */
+.detail-item:hover .item-title-group::before {
+    background: linear-gradient(to right, var(--panel-theme, #2d3436), transparent) !important;
+}
+.detail-item:hover .item-title-group::after {
+    background: linear-gradient(to bottom, var(--panel-theme, #2d3436), transparent) !important;
+}
+
 
 .detail-header {
     display: flex;
@@ -2535,7 +2573,8 @@ button.active .menu-icon {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(232, 237, 247, 0.85);
+    /* 순수 흰색 비중을 높여 밝기 확보 (투명도를 0.75로 낮춰도 밝게 유지됨) */
+    background: rgba(255, 255, 255, 0.75);
     /* 배경을 조금 더 진하게 해서 깜빡임 방지 */
 
     /* 평소(움직일 때)에는 블러를 끕니다 -> 렉 제거 핵심 */
@@ -2557,12 +2596,11 @@ button.active .menu-icon {
     -webkit-backdrop-filter: blur(3px);
 }
 
-/* 2. 모든 패널의 내부 카드(중분류)도 반투명하게 만듭니다. */
 .sub-region-card {
-    background: rgba(240, 244, 250, 0.8) !important;
-    backdrop-filter: blur(1px);
+    /* 푸른 기를 빼고 순수 흰색 투명도로 교체 */
+    background: rgba(240, 244, 250, 0.6) !important;
+    backdrop-filter: blur(2px);
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    /* 기존 호버 효과는 그대로 유지됩니다. */
 }
 
 /* [수정] '권역' 섹션의 중분류 카드에만 '반투명 유리' 효과 적용 */
@@ -5332,20 +5370,39 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 20;
+    z-index: 35;
     /* transform: rotate(-15deg); <-- 회전 제거 */
 }
 
+/* [에너지 흐름도 SVG] */
+.energy-balance-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    overflow:visible;
+}
+
+.energy-balance-container .flow-title{
+    position:absolute;
+    z-index:2;
+}
+
+
 .cell-path {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.8);
-    /* 선명하게 */
+
+    /* ✅ 밝은 하늘색 계열(에너지 화살표와 분리) */
+    stroke: rgba(130, 215, 255, 0.78);
+
     stroke-width: 3;
-    /* 굵게 */
     stroke-dasharray: 15 10;
-    /* 점선 간격 조정 */
     animation: flow-dash 3s linear infinite;
+
+    /* ✅ SVG에서도 잘 먹는 그림자(대부분 브라우저에서 drop-shadow 지원) */
+    filter: drop-shadow(0 0 6px rgba(90, 190, 255, 0.35));
 }
+
 
 /* [지구 시스템] 페렐 순환 역회전 (톱니바퀴 원리) */
 #ferrel-cell {
@@ -5509,15 +5566,23 @@ body {
 }
 
 .cell-label {
-    fill: #fff;
+    /* ✅ 순환세포 라벨 전용 폰트(에너지 라벨과 확실히 구분) */
+    font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
     font-size: 20px;
-    /* 글자 크기 확대 */
-    font-weight: 700;
-    text-shadow: 0 0 10px #000, 0 0 5px #000;
-    /* 그림자 강화 */
+    font-weight: 800;
+
+    /* ✅ 밝은 하늘색(텍스트는 선보다 조금 더 밝게) */
+    fill: rgba(190, 240, 255, 0.95);
+
+    /* ✅ SVG 텍스트 외곽선(가독성 안정) */
+    paint-order: stroke fill;
+    stroke: rgba(0, 0, 0, 0.55);
+    stroke-width: 2px;
+
+    /* text-shadow는 SVG에선 브라우저별로 안 먹는 경우가 많아서 제거 */
     text-anchor: start;
-    /* 왼쪽 정렬 */
 }
+
 
 @keyframes flow-dash {
     to {
@@ -5527,169 +5592,151 @@ body {
     /* 애니메이션 속도 조정 */
 }
 
-/* [지구 시스템] 열수지 및 에너지 불균형 - 재수정본 */
+/* [최종 각도 수정] 지구 시스템 에너지 흐름도 스타일 */
 .energy-balance-container {
     position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 25;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.flow-title {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* 화살표 공통 스타일 */
+.flow-arrow {
+    position: absolute;
+    height: 25px;
+    border-radius: 2px;
+}
+
+.flow-arrow::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+}
+
+/* 라벨 공통 스타일 */
+.flow-label {
+    position: absolute;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-shadow: 0 1px 5px #000;
+}
+
+/* 1. 태양 복사 (입사) */
+.solar-in {
+    top: 58%;
+    left: 35%;
+    width: 25%;
+    background: #f1c40f;
+    box-shadow: 0 0 15px #f1c40f;
+    transform: rotate(0deg); /* 각도 수정 */
+    transform-origin: left center; /* 회전축 수정 */
+}
+.solar-in::after {
+    right: -18px;
+    border-left: 20px solid #f1c40f;
+}
+.solar-label {
+    top: 57%;
+    left: 28%;
+}
+
+/* 2. 반사 (알베도) */
+.albedo-out {
+    top: 50%;
+    left: 38%;
+    width: 25%;
+    background: #ecf0f1;
+    box-shadow: 0 0 15px #ecf0f1;
+    transform: rotate(45deg); /* 각도 수정 */
+    transform-origin: right center; /* 회전축 수정 */
+}
+.albedo-out::after {
+    left: -18px;
+    border-right: 20px solid #ecf0f1;
+}
+.albedo-label {
+    top: 12%;
     left: 40%;
+}
+
+/* 3. 지구 복사 (방출) */
+.earth-out {
+    bottom: 37%;
+    left: 43%;
     width: 20%;
+    background: #e74c3c;
+    box-shadow: 0 0 15px #e74c3c;
+    transform: rotate(-5deg); /* 각도 수정 */
+    transform-origin: right center; /* 회전축 수정 */
+}
+.earth-out::after {
+    left: -18px;
+    border-right: 20px solid #e74c3c;
+}
+.earth-label {
+    bottom: 33%;
+    left: 35%;
+}
+
+/* 4. 온실 효과 (내부 순환) */
+.greenhouse-loop {
+    position: absolute;
+    bottom: 38%;
+    left: 20%;
+    width: 100px;
+    height: 100px;
+    border: 0px dashed #e67e22;
+    border-color: transparent #e67e22 #e67e22 transparent;
+    border-radius: 50%;
+    transform: rotate(135deg);
+    box-shadow: 0 0 15px #e67e22;
+}
+
+/* [신규] SVG 기반 에너지 수지 흐름도 */
+.energy-balance-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 15;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: visible;
 }
 
-/* 공통 그룹 스타일 */
-.balance-group {
-    position: absolute;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* 위치 잡기 (극지방을 하단으로 이동하여 잘림 방지) */
-.polar-balance {
-    top: 20%;
-    left: 80px;
-}
-
-/* [수정] 10% -> 20% (아래로 내림) */
-.equator-balance {
-    top: 60%;
-    left: 0;
-}
-
-/* 화살표 컨테이너 */
-.balance-arrows {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* 화살표 공통 */
-.arrow {
-    width: 250px;
-    border-radius: 4px;
-    opacity: 0.8;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-    position: relative;
-    /* transform-origin 제거 (개별 적용) */
-}
-
-/* 입사 (노랑) */
-.arrow.input {
-    background: linear-gradient(to right, transparent, #f1c40f);
-}
-
-.arrow.input::after {
-    content: '▶';
-    position: absolute;
-    right: -18px;
-    /* [수정] 몸통에 딱 붙도록 조정 */
-    top: 50%;
-    transform: translateY(-53%);
-    /* [수정] 수직 중앙 정렬 미세 조정 */
-    color: #f1c40f;
-    font-size: 35px;
-    /* [수정] 머리 크기 확대 (20px -> 35px) */
-    line-height: 1;
-}
-
-/* 방출 (빨강) */
-.arrow.output {
-    background: linear-gradient(to left, transparent, #e74c3c);
-}
-
-.arrow.output::after {
-    content: '◀';
-    position: absolute;
-    left: -18px;
-    /* [수정] 몸통에 딱 붙도록 조정 */
-    top: 50%;
-    transform: translateY(-53%);
-    /* [수정] 수직 중앙 정렬 미세 조정 */
-    color: #e74c3c;
-    font-size: 35px;
-    /* [수정] 머리 크기 확대 (20px -> 35px) */
-    line-height: 1;
-}
-
-/* [복구] 기울어진 화살표 (극지방 방출용) */
-.arrow.tilted {
-    transform: rotate(30deg);
-    /* [복구] 시계 방향 30도 회전 유지 */
-    transform-origin: right center;
-    /* 지구 쪽을 축으로 회전 */
-    margin-bottom: 20px;
-}
-
-/* [수정] 기울어진 화살표 머리 위치 보정 */
-.arrow.tilted::after {
-    left: -22px;
-    /* 머리가 잘리지 않게 위치 조정 */
-    /* rotate 속성은 상위 요소(.arrow.tilted)에서 상속받으므로 여기서는 제외 */
-}
-
-
-/* 두께 조절 */
-.arrow.large {
-    height: 30px;
-}
-
-.arrow.small {
-    height: 20px;
-}
-
-/* 텍스트 설명 */
-.balance-text h3 {
-    margin: 0;
-    color: #fff;
-    font-size: 1.5rem;
-    text-shadow: 0 0 10px #000;
-    text-align: right;
-}
-
-.balance-text p {
-    margin: 5px 0 0 0;
-    color: #ccc;
-    font-size: 0.9rem;
-    text-shadow: 0 0 5px #000;
-    text-align: right;
-}
-
-/* 열 수송 흐름선 (중간) */
-.heat-transport-flow {
-    position: absolute;
-    top: 40%;
-    right: 0;
-    height: 15%;
-    border-right: 3px dashed rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 20px;
-}
-
-.heat-transport-flow span {
-    color: #fff;
+.energy-balance-svg text {
+    font-family: 'Noto Sans KR', sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
-    text-shadow: 0 0 10px #000;
-    line-height: 1.4;
-    text-align: right;
+    fill: #ffffff;
+    paint-order: stroke;
+    stroke: rgba(0, 0, 0, 0.85);
+    stroke-width: 3px;
 }
 
-.heat-transport-flow::before {
-    content: '▲';
-    position: absolute;
-    top: -15px;
-    right: -11px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 20px;
+.energy-balance-svg .flow-path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
+
 
 /* [제2구간] 바다의 길 */
 .earth-system-ocean-view {
@@ -6141,6 +6188,16 @@ body {
     /* padding은 기존 값 유지하되 필요시 조정 */
 }
 
+
+
+.detail-item:hover .item-title-group {
+    border-left-color: var(--panel-theme, #2d3436); /* 호버 시 띠지 색상 변경 */
+}
+
+.detail-desc, .full-list-container {
+    padding: 0 15px 0 20px; /* 제거된 부모의 우측 여백(15px)을 여기서 보충 */
+}
+
 .detail-item:hover {
     background-color: #fff;
     /* 호버 시 4면 모두 테마색 테두리 적용 (왼쪽 띠지는 더 두꺼워짐) */
@@ -6218,7 +6275,7 @@ body {
 
 /* 카드 1: 저위도 (좌측 하단) */
 .card-surplus {
-    top: 66%;
+    top: 69%;
     left: 42%;
 }
 
@@ -6236,8 +6293,8 @@ body {
 
 /* 카드 4: 전향력 (우측 하단) */
 .card-coriolis {
-    top: 63%;
-    left: 86%;
+    top: 73%;
+    left: 65%;
 }
 
 /* [신규] 지구 시스템 정보 카드 제목 색상 */
@@ -6359,9 +6416,17 @@ body {
 
 /* 4. 리스트 아이템 스타일 조정 */
 #section-cloud .detail-item {
-    background-color: rgba(0, 0, 0, 0.2) !important; /* 어두운 배경 */
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    border-left: 3px solid var(--panel-theme) !important; /* 테마색 띠지는 유지 */
+    border-left: none !important;
+}
+#section-cloud .item-title-group {
+    border-left: none !important;
+}
+/* 다크모드: 가로/세로 그라데이션 강제 적용 */
+#section-cloud .item-title-group::before {
+    background: linear-gradient(to right, var(--panel-theme), transparent) !important;
+}
+#section-cloud .item-title-group::after {
+    background: linear-gradient(to bottom, var(--panel-theme), transparent) !important;
 }
 
 #section-cloud .detail-item:hover {
@@ -6417,3 +6482,269 @@ body {
     color: #fff !important;
     text-decoration: underline !important;
 }
+
+/* [신규] 지구 시스템 대시보드 카드 스타일 */
+.earth-info-cards-container .ocean-card {
+    /* 평소 상태: 작고 간결하게 */
+    max-height: 85px; /* 제목과 지표만 보일 높이 */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* 부드러운 확장 */
+    padding: 15px;
+    width: 240px; /* 너비 약간 확대 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+/* 호버 상태: 확장 및 강조 */
+.earth-info-cards-container .ocean-card:hover {
+    max-height: 300px; /* 내용이 다 보일 만큼 확장 */
+    background: rgba(0, 0, 0, 0.8); /* 배경을 진하게 하여 가독성 확보 */
+    transform: scale(1.05);
+    z-index: 100;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* 핵심 지표 (가운데 박스) */
+.card-indicator {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-align: center;
+    align-self: flex-start; /* 왼쪽 정렬 */
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 상세 내용 (평소엔 숨김) */
+.card-detail {
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s; /* 카드가 커진 뒤 글자가 나타나도록 딜레이 */
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #ddd;
+    margin-top: 5px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+/* 호버 시 상세 내용 표시 */
+.earth-info-cards-container .ocean-card:hover .card-detail {
+    opacity: 1;
+}
+
+/* 상세 내용 내부 강조 */
+.card-detail p {
+    margin: 0 0 8px 0;
+}
+
+.card-detail strong {
+    color: #fff;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+/* 제목 스타일 재정의 (왼쪽 정렬) */
+.earth-info-cards-container .ocean-card h3 {
+    text-align: left;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* [신규] 지구 시스템 좌측 용어 사전 스타일 */
+.earth-glossary {
+    position: absolute;
+    top: 50%;
+    left: 40px; /* 좌측 여백 */
+    transform: translateY(-50%);
+    width: 260px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none; /* 컨테이너 자체는 클릭 통과 */
+}
+
+.glossary-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+
+.glossary-item {
+    pointer-events: auto; /* 아이템은 클릭 가능 */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* 호버 시 확장 */
+.glossary-item:hover {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.glossary-header {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+}
+
+.g-icon {
+    font-size: 1.1rem;
+}
+
+/* 내용 영역 (평소엔 숨김) */
+.glossary-content {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 15px;
+    transition: all 0.4s ease;
+    border-top: 1px solid transparent;
+}
+
+/* 호버 시 내용 표시 */
+.glossary-item:hover .glossary-content {
+    max-height: 200px; /* 충분한 높이 */
+    opacity: 1;
+    padding-bottom: 15px;
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.g-def {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin: 10px 0;
+    line-height: 1.4;
+}
+
+.g-sub-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #eee;
+    margin-bottom: 6px;
+}
+
+/* 태그 스타일 */
+.g-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* 태그별 컬러 포인트 */
+.g-tag.high { color: #74b9ff; border: 1px solid #74b9ff; } /* 알베도 높음 (파랑) */
+.g-tag.low { color: #ff7675; border: 1px solid #ff7675; }  /* 알베도 낮음 (빨강) */
+.g-tag.pos { color: #ff7675; border: 1px solid #ff7675; }  /* 양성 피드백 (빨강-위험) */
+.g-tag.neg { color: #55efc4; border: 1px solid #55efc4; }  /* 음성 피드백 (초록-안정) */
+
+/* [신규] 카드 요약 문구 스타일 */
+.card-summary {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7); /* 은은한 흰색 */
+    margin: 0;
+    line-height: 1.3;
+    font-weight: 400;
+}
+
+/* [수정] 카드 높이 조정 (요약 문구 공간 확보) */
+/* 기존 .earth-info-cards-container .ocean-card 규칙을 덮어씌웁니다 */
+.earth-info-cards-container .ocean-card {
+    max-height: 115px !important; /* 85px -> 115px로 확대 */
+    /* 나머지 속성은 기존 유지되므로 생략 가능하나, 확실히 하기 위해 명시 */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* 간격 미세 조정 */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 15px;
+    width: 240px;
+    text-align: left;
+}
+
+/* 호버 시 높이도 살짝 더 여유 있게 */
+.earth-info-cards-container .ocean-card:hover {
+    max-height: 320px !important; /* 300px -> 320px */
+}
+
+/* [수정] 용어 사전 설명글 스타일 (상시 노출) */
+.g-def {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7); /* 은은한 흰색 */
+    margin: 0;
+    padding: 0 15px 12px 15px; /* 헤더 아래에 위치하도록 패딩 조정 */
+    line-height: 1.4;
+    display: block; /* 항상 보임 */
+}
+
+/* [수정] 숨겨진 콘텐츠 영역 (구분선 추가) */
+.glossary-content {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 15px;
+    transition: all 0.4s ease;
+    border-top: 1px solid transparent;
+}
+
+/* 호버 시 구분선과 함께 확장 */
+.glossary-item:hover .glossary-content {
+    max-height: 200px;
+    opacity: 1;
+    padding-top: 10px; /* 내부 여백 */
+    padding-bottom: 15px;
+    border-top-color: rgba(255, 255, 255, 0.2); /* 구분선 표시 */
+}
+
+button:focus-visible {
+  outline: 2px solid rgba(80, 200, 255, 0.9);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.meta-tag {
+  /* 기존 background: (테마색) 유지 */
+
+  color: color-mix(in srgb, var(--panel-theme) 55%, rgba(10,12,14,0.85));
+  font-weight: 600;
+}
+
+/* 예시 위계 통일: 헤더 예시 + hover로 뜨는 전체 예시 */
+.detail-examples,
+.full-list-container{
+  font-style: italic;
+  font-size: 0.76rem;
+  opacity: 0.85;
+  letter-spacing: 0.01em;
+}
+
+/* (선택) 링크도 동일하게 기울임 유지 */
+.full-list-container a{
+  font-style: italic;
+}
+

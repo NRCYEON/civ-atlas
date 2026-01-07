@@ -326,8 +326,16 @@ window.generatePanelContent = function (data, cardId) {
                             <div class="hidden-article-content" data-title="${item.name}" data-image="${imgSrc}">${item.deepDive}</div>
                         </span>`;
                     }
-
-                    html += `<li class="detail-item"><div class="detail-header"><span class="detail-name">${linkedName}${itemDeepDiveBtn}</span><span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span></div>${metaInfo}<span class="detail-desc">${item.desc}</span></li>`;
+html += `<li class="detail-item">
+            <div class="item-title-group">
+                <div class="detail-header">
+                    <span class="detail-name">${linkedName}${itemDeepDiveBtn}</span>
+                    <span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span>
+                </div>
+                ${metaInfo}
+            </div>
+            <span class="detail-desc">${item.desc}</span>
+        </li>`;
                 });
             }
             html += `</ul></div>`;
@@ -472,7 +480,269 @@ function switchSection(sectionId) {
             climateBandsBtn.classList.remove('active');
         }
     }
+    // [SVG] 지구 시스템(열수지) 섹션 진입 시 에너지 수지 다이어그램 재렌더
+if (sectionId === 'earth-system') {
+    if (typeof initEnergyBalanceDiagram === 'function') initEnergyBalanceDiagram();
+    if (typeof renderEnergyBalanceDiagram === 'function') requestAnimationFrame(renderEnergyBalanceDiagram);
+}
+
     setTimeout(updateActiveLabel, 0);
+}
+/* =========================================================
+   [SVG] 지구 에너지 수지(열수지) 흐름도 - SVG 오버레이 렌더러
+   - 입사 / 반사 / 장파복사 / 대기흡수 / 대기 상향 재복사 / 대기 하향 역복사
+   - 화살표 굵기 = 강도 (최소 두께 + 제곱근 스케일)
+========================================================= */
+
+let __energyBalanceInitDone = false;
+let __energyBalanceRaf = null;
+
+function initEnergyBalanceDiagram() {
+    if (__energyBalanceInitDone) return;
+
+    const svg = document.getElementById('energy-balance-svg');
+    const container = document.querySelector('#section-earth-system .energy-balance-container');
+    if (!svg || !container) return; // 섹션이 없는 페이지에서도 안전하게 빠짐
+
+    __energyBalanceInitDone = true;
+
+    const rerender = () => {
+        if (__energyBalanceRaf) cancelAnimationFrame(__energyBalanceRaf);
+        __energyBalanceRaf = requestAnimationFrame(renderEnergyBalanceDiagram);
+    };
+
+    window.addEventListener('resize', rerender, { passive: true });
+
+    // 지구 요소 크기/위치 변화에 반응 (브라우저 지원 시)
+    const earth = document.querySelector('#section-earth-system .earth-sphere');
+    if (earth && 'ResizeObserver' in window) {
+        const ro = new ResizeObserver(rerender);
+        ro.observe(earth);
+    }
+
+    rerender();
+}
+
+function renderEnergyBalanceDiagram() {
+    const section = document.getElementById('section-earth-system');
+    if (section && !section.classList.contains('active')) return; // 숨김 상태면 렌더 생략
+
+    const container = document.querySelector('#section-earth-system .energy-balance-container');
+    const svg = document.getElementById('energy-balance-svg');
+    const earth = document.querySelector('#section-earth-system .earth-sphere');
+    if (!container || !svg || !earth) return;
+
+    const cRect = container.getBoundingClientRect();
+    if (cRect.width < 10 || cRect.height < 10) return;
+
+    // 지구 위치를 컨테이너 기준 좌표로 변환
+    const eRectV = earth.getBoundingClientRect();
+    const eRect = {
+        left: eRectV.left - cRect.left,
+        top: eRectV.top - cRect.top,
+        width: eRectV.width,
+        height: eRectV.height
+    };
+
+    const cx = eRect.left + eRect.width / 2;
+    const cy = eRect.top + eRect.height / 2;
+    const r = Math.min(eRect.width, eRect.height) / 2;
+    const atmR = r * 1.08;
+
+    const deg2rad = (d) => (d * Math.PI) / 180;
+    const onCircle = (radius, deg) => ({
+        x: cx + radius * Math.cos(deg2rad(deg)),
+        y: cy + radius * Math.sin(deg2rad(deg))
+    });
+
+    // [교육용 대표값] 상대 강도 (엄밀한 에너지 보존은 요구하지 않음)
+    const values = {
+        solarIn: 100,
+        albedoOut: 30,
+        longwaveOut: 70,
+        atmAbsorb: 60,
+        atmUp: 30,
+        atmDown: 30
+    };
+
+    // [굵기 스케일] 최소 두께 + 제곱근 스케일
+    const minW = 4;
+    const maxW = 20;
+    const maxValue = 100;
+    const strokeW = (v) => minW + (maxW - minW) * Math.sqrt(Math.max(0, v) / maxValue);
+
+    const THICK_LABEL = 15; // 이 이상이면 라벨을 화살표 내부(textPath)로 배치
+
+    // ===== 기준점(앵커) =====
+    // 태양은 화면 좌측(9시), 지구는 우측(3시반~4시)라는 전제에 맞춰 자동 배치
+    const earthEntry = onCircle(r * 0.98, 190); // 태양 복사가 들어오는 지점(좌측 약간 하향)
+    const sun = {
+        x: Math.max(60, Math.min(cRect.width * 0.28, earthEntry.x - 140)),
+        y: earthEntry.y
+    };
+
+    // 반사(알베도) 시작점/종점
+    const albedoStart = onCircle(r * 0.98, 165); // 좌측 상단
+    const albedoEnd = { x: cRect.width * 0.55, y: cRect.height * 0.14 };
+
+    // 장파복사(우주로) 시작점/종점
+    const lwStart = onCircle(r * 0.98, 205); // 좌측 하단
+    const lwEnd = { x: cRect.width * 0.55, y: cRect.height * 0.67 };
+
+    // 대기 흡수(지표→대기)
+    const absorbStart = onCircle(r * 0.98, 200);
+    const absorbEnd = onCircle(atmR, 200);
+
+    // 대기 상향 재복사(대기→우주)
+    const atmUpStart = onCircle(atmR, 160);
+    const atmUpEnd = { x: cRect.width * 0.62, y: cRect.height * 0.22 };
+
+    // 대기 하향 역복사(대기→지표)
+    const atmDownStart = onCircle(atmR, 210);
+    const atmDownEnd = onCircle(r * 0.98, 210);
+
+    // ===== 경로(베지어) =====
+    const pathLine = (p0, p1) => `M ${p0.x.toFixed(1)} ${p0.y.toFixed(1)} L ${p1.x.toFixed(1)} ${p1.y.toFixed(1)}`;
+    const pathCubic = (p0, c1, c2, p1) =>
+        `M ${p0.x.toFixed(1)} ${p0.y.toFixed(1)} C ${c1.x.toFixed(1)} ${c1.y.toFixed(1)}, ${c2.x.toFixed(1)} ${c2.y.toFixed(1)}, ${p1.x.toFixed(1)} ${p1.y.toFixed(1)}`;
+
+    const solarPath = pathLine(sun, earthEntry);
+
+    const albedoC1 = { x: albedoStart.x - 120, y: albedoStart.y - 140 };
+    const albedoC2 = { x: albedoEnd.x + 60, y: albedoEnd.y + 40 };
+    const albedoPath = pathCubic(albedoStart, albedoC1, albedoC2, albedoEnd);
+
+    const lwC1 = { x: lwStart.x - 120, y: lwStart.y + 80 };
+    const lwC2 = { x: lwEnd.x + 60, y: lwEnd.y - 30 };
+    const longwavePath = pathC_attach = pathCubic(lwStart, lwC1, lwC2, lwEnd);
+
+    const absorbC1 = { x: absorbStart.x - 50, y: absorbStart.y - 40 };
+    const absorbC2 = { x: absorbEnd.x - 30, y: absorbEnd.y - 20 };
+    const absorbPath = pathCubic(absorbStart, absorbC1, absorbC2, absorbEnd);
+
+    const atmUpC1 = { x: atmUpStart.x - 30, y: atmUpStart.y - 80 };
+    const atmUpC2 = { x: atmUpEnd.x + 30, y: atmUpEnd.y + 20 };
+    const atmUpPath = pathCubic(atmUpStart, atmUpC1, atmUpC2, atmUpEnd);
+
+    const atmDownC1 = { x: atmDownStart.x - 20, y: atmDownStart.y + 30 };
+    const atmDownC2 = { x: atmDownEnd.x - 10, y: atmDownEnd.y + 10 };
+    const atmDownPath = pathCubic(atmDownStart, atmDownC1, atmDownC2, atmDownEnd);
+
+    // ===== SVG 구성 =====
+    svg.setAttribute('viewBox', `0 0 ${cRect.width.toFixed(0)} ${cRect.height.toFixed(0)}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
+
+    const defs = `
+        <defs>
+            <marker id="eb-arrowhead" markerUnits="strokeWidth" markerWidth="4" markerHeight="4" refX="3.2" refY="2" orient="auto">
+                <path d="M0,0 L0,4 L4,2 Z" fill="context-stroke"></path>
+            </marker>
+
+            <filter id="eb-glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f1c40f" flood-opacity="0.9"/>
+            </filter>
+            <filter id="eb-glow-white" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ecf0f1" flood-opacity="0.8"/>
+            </filter>
+            <filter id="eb-glow-red" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#e74c3c" flood-opacity="0.9"/>
+            </filter>
+            <filter id="eb-glow-orange" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#e67e22" flood-opacity="0.9"/>
+            </filter>
+        </defs>
+    `;
+
+    const flows = [
+        {
+            id: 'eb-solar',
+            d: solarPath,
+            color: '#f1c40f',
+            glow: 'eb-glow-yellow',
+            value: values.solarIn,
+            label: '태양 복사 (100%)',
+            labelMode: 'inside'
+        },
+        {
+            id: 'eb-albedo',
+            d: albedoPath,
+            color: '#ecf0f1',
+            glow: 'eb-glow-white',
+            value: values.albedoOut,
+            label: '반사 (30%)',
+            labelMode: 'outside',
+            labelPos: { x: cRect.width * 0.42, y: cRect.height * 0.12 }
+        },
+        {
+            id: 'eb-longwave',
+            d: longwavePath,
+            color: '#e74c3c',
+            glow: 'eb-glow-red',
+            value: values.longwaveOut,
+            label: '장파 복사 (70%)',
+            labelMode: 'inside'
+        },
+        {
+            id: 'eb-absorb',
+            d: absorbPath,
+            color: '#e67e22',
+            glow: 'eb-glow-orange',
+            value: values.atmAbsorb,
+            label: '대기 흡수 (60%)',
+            // 짧은 화살표는 내부 라벨이 답답해지기 쉬워 외부 배치
+            labelMode: 'outside',
+            labelPos: { x: absorbEnd.x - 140, y: absorbEnd.y - 30 }
+        },
+        {
+            id: 'eb-atm-up',
+            d: atmUpPath,
+            color: '#e67e22',
+            glow: 'eb-glow-orange',
+            value: values.atmUp,
+            label: '대기 상향 재복사 (30%)',
+            labelMode: 'outside',
+            labelPos: { x: cRect.width * 0.63, y: cRect.height * 0.10 }
+        },
+        {
+            id: 'eb-atm-down',
+            d: atmDownPath,
+            color: '#e67e22',
+            glow: 'eb-glow-orange',
+            value: values.atmDown,
+            label: '대기 하향 역복사 (30%)',
+            labelMode: 'outside',
+            labelPos: { x: cRect.width * 0.60, y: cRect.height * 0.78 }
+        }
+    ];
+
+    const pathsMarkup = flows.map(f => {
+        const w = strokeW(f.value);
+        return `
+            <path id="${f.id}" class="flow-path" d="${f.d}"
+                stroke="${f.color}" stroke-width="${w.toFixed(2)}"
+                marker-end="url(#eb-arrowhead)" filter="url(#${f.glow})"></path>
+        `;
+    }).join('');
+
+    const labelsMarkup = flows.map(f => {
+        const w = strokeW(f.value);
+        const preferInside = (f.labelMode === 'inside') && (w >= THICK_LABEL);
+        if (preferInside) {
+            return `
+                <text font-size="16">
+                    <textPath href="#${f.id}" startOffset="50%" text-anchor="middle" dominant-baseline="middle">
+                        ${f.label}
+                    </textPath>
+                </text>
+            `;
+        } else {
+            const x = (f.labelPos?.x ?? (cRect.width * 0.3)).toFixed(1);
+            const y = (f.labelPos?.y ?? (cRect.height * 0.3)).toFixed(1);
+            return `<text x="${x}" y="${y}" font-size="16">${f.label}</text>`;
+        }
+    }).join('');
+
+    svg.innerHTML = `${defs}${pathsMarkup}${labelsMarkup}`;
 }
 
 // [2] 검색 링크 및 위키 매핑 (생략 없이 유지)
@@ -1416,12 +1686,13 @@ function renderClimateCards(containerId, dataObj) {
                     const metaTags = item.meta.split('·').map(m => `<span class="meta-tag">${m.trim()}</span>`).join('');
 
                     itemsHTML += `
-                        <li class="detail-item">
-                            <span class="detail-name">${item.name}</span>
-                            <!-- [수정] 알약 태그 적용 및 스타일 조정 -->
-                            <div class="meta-info" style="justify-content: flex-start; gap: 5px; flex-wrap: wrap;">${metaTags}</div>
-                            <span class="detail-desc">${item.desc}</span>
-                        </li>`;
+    <li class="detail-item">
+        <div class="item-title-group">
+            <span class="detail-name">${item.name}</span>
+            <div class="meta-info" style="justify-content: flex-start; gap: 5px; flex-wrap: wrap;">${metaTags}</div>
+        </div>
+        <span class="detail-desc">${item.desc}</span>
+    </li>`;
                 });
                 itemsHTML += `</ul>`;
 
@@ -1457,14 +1728,16 @@ function renderClimateCards(containerId, dataObj) {
                 }
 
                 itemsHTML += `
-                    <li class="detail-item">
-                        <div class="detail-header">
-                            <span class="detail-name">${linkedName}</span>
-                            <span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span>
-                        </div>
-                        ${metaInfo} <!-- [추가] 여기에 메타데이터 삽입 -->
-                        <span class="detail-desc">${item.desc}</span>
-                    </li>`;
+    <li class="detail-item">
+        <div class="item-title-group">
+            <div class="detail-header">
+                <span class="detail-name">${linkedName}</span>
+                <span class="detail-examples" data-list="${examplesAttr}">${item.examples[0]}</span>
+            </div>
+            ${metaInfo}
+        </div>
+        <span class="detail-desc">${item.desc}</span>
+    </li>`;
             });
             itemsHTML += `</ul>`;
 
@@ -1657,6 +1930,8 @@ document.addEventListener('DOMContentLoaded', () => {
             closeMenu();
         }
     });
+// 2. [SVG] 지구 에너지 수지 흐름도 초기화
+initEnergyBalanceDiagram();
 });
 /* [신규] 강수 유형 렌더링 함수 */
 function renderPrecipitation(containerId, data) {
@@ -2158,3 +2433,401 @@ function playOpenSound() {
 // [핵심] 사용자가 페이지를 클릭하면 오디오 시스템 깨우기
 document.addEventListener('click', initAudio, { once: true });
 document.addEventListener('touchstart', initAudio, { once: true });
+
+/* ========================================================================== */
+/* [지구 시스템] 에너지 수지 SVG 오버레이 (단순 직선/완만 곡선 + 짧은 대기 3화살표) */
+/* - 태양/반사/장파복사: 큰 3개(가독성 우선) */
+/* - 대기 흡수/상향 재복사/하향 역복사: 지구 가장자리에서 짧게(충돌 최소화) */
+/* - 두께: minThickness + sqrt(value)*scale (요구사항 반영) */
+/* ========================================================================== */
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+
+  // 교육용 “상대 강도” (너가 말한대로 완전 보존 강제 X)
+  // 100 기준으로 대략적인 비율만 맞춤
+const ENERGY = {
+  solarIn: 100,
+  albedoOut: 30,
+  longwaveOut: 70,
+
+  atmAbsorb: 60,
+  atmUp: 40,     // ✅ 상향 재복사 40
+  atmDown: 20,   // ✅ 하향 역복사 20
+};
+
+  // 색상은 네 스샷/기존 스타일 계열 유지
+  const COLORS = {
+    solar: "#f1c40f",    // 노랑
+    albedo: "#ecf0f1",   // 흰색
+    longwave: "#e74c3c", // 빨강
+    atm: "#e67e22",      // 주황
+  };
+
+  // 최소 두께 + 제곱근 스케일
+  // [굵기] 선형 스케일(=실제 스케일)
+// 100 -> max, 0 -> min
+const THICK = {
+  min: 3,                 // ✅ 얇은 선도 보이게 최소치
+  max: 22,                // ✅ 100% 화살표는 확실히 두껍게
+  labelInsideThreshold: 13
+};
+
+function thickness(v) {
+  const maxValue = 100;
+  const t = Math.max(0, Math.min(maxValue, v)) / maxValue;
+  return THICK.min + (THICK.max - THICK.min) * t;
+}
+
+
+  function el(name, attrs = {}) {
+    const node = document.createElementNS(NS, name);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
+    return node;
+  }
+
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  function midPoint(p1, p2) {
+    return { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+  }
+
+  // “거의 직선 + 살짝만 휘는” 2차 곡선
+  function qPath(p1, p2, bend = { x: 0, y: 0 }) {
+    const m = midPoint(p1, p2);
+    const c = { x: m.x + bend.x, y: m.y + bend.y };
+    return `M ${p1.x} ${p1.y} Q ${c.x} ${c.y} ${p2.x} ${p2.y}`;
+  }
+
+  function drawLabel(svg, textStr, x, y, size = 16, anchor = "middle") {
+    const t = el("text", {
+      x, y,
+      "text-anchor": anchor,
+      "dominant-baseline": "middle",
+      "font-family": "'Noto Serif KR', serif",
+      "font-weight": "700",
+      "font-style": "italic", 
+      "fill": "rgba(211, 211, 211, 0.82)", 
+      "letter-spacing": "0.2px",
+      "paint-order": "stroke",
+      "stroke": "rgba(0,0,0,0.55)",
+"stroke-width": 3,
+    });
+    t.textContent = textStr;
+    svg.appendChild(t);
+    return t;
+  }
+
+  function drawFlow(svg, opts) {
+    const {
+      id, d, color, value, label,
+      labelMode, // "auto" | "inside" | "outside"
+      labelOffset = { x: 0, y: 0 },
+      
+    } = opts;
+
+    const w = thickness(value);
+
+    const path = el("path", {
+  id,
+  d,
+  fill: "none",
+  stroke: color,
+  "stroke-width": w,
+
+  // ✅ 끝자락이 둥글지 않게(더 날카롭게)
+  "stroke-linecap": "butt",
+  "stroke-linejoin": "miter",
+
+  // ✅ 끝 삼각형/시작 삼각형(작게)
+
+  "marker-end": `url(#arrow-head-${id})`,
+
+  // ✅ 은은하게 깔기 (화면이 화살표밖에 안 보이는 문제 해결)
+  opacity: 0.42,
+
+  // ✅ 글로우는 과하면 화면을 덮음 → 기본 끔
+  filter: "none",
+});
+
+    svg.appendChild(path);
+
+    // 라벨 배치: 두꺼운 선은 내부(중앙), 얇은 선은 외부
+    const inside = (labelMode === "inside") ||
+      (labelMode === "auto" && w >= THICK.labelInsideThreshold);
+
+    // 경로 중간 점 근사(2차곡선이라도 중간쯤으로 충분)
+    // (정밀한 getPointAtLength도 가능하지만 여기선 단순+안정 우선)
+const bbox = path.getBBox();
+
+// ✅ labelPos가 있으면 그걸 우선 사용(화살표별로 라벨 고정 배치 가능)
+let lx = bbox.x + bbox.width / 2;
+let ly = bbox.y + bbox.height / 2;
+
+if (opts.labelPos && typeof opts.labelPos.x === "number" && typeof opts.labelPos.y === "number") {
+  lx = opts.labelPos.x;
+  ly = opts.labelPos.y;
+}
+
+// 기존 offset은 최종 미세조정용으로 그대로 적용
+lx += (labelOffset.x || 0);
+ly += (labelOffset.y || 0);
+
+
+    if (inside) {
+      drawLabel(svg, label, lx, ly, 14, "middle");
+    } else {
+      drawLabel(svg, label, lx, ly, 12, "middle");
+    }
+  }
+
+function buildDefs(svg, flows) {
+  const defs = el("defs");
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  flows.forEach(f => {
+    const w = thickness(f.value);
+
+    // "작게" 유지하면서도 확실히 보이게
+    const headSize = clamp(w * 1.25, 18, 30);  // 끝 세모
+const tailSize = clamp(w * 0.90, 14, 24);  // 시작 세모(끝보다 약간 작게)
+
+    // ✅ Head: refX를 8로 당겨서 '끝점 밖으로' 삼각형이 돌출되게
+    const head = el("marker", {
+      id: `arrow-head-${f.id}`,
+      viewBox: "0 0 10 10",
+      refX: "0",          // ★ 핵심(기존 10이면 선과 겹쳐서 삼각형이 죽음)
+      refY: "5",
+      markerWidth: headSize,
+      markerHeight: headSize,
+      orient: "auto",
+      markerUnits: "userSpaceOnUse",
+      overflow: "visible"
+    });
+    head.appendChild(el("path", {
+      d: "M 0 0 L 10 5 L 0 10 Z",
+      fill: f.color,
+      // ✅ 윤곽선으로 형태 살리기(배경/선과 겹쳐도 삼각형이 보임)
+      stroke: "rgba(0,0,0,0.35)",
+      "stroke-width": "0.8",
+      opacity: "0.9"
+    }));
+    defs.appendChild(head);
+
+    // ✅ Tail: 시작점도 뾰족하게. refX를 2로 둬서 살짝 바깥으로
+    const tail = el("marker", {
+      id: `arrow-tail-${f.id}`,
+      viewBox: "0 0 10 10",
+      refX: "0",      // ✅ 시작점 쪽도 뾰족
+  refY: "5",
+      markerWidth: tailSize,
+      markerHeight: tailSize,
+      orient: "auto",
+      markerUnits: "userSpaceOnUse",
+      overflow: "visible"
+    });
+    tail.appendChild(el("path", {
+      d: "M 10 0 L 0 5 L 10 10 Z",
+      fill: f.color,
+      stroke: "rgba(0,0,0,0.35)",
+      "stroke-width": "0.8",
+      opacity: "0.75"
+    }));
+    defs.appendChild(tail);
+  });
+
+  svg.appendChild(defs);
+}
+
+
+
+  function renderEnergyBalance() {
+    const section = document.getElementById("section-earth-system");
+    if (!section || !section.classList.contains("active")) return;
+
+    const container = section.querySelector(".earth-system-space-view");
+    const earth = section.querySelector(".earth-sphere");
+    const svg = document.getElementById("energy-balance-svg");
+    if (!container || !earth || !svg) return;
+
+    const cRect = container.getBoundingClientRect();
+    const eRect = earth.getBoundingClientRect();
+
+    // 숨김/전환 직후 0 사이즈 방지
+    if (cRect.width < 10 || cRect.height < 10) return;
+
+    // SVG를 “화면 픽셀 좌표계”로 맞춤
+    svg.setAttribute("viewBox", `0 0 ${cRect.width} ${cRect.height}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+    clear(svg);
+
+    // 지구 중심/반지름
+    const cx = (eRect.left - cRect.left) + eRect.width / 2;
+    const cy = (eRect.top - cRect.top) + eRect.height / 2;
+    const r = Math.min(eRect.width, eRect.height) / 2;
+
+    // “충돌 최소화”를 위한 기준 접점(지구 왼쪽 아래 쪽: 약 215°)
+    const deg = (a) => (a * Math.PI) / 180;
+    const surfacePt = (a, rr = r) => ({
+      x: cx + Math.cos(deg(a)) * rr,
+      y: cy + Math.sin(deg(a)) * rr
+    });
+
+    // 1) 태양(9시 방향) → 지구(왼쪽 아래 접점) : 큰 직선(아주 약한 곡선)
+    const impact = surfacePt(215, r * 1.01);
+
+    // 태양 시작점(화면 좌측 9시 방향 근처) - 너무 중앙 카드에 안 걸리도록 살짝 아래
+    const sun = {
+      x: cRect.width * 0.20,
+      y: cRect.height * 0.62
+    };
+    // ✅ 태양 원(복구): 은은한 링 + 중심 원 + 글로우
+const sunGroup = el("g", { opacity: "0.75" });
+
+// 외곽 링
+sunGroup.appendChild(el("circle", {
+  cx: sun.x, cy: sun.y, r: 18,
+  fill: "none",
+  stroke: "#f1c40f",
+  "stroke-width": "2",
+  opacity: "0.45"
+}));
+
+// 중심 원
+sunGroup.appendChild(el("circle", {
+  cx: sun.x, cy: sun.y, r: 10,
+  fill: "#f1c40f",
+  opacity: "0.55",
+  filter: "url(#sun-glow)"
+}));
+
+svg.appendChild(sunGroup);
+
+
+    // 2) 반사: impact에서 좌상향으로 “짧고 명확하게”
+    const albedoEnd = {
+      x: cRect.width * 0.55,
+      y: cRect.height * 0.10
+    };
+
+    // 3) 장파복사: impact에서 좌측으로(약간 아래) “단순하게”
+    const lwEnd = {
+      x: cRect.width * 0.32,
+      y: cRect.height * 0.70
+    };
+
+    // 4) 대기 3개는 “지구 가장자리 근처에서 짧게”
+    const atmShell = surfacePt(205, r * 1.09); // 대기권 바깥쪽 느낌
+    const atmAbsStart = surfacePt(205, r * 1.01);
+    const atmAbsEnd = surfacePt(205, r * 1.09);
+
+    const atmUpStart = atmShell;
+    const atmUpEnd = surfacePt(155, r * 1.28); // 위로 짧게
+    const atmDownStart = atmShell;
+    const atmDownEnd = surfacePt(245, r * 1.01); // 아래(표면)로 짧게
+
+    const flows = [
+      {
+        id: "solar",
+        color: COLORS.solar,
+        value: ENERGY.solarIn,
+        d: qPath(sun, impact, { x: 0, y: -25 }), // 거의 직선 + 아주 약한 휨
+        label: `태양 복사 (${ENERGY.solarIn}%)`,
+        labelMode: "inside",
+        labelOffset: { x: 0, y: -18 },
+      },
+      {
+        id: "albedo",
+        color: COLORS.albedo,
+        value: ENERGY.albedoOut,
+        d: qPath(impact, albedoEnd, { x: 20, y: -10 }),
+        label: `반사 (${ENERGY.albedoOut}%)`,
+        labelMode: "outside",
+        labelOffset: { x: 0, y: -22 },
+      },
+      {
+        id: "longwave",
+        color: COLORS.longwave,
+        value: ENERGY.longwaveOut,
+        d: qPath(impact, lwEnd, { x: -10, y: 10 }),
+        label: `장파복사 (${ENERGY.longwaveOut}%)`,
+        labelMode: "inside",
+        labelOffset: { x: 0, y: 18 },
+      },
+      {
+  id: "atmAbs",
+  color: COLORS.atm,
+  value: ENERGY.atmAbsorb,
+  d: qPath(atmAbsStart, atmAbsEnd, { x: 0, y: 0 }),
+  label: `대기 흡수 (${ENERGY.atmAbsorb}%)`,
+  labelMode: "outside",
+
+  // ✅ 추가: 흡수 라벨을 지구 접점(impact) 왼쪽에 고정
+  labelPos: { x: impact.x - 70, y: impact.y + 34 },
+
+  labelOffset: { x: -40, y: -10 },
+},
+
+      {
+  id: "atmUp",
+  color: COLORS.atm,
+  value: ENERGY.atmUp,
+  d: qPath(atmUpStart, atmUpEnd, { x: 15, y: -10 }),
+  label: `상향 재복사 (${ENERGY.atmUp}%)`,
+  labelMode: "outside",
+
+  // ✅ 추가: 상향 라벨을 상향 끝점 근처에 고정
+  labelPos: { x: atmUpEnd.x - 50, y: atmUpEnd.y - 18 },
+
+  labelOffset: { x: -30, y: -18 },
+},
+      {
+  id: "atmDown",
+  color: COLORS.atm,
+  value: ENERGY.atmDown,
+  d: qPath(atmDownStart, atmDownEnd, { x: 12, y: 10 }),
+  label: `하향 역복사 (${ENERGY.atmDown}%)`,
+  labelMode: "outside",
+
+  // ✅ 추가: 하향 라벨을 하향 끝점 근처(아래쪽)에 고정
+  labelPos: { x: atmDownEnd.x - 55, y: atmDownEnd.y + 28 },
+
+  labelOffset: { x: -35, y: 18 },
+},
+    ];
+
+    buildDefs(svg, flows);
+
+    // 실제 드로잉
+    flows.forEach(f => drawFlow(svg, f));
+  }
+
+  // resize 디바운스
+  let t = null;
+  function scheduleRender() {
+    clearTimeout(t);
+    t = setTimeout(renderEnergyBalance, 60);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // 섹션 전환형 UI라서 “활성화 된 다음”에 그려야 안전함
+    const section = document.getElementById("section-earth-system");
+    if (!section) return;
+
+    // class 변화 감지: active 될 때마다 다시 그림
+    const obs = new MutationObserver(() => {
+      if (section.classList.contains("active")) {
+        requestAnimationFrame(() => setTimeout(renderEnergyBalance, 80));
+      }
+    });
+    obs.observe(section, { attributes: true, attributeFilter: ["class"] });
+
+    // 최초 로드시 이미 active면 즉시
+    if (section.classList.contains("active")) {
+      setTimeout(renderEnergyBalance, 120);
+    }
+
+    window.addEventListener("resize", scheduleRender);
+  });
+})();

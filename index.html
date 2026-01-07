@@ -600,6 +600,69 @@
         <div class="earth-system-space-view">
             <div class="space-stars"></div> <!-- 별 배경 -->
 
+            <!-- [수정] 좌측 용어 사전 (설명 문구 상시 노출) -->
+            <div class="earth-glossary">
+                <div class="glossary-title">SYSTEM KEYWORDS</div>
+                
+                <!-- 1. 알베도 -->
+                <div class="glossary-item">
+                    <div class="glossary-header">
+                        <span class="g-icon">✨</span> 알베도 (Albedo)
+                    </div>
+                    <!-- 설명 문구를 밖으로 꺼냄 -->
+                    <p class="g-def">태양 에너지를 반사하는 비율 (0~1)</p>
+                    
+                    <div class="glossary-content">
+                        <div class="g-sub-row">
+                            <span class="g-tag high">High</span>
+                            <span>빙하, 구름 (반사/냉각)</span>
+                        </div>
+                        <div class="g-sub-row">
+                            <span class="g-tag low">Low</span>
+                            <span>바다, 숲 (흡수/가열)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 피드백 루프 -->
+                <div class="glossary-item">
+                    <div class="glossary-header">
+                        <span class="g-icon">🔄</span> 피드백 루프 (Feedback)
+                    </div>
+                    <p class="g-def">결과가 원인을 다시 자극하는 순환</p>
+
+                    <div class="glossary-content">
+                        <div class="g-sub-row">
+                            <span class="g-tag pos">Positive</span>
+                            <span>변화 증폭 (악순환)</span>
+                        </div>
+                        <div class="g-sub-row">
+                            <span class="g-tag neg">Negative</span>
+                            <span>상태 유지 (안정화)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 대기의 힘 -->
+                <div class="glossary-item">
+                    <div class="glossary-header">
+                        <span class="g-icon">💨</span> 대기의 힘 (Forces)
+                    </div>
+                    <p class="g-def">공기를 움직이는 물리적 원리</p>
+
+                    <div class="glossary-content">
+                        <div class="g-sub-row">
+                            <span class="g-tag">대류</span>
+                            <span>수직 이동 (밀도 차이)</span>
+                        </div>
+                        <div class="g-sub-row">
+                            <span class="g-tag">전향력</span>
+                            <span>수평 휘어짐 (자전)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 중앙 컨테이너 -->
             <div class="earth-container">
                 <!-- 1. 지구 본체 -->
@@ -655,55 +718,68 @@
                     <!-- 기존: M 260,280 ... -->
                     <!-- 수정: 상단 제어점을 우측 하단으로 이동하여 곡률 맞춤 -->
                     <path id="polar-cell" class="cell-path" d="M 260,280 Q 230,220 370,160 Q 390,240 260,280" />
-                    <text class="cell-label" x="200" y="190" text-anchor="end">극 순환</text>
+                    <text class="cell-label" x="250" y="190" text-anchor="end">극 순환</text>
                 </svg>
             </div>
 
-            <!-- [복구] 3. 열수지 (에너지 불균형) 화살표 및 텍스트 -->
-            <div class="energy-balance-container">
-                <!-- 1. 극지방 (상단, 에너지 부족) -->
-                <div class="balance-group polar-balance">
-                    <div class="balance-arrows">
-                        <div class="arrow output large tilted" title="지구 복사 (많음)"></div>
-                        <div class="arrow input small" title="태양 복사 (적음)"></div>
-                    </div>
-                </div>
+            <!-- [수정] 3. 열수지 (에너지 불균형) -> 에너지 흐름도(Flow Diagram)로 전면 교체 -->
+            <!-- [에너지 흐름도] DIV 화살표 방식 제거 → SVG 오버레이로 교체 -->
+<div class="energy-balance-container">
+  <div class="flow-title">지구 에너지 수지</div>
+  <svg id="energy-balance-svg" class="energy-balance-svg" aria-hidden="true"></svg>
+</div>
 
-                <!-- 3. 적도 (하단, 에너지 과잉) -->
-                <div class="balance-group equator-balance">
-                    <div class="balance-arrows">
-                        <div class="arrow input large" title="태양 복사 (많음)"></div>
-                        <div class="arrow output small" title="지구 복사 (적음)"></div>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
             <div class="earth-info-cards-container">
                 <!-- ... (카드 4개 내용) ... -->
             </div>
 
-            <!-- [신규] 3. 열수지 및 대기 순환 정보 카드 -->
+            <!-- [수정] 3. 열수지 및 대기 순환 정보 카드 (요약 문구 추가) -->
             <div class="earth-info-cards-container">
-                <!-- 카드 1: 저위도 에너지 과잉 -->
+                <!-- 카드 1: 저위도 -->
                 <div class="ocean-card card-surplus">
                     <h3>저위도: 에너지 과잉</h3>
-                    <p>단위 면적당 태양 복사 입사량이 높으며 식생이 두터워 알베도가 낮으므로 지구 방출 복사량이 낮아 열이 축적된다. 이 과잉 에너지가 모든 순환의 원동력이 된다.</p>
+                    <p class="card-summary">태양 에너지가 집중되는 열대 지역</p>
+                    <div class="card-indicator">🔥 입사량 &gt; 방출량</div>
+                    <div class="card-detail">
+                        <p><strong>원리:</strong> 태양 고도가 높아 단위 면적당 받는 에너지가 최대치입니다.</p>
+                        <p><strong>역할:</strong> 이 과잉 열에너지가 대기와 해수를 움직이는 <strong>지구의 엔진</strong> 역할을 합니다.</p>
+                    </div>
                 </div>
-                <!-- 카드 2: 고위도 에너지 부족 -->
+                
+                <!-- 카드 2: 고위도 -->
                 <div class="ocean-card card-deficit">
                     <h3>고위도: 에너지 부족</h3>
-                    <p>지구 복사 방출량이 태양 복사 입사량보다 많아 열이 부족하다. 빙상으로 인해 높은 알베도는 이를 심화시키며, 저위도에서 수송된 에너지로 균형을 이루려 한다.</p>
+                    <p class="card-summary">열을 우주로 방출하는 극지방</p>
+                    <div class="card-indicator">❄️ 입사량 &lt; 방출량</div>
+                    <div class="card-detail">
+                        <p><strong>원리:</strong> 빙하의 높은 반사율로 인해 들어오는 열보다 나가는 열이 많습니다.</p>
+                        <p><strong>역할:</strong> 지구의 열을 식혀주는 <strong>냉각기</strong> 역할을 하며, 열 순환을 유도합니다.</p>
+                    </div>
                 </div>
+                
                 <!-- 카드 3: 대기 대순환 -->
                 <div class="ocean-card card-circulation">
                     <h3>대기 대순환</h3>
-                    <p>에너지 불균형을 해소하기 위해, 뜨거운 공기는 상승하고 차가운 공기는 하강하며 거대한 순환 세포를 형성한다.</p>
+                    <p class="card-summary">에너지 불균형을 해소하는 공기의 흐름</p>
+                    <div class="card-indicator">🔄 적도 ➔ 극지방 열 수송</div>
+                    <div class="card-detail">
+                        <p><strong>메커니즘:</strong> 뜨거운 공기는 상승하고 차가운 공기는 하강하며 거대한 순환 세포를 형성합니다.</p>
+                        <p><strong>결과:</strong> 저위도의 남는 열을 고위도로 실어 날라 지구의 온도를 조절합니다.</p>
+                    </div>
                 </div>
+                
                 <!-- 카드 4: 전향력 -->
                 <div class="ocean-card card-coriolis">
                     <h3>전향력</h3>
-                    <p>지구의 자전으로 인해 북반구에서는 바람이 오른쪽으로, 남반구에서는 왼쪽으로 휘어지며 항상풍의 방향이 결정된다.</p>
+                    <p class="card-summary">회전을 통해 바람의 방향을 결정</p>
+                    <div class="card-indicator">🌀 지구 자전의 힘</div>
+                    <div class="card-detail">
+                        <p><strong>원리:</strong> 지구가 자전하기 때문에 움직이는 유체(바람, 해류)는 진행 방향의 오른쪽으로 휘어집니다.</p>
+                        <p><strong>결과:</strong> 무역풍과 편서풍의 방향을 결정하고 태풍을 회전시킵니다.</p>
+                    </div>
                 </div>
             </div>
 
