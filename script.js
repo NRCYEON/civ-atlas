@@ -1806,27 +1806,57 @@ function setEnso(state) {
     if (targetBtn) targetBtn.classList.add('active');
 }
 
-/* [신규] 기단 렌더링 함수 */
-function renderAirMass(containerId, data) {
+/* [수정] 기단 렌더링 함수 (디자인: Precip-card 유지 / 기능: Region-card 확장) */
+function renderAirMass(containerId, dataObj) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     container.innerHTML = '';
 
-    data.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'precip-card'; // 기존 스타일 재사용
+    Object.keys(dataObj).forEach(key => {
+        const data = dataObj[key];
+        const cardId = `card-${key}`;
 
+        const card = document.createElement('div');
+        // [핵심] 
+        // 1. 'precip-card': 기존의 투명/유리 디자인 유지
+        // 2. 'region-card': 시스템이 클릭 이벤트를 인식하도록 클래스 추가
+        card.className = 'precip-card region-card'; 
+card.id = cardId;
+// [추가] 테마 색상을 CSS 변수로 주입
+if (data.theme) {
+    card.style.setProperty('--theme', data.theme);
+}
+        
+        // 클릭 시 패널 열기 (기존 activateCard 함수 재사용)
+        card.onclick = (event) => activateCard(key, event);
+
+        // 카드 내부 내용 (기존 디자인 + 숨겨진 데이터)
         card.innerHTML = `
             <div class="precip-header">
-                <h3 class="precip-title">${item.title}</h3>
-                <span class="precip-meta">${item.meta}</span>
+                <h3 class="precip-title">${data.title}</h3>
+                <span class="precip-meta">${data.subtitle}</span>
             </div>
-            <p class="precip-desc">${item.desc}</p>
-            <div class="precip-related">
-                <span class="related-label">발원지:</span> ${item.origin}
+            
+            <!-- 상단 기준 (Criteria) 표시 -->
+            <div class="precip-related" style="margin-top:15px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                ${data.criteria.map(c => `
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:1.2rem;">${c.icon}</span>
+                        <div style="display:flex; flex-direction:column;">
+                            <span style="font-size:0.7rem; opacity:0.7;">${c.label}</span>
+                            <span style="font-size:0.9rem; font-weight:700;">${c.text}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <!-- [숨겨진 데이터] 패널이 열릴 때 이 내용을 가져갑니다 -->
+            <div class="hidden-data">
+                ${generatePanelContent(data, key)}
             </div>
         `;
+
         container.appendChild(card);
     });
 }
@@ -2113,7 +2143,7 @@ function playOpenSound() {
     gain.gain.setValueAtTime(0, audioCtx.currentTime);
 
     // 0.1초 동안 천천히 커짐 -> '탁' 하는 타격감을 없애고 '스윽' 하는 느낌 구현
-    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
+    gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.1);
 
     // 나머지 시간 동안 자연스럽게 사라짐
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
